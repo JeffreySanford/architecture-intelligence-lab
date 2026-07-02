@@ -1,0 +1,10 @@
+.git
+.nx
+dist
+coverage
+node_modules
+tmp
+*.log
+package-lock.json
+documentation
+

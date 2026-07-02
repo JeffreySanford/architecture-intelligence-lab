@@ -1,0 +1,40 @@
+<mat-sidenav-container class="lab-shell">
+  <mat-sidenav mode="side" opened class="lab-shell__nav" fixedInViewport>
+    <div class="lab-shell__brand">
+      <a matButton="tonal" routerLink="/">Architecture Lab</a>
+      <p>Training workspace</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-nav-list aria-label="Lab views">
+      @for (item of visibleNavItems(); track item.route) {
+        <a
+          mat-list-item
+          [routerLink]="item.route"
+          routerLinkActive="lab-shell__nav-item--active"
+        >
+          <span matListItemTitle>{{ item.label }}</span>
+          <span matListItemLine>{{ item.description }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="lab-shell__content">
+    <mat-toolbar class="lab-shell__toolbar">
+      <span>Architecture Intelligence Lab</span>
+      <span class="lab-shell__spacer"></span>
+      @if (currentUser(); as user) {
+        <span class="lab-shell__persona">
+          {{ user.persona.name }} · {{ user.persona.role }}
+        </span>
+      }
+      <a matButton routerLink="/">Change Persona</a>
+    </mat-toolbar>
+
+    <main class="lab-shell__main">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

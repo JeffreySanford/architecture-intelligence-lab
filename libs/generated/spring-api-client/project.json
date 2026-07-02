@@ -1,0 +1,24 @@
+{
+  "name": "spring-api-client",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/generated/spring-api-client/src",
+  "targets": {
+    "build": {
+      "executor": "nx:noop"
+    },
+    "generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec @openapitools/openapi-generator-cli generate -i http://localhost:18080/v3/api-docs -g typescript-angular -o libs/generated/spring-api-client/src/generated --skip-validate-spec --additional-properties=ngVersion=22.0.5,providedIn=Root,serviceSuffix=ApiService,apiPackage=api,modelPackage=models,supportsES6=true,withSeparateModelsAndApi=true"
+      }
+    },
+    "lint": {
+      "executor": "nx:noop"
+    },
+    "test": {
+      "executor": "nx:noop"
+    }
+  },
+  "tags": ["scope:generated", "api:spring"]
+}

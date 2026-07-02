@@ -1,0 +1,57 @@
+<section class="map-inspector">
+  <p class="map-inspector__eyebrow">Computed indexes</p>
+  <h1>Map Inspector</h1>
+  <p>
+    These rows come from the dashboard snapshot and the same computed Map state
+    used by the dashboard cards and table.
+  </p>
+
+  <div class="map-inspector__summary">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ dashboardStore.loansById().size }}</mat-card-title>
+        <mat-card-subtitle>loansById entries</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ dashboardStore.borrowersById().size }}</mat-card-title>
+        <mat-card-subtitle>borrowersById entries</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ authStore.permissionSet().size }}</mat-card-title>
+        <mat-card-subtitle>permissionSet entries</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </div>
+
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Index Rows</mat-card-title>
+      <mat-card-subtitle>Current DTO-to-ViewModel lookup state</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="dashboardStore.mapInspectorRows()">
+        <ng-container matColumnDef="indexName">
+          <th mat-header-cell *matHeaderCellDef>Index</th>
+          <td mat-cell *matCellDef="let row">{{ row.indexName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="key">
+          <th mat-header-cell *matHeaderCellDef>Key</th>
+          <td mat-cell *matCellDef="let row">{{ row.key }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef>Value</th>
+          <td mat-cell *matCellDef="let row">{{ row.value }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</section>

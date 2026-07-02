@@ -1,0 +1,78 @@
+name: architecture-intelligence-lab
+
+services:
+  architecture-dashboard:
+    build:
+      context: .
+      dockerfile: apps/architecture-dashboard/Dockerfile
+    container_name: architecture-lab-dashboard
+    ports:
+      - "${ARCHITECTURE_DASHBOARD_PORT:-4200}:4200"
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - spring-api
+      - nest-api
+
+  spring-api:
+    build:
+      context: .
+      dockerfile: apps/spring-api/Dockerfile
+    container_name: architecture-lab-spring-api
+    ports:
+      - "${SPRING_API_PORT:-18080}:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-architecture_lab}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-architecture_lab}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-architecture_lab}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  nest-api:
+    build:
+      context: .
+      dockerfile: apps/nest-api/Dockerfile
+    container_name: architecture-lab-nest-api
+    ports:
+      - "${NEST_API_PORT:-13000}:3000"
+    environment:
+      NODE_ENV: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: architecture-lab-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-architecture_lab}
+      POSTGRES_USER: ${POSTGRES_USER:-architecture_lab}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-architecture_lab}
+    ports:
+      - "${POSTGRES_PORT:-15432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./apps/postgres/src/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-architecture_lab} -d $${POSTGRES_DB:-architecture_lab}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: architecture-lab-redis
+    ports:
+      - "${REDIS_PORT:-16379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:

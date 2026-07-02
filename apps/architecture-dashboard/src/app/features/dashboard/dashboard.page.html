@@ -1,0 +1,74 @@
+<section class="dashboard">
+  <p class="dashboard__eyebrow">Spring snapshot · {{ dashboardStore.snapshot()?.dataset ?? 'loading' }}</p>
+  <h1>Dashboard</h1>
+  <p>
+    The dashboard is now reading the Spring source-of-truth snapshot and
+    projecting loan cards and table rows through computed Map indexes.
+  </p>
+
+  @if (dashboardStore.error(); as error) {
+    <p class="dashboard__error">{{ error }}</p>
+  }
+
+  <section class="dashboard__cards" aria-label="Loan cards">
+    @for (loan of dashboardStore.loanCards(); track loan.id) {
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>{{ loan.loanNumber }}</mat-card-title>
+          <mat-card-subtitle>{{ loan.borrowerName }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="dashboard__amount">{{ loan.amount | currency }}</p>
+          <mat-chip-set aria-label="Loan details">
+            <mat-chip>{{ loan.statusLabel }}</mat-chip>
+            <mat-chip>{{ loan.documentCount }} docs</mat-chip>
+            <mat-chip>{{ loan.riskBand }} risk</mat-chip>
+          </mat-chip-set>
+        </mat-card-content>
+      </mat-card>
+    }
+  </section>
+
+  <mat-card appearance="outlined" class="dashboard__table-card">
+    <mat-card-header>
+      <mat-card-title>Loan Table</mat-card-title>
+      <mat-card-subtitle>ViewModel rows from the same snapshot</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="dashboardStore.loanCards()">
+        <ng-container matColumnDef="loanNumber">
+          <th mat-header-cell *matHeaderCellDef>Loan</th>
+          <td mat-cell *matCellDef="let loan">{{ loan.loanNumber }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="borrowerName">
+          <th mat-header-cell *matHeaderCellDef>Borrower</th>
+          <td mat-cell *matCellDef="let loan">{{ loan.borrowerName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let loan">{{ loan.amount | currency }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="statusLabel">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let loan">{{ loan.statusLabel }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="documentCount">
+          <th mat-header-cell *matHeaderCellDef>Docs</th>
+          <td mat-cell *matCellDef="let loan">{{ loan.documentCount }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="riskBand">
+          <th mat-header-cell *matHeaderCellDef>Risk</th>
+          <td mat-cell *matCellDef="let loan">{{ loan.riskBand }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</section>

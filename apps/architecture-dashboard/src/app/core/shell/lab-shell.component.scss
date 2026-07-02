@@ -1,0 +1,72 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.lab-shell {
+  min-height: 100vh;
+  background: #f7f8fb;
+}
+
+.lab-shell__nav {
+  width: 292px;
+  border-right: 1px solid #d8dce6;
+  background: #ffffff;
+}
+
+.lab-shell__brand {
+  padding: 20px 16px 16px;
+}
+
+.lab-shell__brand a {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.lab-shell__brand p {
+  margin: 10px 0 0;
+  color: #5d6575;
+  font-size: 0.875rem;
+}
+
+.lab-shell__nav-item--active {
+  background: #e7f0ff;
+}
+
+.lab-shell__content {
+  min-height: 100vh;
+}
+
+.lab-shell__toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  border-bottom: 1px solid #d8dce6;
+  background: #ffffff;
+  color: #172033;
+}
+
+.lab-shell__spacer {
+  flex: 1;
+}
+
+.lab-shell__persona {
+  margin-right: 16px;
+  color: #4f5868;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.lab-shell__main {
+  padding: 28px;
+}
+
+@media (max-width: 860px) {
+  .lab-shell__nav {
+    width: 244px;
+  }
+
+  .lab-shell__main {
+    padding: 20px;
+  }
+}
