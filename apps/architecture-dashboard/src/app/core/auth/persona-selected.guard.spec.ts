@@ -61,4 +61,21 @@ describe('personaSelectedGuard', () => {
     }
     expect(router.createUrlTree).toHaveBeenCalledWith(['/']);
   });
+
+  it('redirects to landing after a hard refresh when in-memory auth state is cleared', async () => {
+    authStore.ensureCurrentUser.mockReturnValue(
+      throwError(() => new Error('No current user in memory')),
+    );
+
+    const result = TestBed.runInInjectionContext(() =>
+      personaSelectedGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    );
+
+    if (typeof result === 'boolean') {
+      expect(result).toBe(false);
+    } else {
+      await expect(guardResultToPromise(result)).resolves.toEqual({ commands: ['/'] });
+    }
+    expect(router.createUrlTree).toHaveBeenCalledWith(['/']);
+  });
 });

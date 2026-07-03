@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { catchError, finalize, map, Observable, of, tap } from 'rxjs';
+import { catchError, finalize, map, Observable, of, throwError, tap } from 'rxjs';
 import { CurrentUserDto, PersonaDto } from '../api/lab-api.models';
 import { SpringApiFacade } from '../api/spring-api.facade';
 
