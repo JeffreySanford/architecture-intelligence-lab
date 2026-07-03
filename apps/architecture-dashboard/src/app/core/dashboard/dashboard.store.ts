@@ -9,6 +9,9 @@ import {
 } from '../api/lab-api.models';
 import { SpringApiFacade } from '../api/spring-api.facade';
 
+export type DatasetSize = 'small' | 'medium' | 'large' | 'stress';
+export type BackendMode = 'spring-direct' | 'nest-direct' | 'nest-proxy' | 'compare-all';
+
 export type LoanCardVm = {
   id: string;
   loanNumber: string;
@@ -29,7 +32,8 @@ export type MapInspectorRowVm = {
 export class DashboardStore {
   private readonly api = inject(SpringApiFacade);
 
-  readonly selectedDataset = signal('small');
+  readonly selectedDataset = signal<DatasetSize>('small');
+  readonly selectedBackendMode = signal<BackendMode>('spring-direct');
   readonly snapshot = signal<DashboardSnapshotDto | null>(null);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);

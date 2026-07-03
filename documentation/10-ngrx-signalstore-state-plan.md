@@ -12,6 +12,7 @@ NgRx SignalStore is the frontend state layer. It should hold raw DTO state, expo
 | `DashboardStore` | Raw dashboard DTOs, selected backend, dataset size, computed dashboard ViewModels. |
 | `BackendComparisonStore` | Comparison mode, metrics, errors, response summaries. |
 | `RealtimeStore` | Socket connection, event history, event controls, last realtime event. |
+| `PhaseFiveVisualizationStore` | Optional future store for graph path selection, visible deliverables, and live comparison/realtime binding. |
 | `OpenApiContractStore` | Contract summaries, generated client status, drift check state. |
 | `McpDashboardStore` | MCP guidance checklist and command references. |
 | `ExplainModeStore` | Global Explain Mode state and overlays. |
@@ -33,6 +34,15 @@ type DashboardState = {
 };
 ```
 
+```ts
+type PhaseFiveVisualizationState = {
+  selectedPathId: 'spring-direct' | 'nest-direct' | 'nest-proxy' | 'socket-event' | null;
+  comparisonResults: BackendComparisonResultDto[];
+  realtimeEvents: RealtimeEventDto[];
+  redisAdapterStatus: 'unknown' | 'connected' | 'degraded' | 'unavailable';
+};
+```
+
 ## Computed State Examples
 
 | Computed signal | Purpose |
@@ -46,6 +56,8 @@ type DashboardState = {
 | `dashboardSummary` | Totals and chart data. |
 | `mapInspectorRows` | Rows explaining current Map contents. |
 | `signalStoreGraph` | D3-ready SignalStore dependency graph. |
+| `phaseFiveFlowGraph` | D3-ready backend comparison and realtime topology graph. |
+| `visiblePhaseFiveDeliverables` | Deliverables filtered by the current permission set. |
 
 ```mermaid
 flowchart LR
@@ -62,4 +74,4 @@ flowchart LR
 - Computed signals make derived state explicit.
 - Map indexes make joins visible and efficient.
 - Realtime events should update state immutably.
-
+- Visualization state should be represented as typed nodes, links, rows, and selections before D3 renders it.

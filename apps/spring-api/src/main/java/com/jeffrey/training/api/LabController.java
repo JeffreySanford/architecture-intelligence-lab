@@ -3,11 +3,13 @@ package com.jeffrey.training.api;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,15 +18,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jeffrey.training.api.entity.Persona;
+import com.jeffrey.training.api.repository.BorrowerRepository;
+import com.jeffrey.training.api.repository.LoanDocumentRepository;
+import com.jeffrey.training.api.repository.LoanRepository;
+import com.jeffrey.training.api.repository.LoanStatusCodeRepository;
+import com.jeffrey.training.api.repository.PersonaRepository;
+
 @RestController
 @RequestMapping("/api")
 class LabController {
   private static final String DEFAULT_PERSONA_ID = "alice-viewer";
 
-  private final JdbcTemplate jdbcTemplate;
+  private final PersonaRepository personaRepository;
+  private final BorrowerRepository borrowerRepository;
+  private final LoanRepository loanRepository;
+  private final LoanDocumentRepository loanDocumentRepository;
+  private final LoanStatusCodeRepository loanStatusCodeRepository;
 
-  LabController(JdbcTemplate jdbcTemplate) {
-    this.jdbcTemplate = jdbcTemplate;
+  LabController(
+      PersonaRepository personaRepository,
+      BorrowerRepository borrowerRepository,
+      LoanRepository loanRepository,
+      LoanDocumentRepository loanDocumentRepository,
+      LoanStatusCodeRepository loanStatusCodeRepository) {
+    this.personaRepository = personaRepository;
+    this.borrowerRepository = borrowerRepository;
+    this.loanRepository = loanRepository;
+    this.loanDocumentRepository = loanDocumentRepository;
+    this.loanStatusCodeRepository = loanStatusCodeRepository;
   }
 
   @GetMapping("/health")
@@ -34,7 +56,9 @@ class LabController {
 
   @GetMapping("/personas")
   List<PersonaDto> personas() {
-    return queryPersonas();
+    return personaRepository.findAllWithRoleAndPermissions().stream()
+        .map(this::toPersonaDto)
+        .collect(Collectors.toList());
   }
 
   @PostMapping("/dev-auth/personas/{personaId}/select")
@@ -65,85 +89,56 @@ class LabController {
   DashboardSnapshotDto dashboardSnapshot(
       @RequestParam(defaultValue = "small") String dataset
   ) {
-    List<BorrowerDto> borrowers = jdbcTemplate.query(
-        "select id, display_name, credit_score, risk_band from borrowers order by id",
-        (rs, rowNum) -> new BorrowerDto(
-            rs.getString("id"),
-            rs.getString("display_name"),
-            rs.getInt("credit_score"),
-            rs.getString("risk_band")
-        )
-    );
+    List<BorrowerDto> borrowers = borrowerRepository.findAll(Sort.by("id")).stream()
+        .map(b -> new BorrowerDto(b.getId(), b.getDisplayName(), b.getCreditScore(), b.getRiskBand()))
+        .collect(Collectors.toList());
 
-    List<LoanStatusCodeDto> statusCodes = jdbcTemplate.query(
-        "select code, label, sort_order from loan_status_codes order by sort_order",
-        (rs, rowNum) -> new LoanStatusCodeDto(
-            rs.getString("code"),
-            rs.getString("label"),
-            rs.getInt("sort_order")
-        )
-    );
+    List<LoanStatusCodeDto> statusCodes = loanStatusCodeRepository.findAll(Sort.by("sortOrder")).stream()
+        .map(code -> new LoanStatusCodeDto(code.getCode(), code.getLabel(), code.getSortOrder()))
+        .collect(Collectors.toList());
 
-    List<LoanDto> loans = jdbcTemplate.query(
-        """
-        select id, borrower_id, loan_number, amount, status_code, updated_at
-        from loans
-        order by loan_number
-        """,
-        (rs, rowNum) -> new LoanDto(
-            rs.getString("id"),
-            rs.getString("borrower_id"),
-            rs.getString("loan_number"),
-            rs.getBigDecimal("amount"),
-            rs.getString("status_code"),
-            rs.getTimestamp("updated_at").toInstant()
-        )
-    );
+    List<LoanDto> loans = loanRepository.findAll(Sort.by("loanNumber")).stream()
+        .map(loan -> new LoanDto(
+            loan.getId(),
+            loan.getBorrower().getId(),
+            loan.getLoanNumber(),
+            loan.getAmount(),
+            loan.getStatusCode().getCode(),
+            loan.getUpdatedAt()
+        ))
+        .collect(Collectors.toList());
 
-    List<LoanDocumentDto> documents = jdbcTemplate.query(
-        "select id, loan_id, document_type, status from loan_documents order by id",
-        (rs, rowNum) -> new LoanDocumentDto(
-            rs.getString("id"),
-            rs.getString("loan_id"),
-            rs.getString("document_type"),
-            rs.getString("status")
-        )
-    );
+    List<LoanDocumentDto> documents = loanDocumentRepository.findAll(Sort.by("id")).stream()
+        .map(document -> new LoanDocumentDto(
+            document.getId(),
+            document.getLoan().getId(),
+            document.getDocumentType(),
+            document.getStatus()
+        ))
+        .collect(Collectors.toList());
 
     return new DashboardSnapshotDto(dataset, loans, borrowers, documents, statusCodes);
   }
 
   private CurrentUserDto currentUserFor(String personaId) {
-    return queryPersonas().stream()
-        .filter(persona -> persona.id().equals(personaId))
-        .findFirst()
-        .map(persona -> new CurrentUserDto(persona, List.of(persona.role()), persona.permissions()))
-        .orElseGet(() -> currentUserFor(DEFAULT_PERSONA_ID));
+    Persona persona = personaRepository.findByIdWithRoleAndPermissions(personaId);
+    if (persona == null) {
+      return currentUserFor(DEFAULT_PERSONA_ID);
+    }
+    PersonaDto personaDto = toPersonaDto(persona);
+    return new CurrentUserDto(personaDto, List.of(personaDto.role()), personaDto.permissions());
   }
 
-  private List<PersonaDto> queryPersonas() {
-    return jdbcTemplate.query(
-        """
-        select
-          p.id,
-          p.display_name,
-          r.label as role_label,
-          p.description,
-          coalesce(array_agg(rp.permission_id order by rp.permission_id)
-            filter (where rp.permission_id is not null), '{}') as permissions
-        from personas p
-        join roles r on r.id = p.role_id
-        left join role_permissions rp on rp.role_id = r.id
-        group by p.id, p.display_name, r.label, p.description
-        order by p.display_name
-        """,
-        (rs, rowNum) -> new PersonaDto(
-            rs.getString("id"),
-            rs.getString("display_name"),
-            rs.getString("role_label"),
-            rs.getString("description"),
-            List.of((String[]) rs.getArray("permissions").getArray())
-        )
+  private PersonaDto toPersonaDto(Persona persona) {
+    return new PersonaDto(
+        persona.getId(),
+        persona.getDisplayName(),
+        persona.getRole().getLabel(),
+        persona.getDescription(),
+        persona.getRole().getPermissions().stream()
+            .map(permission -> permission.getId())
+            .sorted()
+            .collect(Collectors.toList())
     );
   }
 

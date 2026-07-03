@@ -69,10 +69,43 @@ NestJS may read directly from PostgreSQL for comparison and diagnostics, and it 
 | Compare all | Angular fires all comparison paths and renders metrics |
 | Realtime | Angular -> Socket.IO -> NestJS -> Redis -> Angular update |
 
+## Phase 5 Visualization Surface
+
+Phase 5 makes backend topology visible before the full Nest implementation is complete. The `/lab/backend-comparison` route is the initial control surface:
+
+```mermaid
+flowchart LR
+  Angular[Angular Phase 5 view]
+  Spring[Spring direct reads]
+  Nest[Nest direct API]
+  Proxy[Nest proxy]
+  Compare[Comparison endpoint]
+  Socket[Socket.IO gateway]
+  Redis[Redis adapter]
+  Swagger[Nest Swagger UI]
+
+  Angular -->|direct| Spring
+  Angular -->|direct| Nest
+  Angular -->|proxy| Proxy
+  Spring -->|baseline| Compare
+  Nest -->|candidate| Compare
+  Proxy -->|parity| Compare
+  Angular -->|emit| Socket
+  Socket -->|adapter| Redis
+  Nest -->|docs| Swagger
+```
+
+The methodology is deliberate:
+
+- D3/SVG renders topology and, later, active request/event paths.
+- PrimeNG renders deliverables, acceptance criteria, role access, comparison metrics, and realtime event history.
+- The current persona filters visible Phase 5 deliverables while the access matrix explains the complete intended permission model.
+- Static visualization data should be replaced by live backend data through typed ViewModels, not by a separate UI.
+
 ## What This Teaches
 
 - Architecture is easier to understand when each service has a clear job.
 - A gateway can add value without owning all business rules.
 - Comparison paths make tradeoffs visible instead of theoretical.
 - A single browser entrypoint keeps the learner focused on architecture instead of ports.
-
+- Role-aware visualization keeps diagnostics and realtime controls understandable without broadening access to every learner persona.

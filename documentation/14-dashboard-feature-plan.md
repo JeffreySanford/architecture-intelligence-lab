@@ -4,6 +4,8 @@
 
 The dashboard is the primary working surface. It shows loan cards, loan tables, filters, status chips, charts, dataset controls, backend mode selection, and Explain Mode overlays.
 
+The dashboard remains useful for DTO-to-ViewModel mapping, and `/lab/security-search` is now the first PrimeNG-heavy Capital Markets study surface. That route carries the workflow vocabulary: securities, pools, commitments, disclosure files, settlement dates, coupons, status filters, row actions, and export/detail flows.
+
 ## Dashboard Capabilities
 
 | Capability | Description |
@@ -12,6 +14,7 @@ The dashboard is the primary working surface. It shows loan cards, loan tables, 
 | Loan table | PrimeNG table with sorting, filtering, and status chips. |
 | Dataset selector | Small, Medium, Large, Stress. |
 | Backend selector | Spring direct, Nest direct, Nest proxy, Compare all. |
+| Security search entry | Link or route to the PrimeNG Capital Markets table lab. |
 | Credit score bands | Visual grouping for borrower risk. |
 | Document counts | Joined from `documentsByLoanId`. |
 | Approval state | Derived from status code and permissions. |
@@ -40,6 +43,7 @@ flowchart LR
 | `LoanTableRowVm` | Loan, borrower, status, document count. |
 | `DashboardSummaryVm` | Loans, statuses, backend metrics. |
 | `MapInspectorRowVm` | Current index state. |
+| `SecuritySearchRowVm` | Security, pool, coupon, commitment status, disclosure status, settlement date, balance/amount, audit metadata. |
 
 ## What This Teaches
 
@@ -47,3 +51,4 @@ flowchart LR
 - One snapshot can feed multiple UI projections.
 - Dataset size controls make performance and mapping choices visible.
 - Explain Mode should attach learning to real UI behavior.
+- PrimeNG table query state is a first-class ViewModel concern, not template glue.

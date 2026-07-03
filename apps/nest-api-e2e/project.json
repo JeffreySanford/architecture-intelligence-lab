@@ -5,12 +5,11 @@
   "implicitDependencies": ["nest-api"],
   "targets": {
     "e2e": {
-      "executor": "@nx/jest:jest",
+      "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
-      "dependsOn": ["nest-api:build", "nest-api:serve"],
+      "dependsOn": ["nest-api:build", "nest-api:serve-e2e"],
       "options": {
-        "jestConfig": "apps/nest-api-e2e/jest.config.cts",
-        "passWithNoTests": true
+        "command": "pnpm exec jest --config apps/nest-api-e2e/jest.config.mjs --passWithNoTests"
       }
     }
   }

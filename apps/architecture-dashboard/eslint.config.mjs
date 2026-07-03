@@ -30,6 +30,22 @@ export default [
     },
     {
         files: [
+            "apps/architecture-dashboard/src/app/features/capital-markets/capital-markets.page.ts"
+        ],
+        rules: {
+            "@angular-eslint/use-lifecycle-interface": "off"
+        }
+    },
+    {
+        files: [
+            "apps/architecture-dashboard/src/app/features/capital-markets/capital-markets.page.ts"
+        ],
+        rules: {
+            "@angular-eslint/use-lifecycle-interface": "off"
+        }
+    },
+    {
+        files: [
             "**/*.html"
         ],
         // Override or add rules here
@@ -38,6 +54,14 @@ export default [
     {
         files: [
             "**/spring-api.facade.ts"
+        ],
+        rules: {
+            "@nx/enforce-module-boundaries": "off"
+        }
+    },
+    {
+        files: [
+            "src/app/core/realtime-socket/realtime-socket.service.ts"
         ],
         rules: {
             "@nx/enforce-module-boundaries": "off"

@@ -16,6 +16,17 @@ The OpenAPI contract lab teaches anti-drift workflows. It shows Spring Swagger U
 | Endpoint list | Show browser-facing paths. |
 | Drift explanation | Explain database, API, frontend mapping, and runtime drift. |
 
+## Phase 5 Relationship
+
+The Phase 5 view includes Nest Swagger UI as a topology node and shows Contract Admin access in the role matrix. The OpenAPI Contract Lab remains the deeper contract surface, but Phase 5 should expose enough Swagger/contract status to explain why gateway DTOs matter for comparison metrics and realtime events.
+
+Nest contract DTOs should include:
+
+- comparison metric rows keyed by `pathId`
+- realtime emit responses keyed by `eventId`
+- Socket.IO event payload shape
+- diagnostics and Redis adapter status summaries
+
 ## Drift Map
 
 ```mermaid
@@ -37,4 +48,4 @@ Generated files are build artifacts. They should be regenerated, not hand-edited
 - Swagger UI is useful for humans; generated clients are useful for code.
 - Nest can expose a useful contract even when Spring owns source-of-truth writes.
 - Tests complete the contract story by verifying UI behavior.
-
+- Phase 5 should consume contract-backed shapes once the Nest OpenAPI document exists.

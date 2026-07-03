@@ -8,10 +8,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json 
 COPY .prettierrc .prettierignore eslint.config.mjs jest.config.ts jest.preset.js ./
 COPY apps ./apps
 
-RUN pnpm config set trust-policy ignore \
-    && pnpm config set minimumReleaseAge 0 \
-    && pnpm config set --location=project allowBuilds true \
-    && pnpm install --frozen-lockfile --trust-policy-ignore-after 0 || (pnpm approve-builds --all && pnpm install --frozen-lockfile --trust-policy-ignore-after 0)
+RUN pnpm install --frozen-lockfile
 
 EXPOSE 3000
 

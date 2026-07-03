@@ -53,6 +53,18 @@ Use both realistic names and role labels:
 | `realtime:emit` | Trigger demo realtime events. |
 | `backend-comparison:view` | View backend comparison lab. |
 
+## Phase 5 Access Matrix
+
+| Role | Phase 5 access |
+| --- | --- |
+| Diagnostics Admin | Backend comparison, diagnostics panels, direct/proxy comparison inspection. |
+| Realtime Operator | Realtime lab and demo event emission. |
+| Contract Admin | OpenAPI contract lab and Nest Swagger inspection. |
+| Admin | Admin/persona lab; no comparison or realtime access unless explicitly granted. |
+| Viewer, Reviewer, Approver, Auditor, MCP Explorer | No Phase 5 comparison/realtime controls by default. |
+
+This split is intentional. The UI should show a role matrix so users understand that hidden Phase 5 controls are permission-driven, not missing features.
+
 ## Cookie Flow
 
 Current implementation checkpoint: the landing page loads persona cards from Spring, posts the selected persona to `/api/dev-auth/personas/{personaId}/select`, receives an httpOnly cookie, then calls `/api/me`. `/lab` is guarded by `/api/me`, but the backend currently falls back to Alice Viewer when no cookie exists so the lab remains demo-accessible during setup.
@@ -87,3 +99,4 @@ Persona selection is demo-only and must be disabled outside the Docker demo prof
 - Frontend permission checks improve UX but do not replace backend enforcement.
 - httpOnly cookies protect tokens from direct JavaScript reads.
 - Demo shortcuts must be profile-gated.
+- Route-level guards should mirror sidebar filtering for protected lab routes.

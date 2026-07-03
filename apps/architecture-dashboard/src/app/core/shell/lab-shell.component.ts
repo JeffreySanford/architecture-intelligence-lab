@@ -8,7 +8,7 @@ type LabNavItem = {
   label: string;
   route: string;
   description: string;
-  permission?: string;
+  permission: string | string[];
 };
 
 @Component({
@@ -29,9 +29,13 @@ export class LabShellComponent {
 
   protected readonly currentUser = this.authStore.currentUser;
   protected readonly visibleNavItems = computed(() =>
-    this.navItems.filter(
-      (item) => !item.permission || this.authStore.hasPermission(item.permission),
-    ),
+    this.currentUser()
+      ? this.navItems.filter((item) =>
+          this.asPermissions(item.permission).some((permission) =>
+            this.authStore.hasPermission(permission),
+          ),
+        )
+      : [],
   );
 
   protected readonly navItems: LabNavItem[] = [
@@ -39,32 +43,49 @@ export class LabShellComponent {
       label: 'Architecture Flow',
       route: '/lab/architecture-flow',
       description: 'System graph',
+      permission: 'dashboard:view',
     },
     {
       label: 'Dashboard',
       route: '/lab/dashboard',
       description: 'Loan workspace',
+      permission: 'dashboard:view',
+    },
+    {
+      label: 'Capital Markets',
+      route: '/lab/capital-markets',
+      description: 'Security commitments and disclosure sample',
+      permission: 'loans:view',
+    },
+    {
+      label: 'Security Search',
+      route: '/lab/security-search',
+      description: 'Lazy security and disclosure table',
+      permission: 'loans:view',
     },
     {
       label: 'Map Inspector',
       route: '/lab/map-inspector',
       description: 'Map and Set indexes',
+      permission: 'dashboard:view',
     },
     {
       label: 'SignalStore Inspector',
       route: '/lab/signal-store-inspector',
       description: 'Computed state',
+      permission: 'diagnostics:view',
     },
     {
       label: 'Backend Comparison',
       route: '/lab/backend-comparison',
       description: 'Spring, Nest, proxy',
-      permission: 'backend-comparison:view',
+      permission: ['backend-comparison:view', 'realtime:view'],
     },
     {
       label: 'Infrastructure Status',
       route: '/lab/infrastructure',
       description: 'Docker and tooling health',
+      permission: ['diagnostics:view', 'admin:view'],
     },
     {
       label: 'Realtime Lab',
@@ -91,4 +112,8 @@ export class LabShellComponent {
       permission: 'admin:view',
     },
   ];
+
+  private asPermissions(permission: string | string[]): string[] {
+    return Array.isArray(permission) ? permission : [permission];
+  }
 }

@@ -1,5 +1,7 @@
 <section class="dashboard">
-  <p class="dashboard__eyebrow">Spring snapshot · {{ dashboardStore.snapshot()?.dataset ?? 'loading' }}</p>
+  <p class="dashboard__eyebrow">
+    Spring snapshot · {{ dashboardStore.snapshot()?.dataset ?? 'loading' }} · {{ dashboardStore.selectedBackendMode() }}
+  </p>
   <h1>Dashboard</h1>
   <p>
     The dashboard is now reading the Spring source-of-truth snapshot and
@@ -12,7 +14,7 @@
 
   <section class="dashboard__cards" aria-label="Loan cards">
     @for (loan of dashboardStore.loanCards(); track loan.id) {
-      <p-card class="dashboard__card" [styleClass]="'p-card p-shadow-3'">
+      <p-card class="dashboard__card">
         <ng-template pHeader>
           <div class="dashboard__card-header">
             <div class="dashboard__card-title">{{ loan.loanNumber }}</div>
@@ -31,7 +33,7 @@
     }
   </section>
 
-  <p-card class="dashboard__table-card" [styleClass]="'p-card p-shadow-3'">
+  <p-card class="dashboard__table-card">
     <ng-template pHeader>
       <div class="dashboard__table-header">
         <div>
@@ -40,18 +42,37 @@
         </div>
       </div>
     </ng-template>
-    <p-table [value]="dashboardStore.loanCards()" [responsiveLayout]="'scroll'">
-      <ng-template pTemplate="header">
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter loans, borrowers, status, risk"
+        [ngModel]="globalFilter()"
+        (ngModelChange)="globalFilter.set($event)"
+      />
+    </div>
+    <p-table
+      [value]="filteredLoanCards()"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      sortMode="multiple"
+      sortField="id"
+      [sortOrder]="1"
+      showCurrentPageReport="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    >
+      <ng-template #header>
         <tr>
-          <th>Loan</th>
-          <th>Borrower</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Docs</th>
-          <th>Risk</th>
+          <th pSortableColumn="loanNumber">Loan <p-sort-icon field="loanNumber"></p-sort-icon></th>
+          <th pSortableColumn="borrowerName">Borrower <p-sort-icon field="borrowerName"></p-sort-icon></th>
+          <th pSortableColumn="amount">Amount <p-sort-icon field="amount"></p-sort-icon></th>
+          <th pSortableColumn="statusLabel">Status <p-sort-icon field="statusLabel"></p-sort-icon></th>
+          <th pSortableColumn="documentCount">Docs <p-sort-icon field="documentCount"></p-sort-icon></th>
+          <th pSortableColumn="riskBand">Risk <p-sort-icon field="riskBand"></p-sort-icon></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-loan>
+      <ng-template #body let-loan>
         <tr>
           <td>{{ loan.loanNumber }}</td>
           <td>{{ loan.borrowerName }}</td>

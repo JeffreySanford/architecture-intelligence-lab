@@ -6,7 +6,7 @@ Spring Boot is the source-of-truth backend. It owns durable business writes, Fly
 
 ## Target Stack
 
-- Java 21
+- Java 17 in the current Maven build
 - Maven
 - Spring Web
 - Spring Security
@@ -15,6 +15,8 @@ Spring Boot is the source-of-truth backend. It owns durable business writes, Fly
 - Flyway
 - springdoc-openapi
 - JWT signing for httpOnly cookies
+
+Enterprise note: Java 17/21 with Spring Boot 3.x is the conservative baseline to be able to discuss. This repo currently keeps the modern Spring Boot 4.x study track while using Java 17 locally.
 
 ## Source-Of-Truth Rule
 
@@ -27,7 +29,7 @@ Current checkpoint: the minimal training API is live with `/api/health`, `/api/p
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `GET` | `/api/health` | Return basic Spring API health. |
-| `POST` | `/api/dev-auth/personas/{personaId}/select` | Select demo persona and set httpOnly JWT cookie. |
+| `POST` | `/api/dev-auth/personas/{personaId}/select` | Select demo persona and set httpOnly demo cookie. |
 | `POST` | `/api/auth/logout` | Clear auth cookie. |
 | `GET` | `/api/me` | Return current user, roles, permissions. |
 | `GET` | `/api/personas` | List selectable demo personas. |
@@ -65,7 +67,7 @@ Set-Cookie: access_token=...; HttpOnly; SameSite=Lax
 
 Angular calls `/api/me` to learn who the current user is. Angular never reads the JWT directly.
 
-Current implementation shortcut: the cookie value is the selected persona id. Signed JWTs and Spring Security enforcement are still planned.
+Current implementation shortcut: the cookie value is the selected persona id. Signed JWTs and Spring Security enforcement are still planned. Documentation and UI text should call this a demo cookie unless the signed JWT work has been implemented.
 
 ## Current Schema Checkpoint
 

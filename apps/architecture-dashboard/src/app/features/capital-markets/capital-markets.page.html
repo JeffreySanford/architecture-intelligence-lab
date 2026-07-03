@@ -1,0 +1,82 @@
+<section class="capital-markets">
+  <p class="capital-markets__eyebrow">Capital Markets sample</p>
+  <h1>Security Commitment Grid</h1>
+  <p>
+    This demo page shows PrimeNG grid behavior for securities, commitments,
+    and disclosure status in a capital markets workflow.
+  </p>
+
+  <section class="capital-markets__controls">
+    <div class="table-toolbar">
+      <p-select
+        ngDefaultControl
+        [options]="statusOptions"
+        [ngModel]="selectedCommitmentTypeValue()"
+        (ngModelChange)="selectedCommitmentType.set($event)"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Commitment type"
+      ></p-select>
+      <span class="capital-markets__spacer"></span>
+      <div class="capital-markets__search">
+        <span>Global filter</span>
+        <input
+          pInputText
+          type="text"
+          placeholder="Search securities, borrowers, amounts"
+          [ngModel]="globalFilterValue()"
+          (ngModelChange)="globalFilter.set($event)"
+        />
+      </div>
+    </div>
+  </section>
+
+  <p-card class="capital-markets__table-card">
+    <ng-template pHeader>
+      <div class="capital-markets__table-header">
+        <div>
+          <h2>Commitment and Disclosure Rows</h2>
+          <p>Simulated security workflow rows drawn from dashboard snapshot data.</p>
+        </div>
+      </div>
+    </ng-template>
+    <p-table
+      [value]="rows()"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      sortMode="multiple"
+      sortField="id"
+      [sortOrder]="1"
+      showCurrentPageReport="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="loanNumber">Loan <p-sort-icon field="loanNumber"></p-sort-icon></th>
+          <th pSortableColumn="borrowerName">Borrower <p-sort-icon field="borrowerName"></p-sort-icon></th>
+          <th pSortableColumn="amount">Amount <p-sort-icon field="amount"></p-sort-icon></th>
+          <th pSortableColumn="commitmentType">Commitment <p-sort-icon field="commitmentType"></p-sort-icon></th>
+          <th pSortableColumn="disclosureStatus">Disclosure <p-sort-icon field="disclosureStatus"></p-sort-icon></th>
+          <th pSortableColumn="settlementDate">Settle <p-sort-icon field="settlementDate"></p-sort-icon></th>
+          <th pSortableColumn="statusLabel">Status <p-sort-icon field="statusLabel"></p-sort-icon></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr>
+          <td>{{ row.loanNumber }}</td>
+          <td>{{ row.borrowerName }}</td>
+          <td>{{ row.amount | currency }}</td>
+          <td>
+            <p-tag [value]="row.commitmentType" [severity]="commitmentSeverity(row.commitmentType)"></p-tag>
+          </td>
+          <td>
+            <p-tag [value]="row.disclosureStatus" [severity]="disclosureSeverity(row.disclosureStatus)"></p-tag>
+          </td>
+          <td>{{ row.settlementDate }}</td>
+          <td>{{ row.statusLabel }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</section>

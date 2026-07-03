@@ -1,0 +1,430 @@
+<section class="phase-five">
+  <div class="phase-five__header">
+    <div>
+      <p class="phase-five__eyebrow">Phase 5 Sprint</p>
+      <h1>NestJS Comparison And Realtime API</h1>
+      <p>
+        Implementation control view for gateway comparison, diagnostics,
+        Socket.IO delivery, Redis adapter readiness, and Swagger visibility.
+      </p>
+    </div>
+
+    @if (currentUser(); as user) {
+      <div class="phase-five__identity">
+        <span>{{ user.persona?.name ?? 'Unknown persona' }}</span>
+        <strong>{{ user.persona?.role ?? 'Unknown role' }}</strong>
+      </div>
+    }
+  </div>
+
+  <div class="phase-five__summary" aria-label="Current access">
+    <p-card class="phase-five__stat">
+      <div class="phase-five__stat-value">{{ visibleDeliverables().length }}</div>
+      <div class="phase-five__stat-label">visible deliverables</div>
+    </p-card>
+    <p-card class="phase-five__stat">
+      <div class="phase-five__stat-value">{{ canViewComparison() ? 'Yes' : 'No' }}</div>
+      <div class="phase-five__stat-label">comparison access</div>
+    </p-card>
+    <p-card class="phase-five__stat">
+      <div class="phase-five__stat-value">{{ canEmitRealtime() ? 'Yes' : 'No' }}</div>
+      <div class="phase-five__stat-label">event emit access</div>
+    </p-card>
+    <p-card class="phase-five__stat">
+      <div class="phase-five__stat-value phase-five__stat-value--mode">{{ selectedBackendMode() }}</div>
+      <div class="phase-five__stat-label">landing backend mode · {{ selectedDataset() }}</div>
+    </p-card>
+  </div>
+
+  <p-card class="phase-five__graph-card">
+    <div class="phase-five__card-title">Runtime Flow</div>
+    <div class="phase-five__card-subtitle">D3 map of comparison and realtime paths</div>
+    <div class="phase-five__graph-shell">
+      <svg #flowGraph class="phase-five__graph"></svg>
+    </div>
+  </p-card>
+
+  <p-card class="phase-five__chart-card">
+    <div class="phase-five__card-title">Measured Metrics Visualization</div>
+    <div class="phase-five__card-subtitle">
+      D3 grouped bars for latency, payload size, and records returned by the comparison endpoint
+    </div>
+    <div class="phase-five__chart-shell">
+      <svg #comparisonChart class="phase-five__comparison-chart"></svg>
+    </div>
+  </p-card>
+
+  <p-card class="phase-five__table-card">
+    <div class="phase-five__card-title">Comparison Metrics</div>
+    <div class="phase-five__card-subtitle">
+      Live Nest gateway response for Spring direct, Nest direct, and Nest proxy
+    </div>
+
+    @if (comparisonError(); as error) {
+      <p class="phase-five__error">{{ error }}</p>
+    }
+
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter comparison metrics"
+        [ngModel]="comparisonFilter()"
+        (ngModelChange)="comparisonFilter.set($event)"
+      />
+    </div>
+
+    <p-table
+      [value]="filteredComparisonMetrics()"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      [loading]="comparisonLoading()"
+      sortMode="multiple"
+      sortField="pathId"
+      [sortOrder]="1"
+      showCurrentPageReport="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="label">Path <p-sort-icon field="label"></p-sort-icon></th>
+          <th pSortableColumn="latencyMs">Latency <p-sort-icon field="latencyMs"></p-sort-icon></th>
+          <th pSortableColumn="payloadBytes">Payload <p-sort-icon field="payloadBytes"></p-sort-icon></th>
+          <th pSortableColumn="recordCount">Records <p-sort-icon field="recordCount"></p-sort-icon></th>
+          <th pSortableColumn="status">Status <p-sort-icon field="status"></p-sort-icon></th>
+          <th pSortableColumn="observedAt">Observed <p-sort-icon field="observedAt"></p-sort-icon></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr
+          class="phase-five__metric-row"
+          data-testid="comparison-metric-row"
+          [attr.data-path-id]="row.pathId"
+          [class.phase-five__active-row]="selectedComparisonPath() === row.pathId"
+          (click)="selectComparisonPath(row.pathId)"
+        >
+          <td>{{ row.label }}</td>
+          <td>{{ row.latencyMs }} ms</td>
+          <td>{{ row.payloadBytes }} bytes</td>
+          <td>{{ row.recordCount }}</td>
+          <td><p-tag [severity]="row.status === 'ok' ? 'success' : 'warn'" [value]="row.status"></p-tag></td>
+          <td>{{ row.observedAt }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="6">
+            {{ comparisonLoading() ? 'Loading Nest comparison metrics.' : 'No comparison metrics are available.' }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <p-card class="phase-five__table-card">
+    <div class="phase-five__card-title">Live Gateway Loan Reads</div>
+    <div class="phase-five__card-subtitle">
+      Direct and proxy loan read responses from the Nest gateway. Pager, filter, and status indicators show current available reads.
+    </div>
+
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter loan reads"
+        [ngModel]="loanReadFilter()"
+        (ngModelChange)="loanReadFilter.set($event)"
+      />
+    </div>
+
+    <p-table
+      [value]="liveLoanReadRows()"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      [loading]="realtimeReadsLoading()"
+      sortMode="multiple"
+      sortField="pathId"
+      [sortOrder]="1"
+      showCurrentPageReport="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="label">Path <p-sort-icon field="label"></p-sort-icon></th>
+          <th pSortableColumn="mode">Mode <p-sort-icon field="mode"></p-sort-icon></th>
+          <th pSortableColumn="recordCount">Records <p-sort-icon field="recordCount"></p-sort-icon></th>
+          <th>Error</th>
+          <th pSortableColumn="observedAt">Observed <p-sort-icon field="observedAt"></p-sort-icon></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr data-testid="loan-read-row" [attr.data-path-id]="row.pathId">
+          <td>{{ row.label }}</td>
+          <td>
+            <p-tag
+              [severity]="row.mode === 'live' ? 'success' : row.mode === 'mock' ? 'info' : 'warn'"
+              [value]="row.mode"
+            ></p-tag>
+          </td>
+          <td>{{ row.recordCount }}</td>
+          <td>{{ row.errorMessage || 'None' }}</td>
+          <td>{{ row.observedAt || 'n/a' }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5">
+            {{ realtimeReadsLoading() ? 'Loading live loan reads.' : 'No live loan reads are available.' }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <p-card class="phase-five__table-card">
+    <div class="phase-five__card-header">
+      <div>
+        <div class="phase-five__card-title">Realtime Event History</div>
+        <div class="phase-five__card-subtitle">Socket.IO event stream history for Phase 5 realtime updates</div>
+      </div>
+      @if (canEmitRealtime()) {
+        <button
+          pButton
+          type="button"
+          class="phase-five__header-action"
+          [loading]="realtimeEmitLoading()"
+          [disabled]="realtimeEmitLoading()"
+          (click)="emitRealtimeEvent()"
+        >
+          Emit event
+        </button>
+      }
+    </div>
+
+    <div class="phase-five__status-row">
+      <p-tag [severity]="socketStatusSeverity()" [value]="socketStatusLabel()"></p-tag>
+      @if (socketError(); as error) {
+        <p-tag severity="warn" [value]="error"></p-tag>
+      }
+      @if (canViewContracts()) {
+        <a
+          class="phase-five__link"
+          target="_blank"
+          rel="noopener noreferrer"
+          [href]="swaggerUrl"
+        >
+          Open Nest Swagger UI
+        </a>
+      } @else {
+        <span class="phase-five__status-label">
+          Nest Swagger UI access is restricted for your persona.
+        </span>
+      }
+    </div>
+
+    @if (realtimeError(); as error) {
+      <p class="phase-five__error">{{ error }}</p>
+    }
+
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter realtime events"
+        [ngModel]="realtimeFilter()"
+        (ngModelChange)="realtimeFilter.set($event)"
+      />
+    </div>
+
+    <p-table
+      [value]="filteredRealtimeEvents()"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      [loading]="realtimeLoading()"
+      sortMode="multiple"
+      sortField="eventId"
+      [sortOrder]="1"
+      showCurrentPageReport="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="type">Event <p-sort-icon field="type"></p-sort-icon></th>
+          <th pSortableColumn="loanNumber">Loan <p-sort-icon field="loanNumber"></p-sort-icon></th>
+          <th pSortableColumn="previousStatus">Previous <p-sort-icon field="previousStatus"></p-sort-icon></th>
+          <th pSortableColumn="nextStatus">Next <p-sort-icon field="nextStatus"></p-sort-icon></th>
+          <th pSortableColumn="source">Source <p-sort-icon field="source"></p-sort-icon></th>
+          <th pSortableColumn="observedAt">Observed <p-sort-icon field="observedAt"></p-sort-icon></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-event>
+        <tr data-testid="realtime-event-row" [attr.data-event-id]="event.eventId">
+          <td>{{ event.type }}</td>
+          <td>{{ event.loanNumber }}</td>
+          <td>{{ event.previousStatus }}</td>
+          <td>{{ event.nextStatus }}</td>
+          <td><p-tag [severity]="event.source === 'socket' ? 'success' : 'info'" [value]="event.source"></p-tag></td>
+          <td>{{ event.observedAt }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="6">
+            {{ realtimeLoading() ? 'Loading realtime event history.' : 'No realtime events are available.' }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <div class="phase-five__grid">
+    <p-card class="phase-five__table-card">
+      <div class="phase-five__card-title">Deliverables</div>
+      <div class="phase-five__card-subtitle">Filtered to what this persona can inspect</div>
+
+      <div class="table-toolbar">
+        <input
+          pInputText
+          type="search"
+          placeholder="Filter deliverables"
+          [ngModel]="deliverablesFilter()"
+          (ngModelChange)="deliverablesFilter.set($event)"
+        />
+      </div>
+
+      <p-table
+        [value]="filteredDeliverables()"
+        [paginator]="true"
+        [rows]="5"
+        [rowsPerPageOptions]="rowsPerPageOptions"
+        sortMode="multiple"
+        sortField="label"
+        [sortOrder]="1"
+        showCurrentPageReport="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+      >
+        <ng-template #header>
+          <tr>
+            <th pSortableColumn="label">Deliverable <p-sort-icon field="label"></p-sort-icon></th>
+            <th pSortableColumn="area">Area <p-sort-icon field="area"></p-sort-icon></th>
+            <th pSortableColumn="permission">Permission <p-sort-icon field="permission"></p-sort-icon></th>
+            <th pSortableColumn="status">Status <p-sort-icon field="status"></p-sort-icon></th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-item>
+          <tr data-testid="phase-five-deliverable-row">
+            <td>{{ item.label }}</td>
+            <td>{{ item.area }}</td>
+            <td><p-chip [label]="item.permission"></p-chip></td>
+            <td><p-tag [severity]="statusSeverity(item.status)" [value]="item.status"></p-tag></td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="4">This persona does not have Phase 5 deliverable access.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <p-card class="phase-five__table-card">
+      <div class="phase-five__card-title">Acceptance Criteria</div>
+      <div class="phase-five__card-subtitle">Sprint checks and required permissions</div>
+
+      <div class="table-toolbar">
+        <input
+          pInputText
+          type="search"
+          placeholder="Filter acceptance criteria"
+          [ngModel]="acceptanceCriteriaFilter()"
+          (ngModelChange)="acceptanceCriteriaFilter.set($event)"
+        />
+      </div>
+
+      <p-table
+        [value]="filteredAcceptanceCriteria()"
+        [paginator]="true"
+        [rows]="5"
+        [rowsPerPageOptions]="rowsPerPageOptions"
+        sortMode="multiple"
+        sortField="label"
+        [sortOrder]="1"
+        showCurrentPageReport="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+      >
+        <ng-template #header>
+          <tr>
+            <th pSortableColumn="label">Criteria <p-sort-icon field="label"></p-sort-icon></th>
+            <th pSortableColumn="roleAccess">Role <p-sort-icon field="roleAccess"></p-sort-icon></th>
+            <th pSortableColumn="access">Access <p-sort-icon field="access"></p-sort-icon></th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-item>
+          <tr [class.phase-five__muted-row]="!hasAnyPermission([item.permission])">
+            <td>{{ item.label }}</td>
+            <td>{{ item.roleAccess.join(', ') }}</td>
+            <td>
+              <p-tag
+                [severity]="hasAnyPermission([item.permission]) ? 'success' : 'info'"
+                [value]="hasAnyPermission([item.permission]) ? 'available' : 'restricted'"
+              ></p-tag>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+
+  <p-card class="phase-five__table-card">
+    <div class="phase-five__card-title">Role Access Matrix</div>
+    <div class="phase-five__card-subtitle">Seeded personas and Phase 5 permissions</div>
+
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter role access"
+        [ngModel]="accessRowsFilter()"
+        (ngModelChange)="accessRowsFilter.set($event)"
+      />
+    </div>
+
+    <p-table
+      [value]="filteredAccessRows()"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      sortMode="multiple"
+      sortField="role"
+      [sortOrder]="1"
+      showCurrentPageReport="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="role">Role <p-sort-icon field="role"></p-sort-icon></th>
+          <th pSortableColumn="persona">Persona <p-sort-icon field="persona"></p-sort-icon></th>
+          <th>Permissions</th>
+          <th pSortableColumn="access">Phase 5 Access <p-sort-icon field="access"></p-sort-icon></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr [class.phase-five__active-row]="hasAnyPermission(row.permissions)">
+          <td>{{ row.role }}</td>
+          <td>{{ row.persona }}</td>
+          <td>
+            <div class="phase-five__chips">
+              @for (permission of row.permissions; track permission) {
+                <p-chip [label]="permission"></p-chip>
+              }
+            </div>
+          </td>
+          <td>{{ row.access }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</section>

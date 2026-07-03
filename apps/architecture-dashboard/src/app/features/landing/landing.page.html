@@ -10,10 +10,12 @@
     </div>
 
     <div class="landing__actions">
-      <a pButton type="button" label="Open Current User Lab" class="p-button-outlined" routerLink="/lab/dashboard">
-        Open Current User Lab
-      </a>
-      <button pButton type="button" label="Enter As {{ selectedPersona().name }}" class="p-button-filled" (click)="enterLab()">
+      @if (authStore.currentUser(); as currentUser) {
+        <button pButton type="button" class="p-button-outlined" (click)="openCurrentUserLab()">
+          Open Current User Lab
+        </button>
+      }
+      <button pButton type="button" class="p-button-filled" (click)="enterLab()">
         Enter As {{ selectedPersona().name }}
       </button>
     </div>
@@ -31,7 +33,8 @@
   <section class="landing__controls" aria-label="Lab setup controls">
     <div class="field">
       <label for="persona-select">JWT persona</label>
-      <p-dropdown
+      <p-select
+        ngDefaultControl
         inputId="persona-select"
         [options]="personaOptions()"
         optionLabel="label"
@@ -39,12 +42,13 @@
         [ngModel]="selectedPersonaId()"
         (ngModelChange)="selectedPersonaId.set($event)"
         placeholder="Select a persona"
-      ></p-dropdown>
+      ></p-select>
     </div>
 
     <div class="field">
       <label for="dataset-select">Dataset</label>
-      <p-dropdown
+      <p-select
+        ngDefaultControl
         inputId="dataset-select"
         [options]="datasetOptions"
         optionLabel="label"
@@ -52,12 +56,13 @@
         [ngModel]="selectedDatasetSize()"
         (ngModelChange)="selectedDatasetSize.set($event)"
         placeholder="Select dataset"
-      ></p-dropdown>
+      ></p-select>
     </div>
 
     <div class="field">
       <label for="backend-select">Backend mode</label>
-      <p-dropdown
+      <p-select
+        ngDefaultControl
         inputId="backend-select"
         [options]="backendOptions"
         optionLabel="label"
@@ -65,14 +70,15 @@
         [ngModel]="selectedBackendMode()"
         (ngModelChange)="selectedBackendMode.set($event)"
         placeholder="Select backend"
-      ></p-dropdown>
+      ></p-select>
     </div>
 
     <div class="field field-switch">
-      <p-inputSwitch
+      <p-toggleSwitch
+        ngDefaultControl
         [ngModel]="explainMode()"
         (ngModelChange)="explainMode.set($event)"
-      ></p-inputSwitch>
+      ></p-toggleSwitch>
       <label>Explain Mode</label>
     </div>
   </section>

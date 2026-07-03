@@ -27,6 +27,22 @@ flowchart LR
 | Realtime coordination | Helps explain event propagation separate from durable storage. |
 | Redis Insight | Lets learners inspect keys, TTLs, and activity. |
 
+## Phase 5 Visualization Alignment
+
+Redis appears in the Phase 5 D3 topology as the adapter/cache coordination node for Socket.IO and realtime diagnostics. It should not be hidden behind the Socket.IO gateway in the learning UI.
+
+PrimeNG should present Redis-related state as operational rows rather than decorative graphics:
+
+- adapter connected or unavailable
+- last event id
+- last pub/sub delivery timestamp
+- cache key
+- TTL
+- hit or miss
+- error state
+
+The D3 graph should explain where Redis sits in the event path; PrimeNG tables should explain what happened.
+
 ## Redis Non-Responsibilities
 
 Redis should not store authoritative loan state in v1. It should not replace PostgreSQL for durable status history. It should not become a hidden dependency for basic dashboard reads unless the cache behavior is explicitly visible.
@@ -46,4 +62,3 @@ Redis should not store authoritative loan state in v1. It should not replace Pos
 - Pub/sub is coordination, not durable event storage.
 - Redis Insight makes transient infrastructure inspectable.
 - Socket.IO plus Redis prepares the system for horizontal scaling lessons later.
-

@@ -1,0 +1,175 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<section class="infrastructure">
+  <p class="infrastructure__eyebrow">Infrastructure status</p>
+  <h1>Service health and tooling links</h1>
+  <p>
+    This page shows the current Spring API health and quick links for local infrastructure tools.
+  </p>
+
+  <div class="infrastructure__summary">
+    <p-card class="infrastructure__health-card">
+      <ng-template pHeader>
+        <div>
+          <div class="infrastructure__card-title">Spring API health</div>
+          <div class="infrastructure__card-subtitle">/api/health</div>
+        </div>
+      </ng-template>
+      <div class="infrastructure__card-body">
+        <div *ngIf="loading()" class="infrastructure__loading">
+          <p-progress-spinner></p-progress-spinner>
+          <span>Checking Spring health...</span>
+        </div>
+
+        <div *ngIf="!loading()">
+          <ng-container *ngIf="health() as healthData; else errorTemplate">
+            <div class="infrastructure__health">
+              <p>Status: <strong>{{ healthData.status }}</strong></p>
+              <p>Service: <strong>{{ healthData.service }}</strong></p>
+              <div class="infrastructure__status-tag" aria-live="polite">
+                <p-tag
+                  [severity]="healthSeverity(healthData.status)"
+                  [value]="healthData.status === 'ok' ? 'Healthy' : 'Degraded'"
+                ></p-tag>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-template #errorTemplate>
+            <div *ngIf="error()" class="infrastructure__error">
+              <p>{{ error() }}</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="infrastructure__card-actions">
+        <button pButton type="button" class="p-button-primary" (click)="retry()">Retry</button>
+      </div>
+    </p-card>
+
+    <p-card class="infrastructure__links-card">
+      <ng-template pHeader>
+        <div>
+          <div class="infrastructure__card-title">Tooling access</div>
+          <div class="infrastructure__card-subtitle">Quick links for local services</div>
+        </div>
+      </ng-template>
+      <div class="infrastructure__card-body">
+        <ng-container *ngIf="infrastructureLinks.length > 0; else noLinksTemplate">
+          <ul class="infrastructure__links" aria-label="Infrastructure links">
+            <li *ngFor="let link of infrastructureLinks">
+              <div class="infrastructure__link-row">
+                <a target="_blank" rel="noreferrer noopener" [href]="link.url">
+                  <strong>{{ link.label }}</strong>
+                </a>
+                <span *ngIf="link.proxyUrl" class="infrastructure__proxy-url">
+                  or <a target="_blank" rel="noreferrer noopener" [href]="link.proxyUrl">{{ link.proxyUrl }}</a>
+                </span>
+              </div>
+              <span>{{ link.description }}</span>
+            </li>
+          </ul>
+        </ng-container>
+        <ng-template #noLinksTemplate>
+          <p>No infrastructure links available.</p>
+        </ng-template>
+      </div>
+    </p-card>
+
+    <p-card class="infrastructure__route-card">
+      <ng-template pHeader>
+        <div>
+          <div class="infrastructure__card-title">Route map</div>
+          <div class="infrastructure__card-subtitle">Direct ports and Nginx proxy paths</div>
+        </div>
+      </ng-template>
+      <div class="infrastructure__card-body">
+        <div class="table-toolbar">
+          <input
+            pInputText
+            type="search"
+            placeholder="Filter infrastructure routes"
+            [ngModel]="infrastructureFilter()"
+            (ngModelChange)="infrastructureFilter.set($event)"
+          />
+        </div>
+        <p-table
+          [value]="filteredInfrastructureLinks()"
+          styleClass="p-datatable-sm"
+          [paginator]="true"
+          [rows]="5"
+          [rowsPerPageOptions]="rowsPerPageOptions"
+          sortMode="multiple"
+          sortField="label"
+          [sortOrder]="1"
+          showCurrentPageReport="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+        >
+          <ng-template #header>
+            <tr>
+              <th pSortableColumn="label">Service <p-sort-icon field="label"></p-sort-icon></th>
+              <th pSortableColumn="url">Direct <p-sort-icon field="url"></p-sort-icon></th>
+              <th pSortableColumn="proxyUrl">Proxy <p-sort-icon field="proxyUrl"></p-sort-icon></th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-link>
+            <tr>
+              <td>{{ link.label }}</td>
+              <td><code>{{ link.url }}</code></td>
+              <td><code>{{ link.proxyUrl ?? 'n/a' }}</code></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </p-card>
+
+    <p-card class="infrastructure__ports-card">
+      <ng-template pHeader>
+        <div>
+          <div class="infrastructure__card-title">Compose port mapping</div>
+          <div class="infrastructure__card-subtitle">Environment variables and local ports</div>
+        </div>
+      </ng-template>
+      <div class="infrastructure__card-body">
+        <div class="table-toolbar">
+          <input
+            pInputText
+            type="search"
+            placeholder="Filter port mappings"
+            [ngModel]="portMappingFilter()"
+            (ngModelChange)="portMappingFilter.set($event)"
+          />
+        </div>
+        <p-table
+          [value]="filteredInfrastructurePortMappings()"
+          styleClass="p-datatable-sm"
+          aria-label="Infrastructure port mappings"
+          [paginator]="true"
+          [rows]="5"
+          [rowsPerPageOptions]="rowsPerPageOptions"
+          sortMode="multiple"
+          sortField="service"
+          [sortOrder]="1"
+          showCurrentPageReport="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+        >
+          <ng-template #header>
+            <tr>
+              <th pSortableColumn="service">Service <p-sort-icon field="service"></p-sort-icon></th>
+              <th pSortableColumn="env">Env <p-sort-icon field="env"></p-sort-icon></th>
+              <th pSortableColumn="directPort">Direct port <p-sort-icon field="directPort"></p-sort-icon></th>
+              <th pSortableColumn="proxyPath">Proxy path <p-sort-icon field="proxyPath"></p-sort-icon></th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-mapping>
+            <tr>
+              <td>{{ mapping.service }}</td>
+              <td><code>{{ mapping.env }}</code></td>
+              <td><code>{{ mapping.directPort }}</code></td>
+              <td><code>{{ mapping.proxyPath }}</code></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </p-card>
+  </div>
+</section>

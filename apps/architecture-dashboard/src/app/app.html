@@ -1,1 +1,72 @@
-<router-outlet></router-outlet>
+<div class="app-frame">
+  <header class="app-frame__header">
+    <div class="app-frame__header-inner">
+      <a class="app-frame__brand" routerLink="/">
+        <span class="app-frame__brand-mark">AIL</span>
+        <span>
+          <strong>Architecture Intelligence Lab</strong>
+          <small>{{ pageChrome().eyebrow }}</small>
+        </span>
+      </a>
+
+      <div class="app-frame__page-heading">
+        <span>{{ pageChrome().eyebrow }}</span>
+        <h1>{{ pageChrome().title }}</h1>
+      </div>
+
+      <div class="app-frame__identity">
+        @if (currentUser(); as user) {
+          <span>{{ user.persona?.name ?? 'Unknown persona' }}</span>
+          <strong>{{ user.persona?.role ?? 'Unknown role' }}</strong>
+        } @else {
+          <span>No persona selected</span>
+          <strong>Public entry</strong>
+        }
+      </div>
+    </div>
+  </header>
+
+  <div class="app-frame__body">
+    <aside class="app-frame__nav" aria-label="Primary navigation">
+      <div class="app-frame__nav-section">
+        <a
+          class="app-frame__nav-item"
+          routerLink="/"
+          routerLinkActive="app-frame__nav-item--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span class="app-frame__nav-label">Persona Setup</span>
+          <span class="app-frame__nav-description">Select role and context</span>
+        </a>
+
+        @for (item of visibleNavItems(); track item.route) {
+          <a
+            class="app-frame__nav-item"
+            [routerLink]="item.route"
+            routerLinkActive="app-frame__nav-item--active"
+          >
+            <span class="app-frame__nav-label">{{ item.label }}</span>
+            <span class="app-frame__nav-description">{{ item.description }}</span>
+          </a>
+        }
+      </div>
+    </aside>
+
+    <main class="app-frame__main" [class.app-frame__main--landing]="isLandingRoute()">
+      <section class="app-frame__content-header" aria-label="Current page">
+        <p>{{ pageChrome().eyebrow }}</p>
+        <h2>{{ pageChrome().title }}</h2>
+        <span>{{ pageChrome().description }}</span>
+      </section>
+
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <footer class="app-frame__footer">
+    <div class="app-frame__footer-inner">
+      <span>Architecture Intelligence Lab · {{ currentYear }}</span>
+      <span>{{ pageChrome().title }}</span>
+    </div>
+  </footer>
+</div>

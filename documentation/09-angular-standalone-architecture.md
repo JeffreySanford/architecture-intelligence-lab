@@ -15,18 +15,18 @@ apps/architecture-dashboard/src/app/
   app.routes.ts
   core/
     auth/
-    guards/
     interceptors/
     shell/
     layout/
     tokens/
   features/
     landing/
+    security-search/
     architecture-flow/
     dashboard/
     map-inspector/
     signal-store-inspector/
-    backend-comparison/
+    phase-five/
     realtime-lab/
     openapi-contract-lab/
     mcp-dashboard/
@@ -45,11 +45,12 @@ apps/architecture-dashboard/src/app/
 | --- | --- |
 | `/` | Landing command center and persona selection. |
 | `/lab` | Protected lab shell. |
+| `/lab/security-search` | PrimeNG Capital Markets table lab for securities, pools, commitments, and disclosures. |
 | `/lab/architecture-flow` | System architecture visualization. |
-| `/lab/dashboard` | Main loan dashboard. |
+| `/lab/dashboard` | Main loan dashboard and source DTO projection surface. |
 | `/lab/map-inspector` | Map and Set index inspector. |
 | `/lab/signal-store-inspector` | SignalStore state and computed graph. |
-| `/lab/backend-comparison` | Spring vs Nest vs proxy comparison. |
+| `/lab/backend-comparison` | Phase 5 Spring/Nest/proxy comparison and realtime topology visualization. |
 | `/lab/realtime` | Socket.IO and Redis realtime lab. |
 | `/lab/openapi` | OpenAPI contract lab. |
 | `/lab/mcp` | MCP guidance dashboard. |
@@ -57,9 +58,23 @@ apps/architecture-dashboard/src/app/
 
 ## Current Shell Checkpoint
 
-The current Angular shell is intentionally permissive while the Spring persona auth API is still pending. `/lab` is accessible without a route guard for now. The landing page exposes documented persona cards and setup controls so the eventual JWT-authenticated user flow has a visible UI surface before backend auth exists.
+The current Angular shell uses Spring persona state. The landing page loads personas from `/api/personas`, posts selections to `/api/dev-auth/personas/{personaId}/select`, and `/lab` is guarded through `personaSelectedGuard`.
 
-When `/api/dev-auth/personas/{personaId}/select` and `/api/me` are implemented, replace the temporary local persona selection with `AuthStore` state and add the protected `/lab` route guard.
+The shell also filters visible navigation by permission. Phase 5 adds route-level permission enforcement through `permissionGuard`, so hidden links cannot be opened directly by URL.
+
+The landing page also serves as the command center for dataset and backend mode selection. It should let the user pick a persona, dataset size, and backend mode, and persist those selections into shared dashboard state before opening `/lab/dashboard`.
+
+Protected Phase 5 route permissions:
+
+| Route | Permission |
+| --- | --- |
+| `/lab/backend-comparison` | `backend-comparison:view` |
+| `/lab/realtime` | `realtime:view` |
+| `/lab/openapi` | `contracts:view` |
+| `/lab/mcp` | `mcp:view` |
+| `/lab/admin` | `admin:view` |
+
+Capital Markets table routes should use ordinary app permissions such as `dashboard:view` at first, then move to a dedicated permission when row actions become role-sensitive. The initial `/lab/security-search` work should focus on PrimeNG table state, query ViewModels, and facade boundaries rather than admin/security behavior.
 
 ## Route Example
 
@@ -92,3 +107,4 @@ export const appRoutes: Routes = [
 - Route-level boundaries replace feature module boundaries.
 - Feature-local stores keep state ownership close to the UI that uses it.
 - Shared UI components should stay dumb and reusable.
+- Nav filtering is a usability feature; route guards are the access boundary inside the Angular app.

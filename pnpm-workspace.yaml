@@ -1,13 +1,17 @@
 allowBuilds:
   '@openapitools/openapi-generator-cli': true
   '@parcel/watcher': true
+  '@scarf/scarf': false
   esbuild: true
   less: true
   lmdb: true
   msgpackr-extract: true
   nx: true
   unrs-resolver: true
-minimumReleaseAge: 0
+blockExoticSubdeps: true
+minimumReleaseAge: 1440
+minimumReleaseAgeIgnoreMissingTime: false
+minimumReleaseAgeStrict: true
 minimumReleaseAgeExclude:
   - '@nx/angular@23.1.0-beta.6'
   - '@nx/devkit@23.1.0-beta.6'
@@ -35,3 +39,6 @@ minimumReleaseAgeExclude:
   - '@nx/webpack@23.1.0-beta.6'
   - '@nx/workspace@23.1.0-beta.6'
   - nx@23.1.0-beta.6
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 525600
+trustLockfile: false

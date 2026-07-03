@@ -19,12 +19,14 @@
     },
     "test": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
-        "command": "docker compose run --rm spring-api ./mvnw -pl apps/spring-api test"
+        "command": "docker compose run --rm -e SPRING_PROFILES_ACTIVE=test -e SPRING_JPA_OPEN_IN_VIEW=false -e LOGGING_LEVEL_ORG_HIBERNATE_ORM_DEPRECATION=ERROR -e \"SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;DATABASE_TO_UPPER=false\" -e SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver -e SPRING_DATASOURCE_USERNAME=sa -e SPRING_DATASOURCE_PASSWORD= spring-api ./mvnw -pl apps/spring-api clean test"
       }
     },
     "lint": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
         "command": "docker compose run --rm spring-api ./mvnw -pl apps/spring-api validate"
       }
@@ -32,4 +34,3 @@
   },
   "tags": []
 }
-

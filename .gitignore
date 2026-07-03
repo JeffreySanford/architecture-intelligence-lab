@@ -26,6 +26,9 @@ node_modules
 !.vscode/mcp.json
 
 # misc
+/.env
+/.env.*
+!/.env.example
 /.sass-cache
 /connect.lock
 /coverage
@@ -53,3 +56,6 @@ Thumbs.db
 __screenshots__/
 
 .nx/polygraph
+
+# Local runtime config generated from .env
+/apps/architecture-dashboard/public/env.js

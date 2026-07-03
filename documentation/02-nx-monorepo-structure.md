@@ -93,6 +93,21 @@ pnpm nx affected --target=<target>
 
 The npm lockfile is intentionally not part of the workspace. Use `pnpm-lock.yaml` as the dependency lockfile.
 
+## Current Phase 5 Structure Note
+
+The first Phase 5 visualization is implemented directly in the Angular app while the surrounding feature libraries are still planned:
+
+```text
+apps/architecture-dashboard/src/app/
+  core/auth/permission.guard.ts
+  features/phase-five/
+    phase-five.page.ts
+    phase-five.page.html
+    phase-five.page.scss
+```
+
+Future extraction into `libs/frontend/visualizations` or `libs/shared/visualization-models` is appropriate only when more D3 graphs share node/link models or rendering helpers. Until then, keeping the Phase 5 graph local avoids premature abstraction.
+
 ## What This Teaches
 
 - Nx is not just for frontend code. It can organize a whole training system.

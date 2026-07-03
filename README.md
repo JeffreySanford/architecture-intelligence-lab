@@ -1,10 +1,19 @@
 # Architecture Intelligence Lab
 
-`architecture-intelligence-lab` is a Docker-first Nx training lab for exploring Angular standalone architecture, NgRx SignalStore, Spring Boot, NestJS, PostgreSQL, Redis, OpenAPI contracts, and full-stack testing.
+`architecture-intelligence-lab` is a Docker-first Nx training lab for exploring Angular standalone architecture, NgRx SignalStore, Spring Boot, NestJS, PostgreSQL, Redis, OpenAPI contracts, and full-stack testing. It is currently oriented toward PrimeNG enterprise UI patterns and a capital markets-style study lab for securities, commitments, disclosures, and pricing workflows.
+
+## Stack Strategy
+
+This repo intentionally keeps the current modern study stack: Angular 22, Nx 23 beta, TypeScript 6, Spring Boot 4.x, Java 17, NestJS 11, PostgreSQL, Redis, Docker, OpenAPI, D3, and PrimeNG 22 RC. The conservative enterprise baseline to understand alongside it is Angular 18/19/20, PrimeNG 18/19/20/21, Java 17/21, Spring Boot 3.x, PostgreSQL, Docker, and OpenAPI.
+
+PrimeNG has been moved to the Angular 22-aligned release-candidate line (`22.0.0-rc.1`) with `@angular/cdk` installed as its peer dependency. Treat PrimeNG 22 APIs as allowed only after local build/test validation, because this is still an RC dependency.
+
+The domain emphasis is Capital Markets architecture practice, not a generic mortgage demo. Existing loan data remains useful as source material, but future screens should prefer vocabulary such as securities, pools, commitments, disclosure files, trade events, backend metrics, and contract snapshots.
 
 Read the architecture documentation and planning checkpoint first:
 
 - [Documentation overview](documentation/README.md)
+- [Capital Markets vocabulary](documentation/21-capital-markets-vocabulary.md)
 - [Planning overview](planning/README.md)
 - [PI and sprint plan](planning/22-pi-and-sprint-plan.md)
 - [Codex task breakdown](planning/21-codex-task-breakdown.md)

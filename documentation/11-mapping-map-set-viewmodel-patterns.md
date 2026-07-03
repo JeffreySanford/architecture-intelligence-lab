@@ -66,6 +66,9 @@ flowchart TB
 | `SignalStoreNodeVm` | D3 SignalStore graph node. |
 | `BackendComparisonVm` | Backend comparison chart/table display. |
 | `RealtimeEventVm` | Realtime event history row. |
+| `PhaseFiveFlowNodeVm` | D3 node for Angular, Spring, Nest, Socket.IO, Redis, and Swagger topology. |
+| `PhaseFiveFlowLinkVm` | D3 link for direct, proxy, comparison, emit, adapter, and docs paths. |
+| `PhaseFiveAccessRowVm` | PrimeNG row explaining role/persona access. |
 | `OpenApiContractVm` | Contract lab display node. |
 | `McpDashboardVm` | MCP guidance checklist display. |
 
@@ -75,4 +78,4 @@ flowchart TB
 - Keyed lookup is often clearer than repeated nested searching.
 - ViewModels keep components simple.
 - Performance lessons become visible when dataset size changes.
-
+- The same ViewModel discipline applies to visualizations: D3 should consume typed node/link data, and PrimeNG should consume typed row data.

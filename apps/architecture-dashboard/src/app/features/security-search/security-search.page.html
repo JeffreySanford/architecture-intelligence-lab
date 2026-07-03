@@ -1,0 +1,202 @@
+<section class="security-search">
+  <div class="security-search__header">
+    <div>
+      <p class="security-search__eyebrow">Capital Markets workflow</p>
+      <h1>Security Search</h1>
+      <p>
+        Search securities, pools, commitments, and disclosure files through a typed
+        PrimeNG table query state.
+      </p>
+    </div>
+    <div class="security-search__summary" aria-label="Search summary">
+      <span>{{ totalRecords() }} matches</span>
+      <span>{{ query().rows }} rows/page</span>
+    </div>
+  </div>
+
+  @if (exportMessage(); as message) {
+    <p class="security-search__message">{{ message }}</p>
+  }
+
+  <p-card class="security-search__filters">
+    <ng-template #header>
+      <div class="security-search__card-header">
+        <div>
+          <div class="security-search__card-title">Filters</div>
+          <div class="security-search__card-subtitle">Typed query object feeding lazy table state</div>
+        </div>
+        <button pButton type="button" class="p-button-text" (click)="resetFilters()">Reset</button>
+      </div>
+    </ng-template>
+
+    <div class="security-search__filter-grid">
+      <label class="security-search__field">
+        <span>Global</span>
+        <input
+          pInputText
+          type="search"
+          [ngModel]="query().globalFilter"
+          (ngModelChange)="updateFilter({ globalFilter: $event })"
+          placeholder="CUSIP, security, pool, disclosure"
+        />
+      </label>
+
+      <div class="security-search__field">
+        <label for="workflow-status-filter">Workflow</label>
+        <p-select
+          ngDefaultControl
+          inputId="workflow-status-filter"
+          [options]="workflowOptions"
+          [ngModel]="query().workflowStatus"
+          (ngModelChange)="updateFilter({ workflowStatus: $event })"
+          optionLabel="label"
+          optionValue="value"
+        ></p-select>
+      </div>
+
+      <div class="security-search__field">
+        <label for="disclosure-status-filter">Disclosure</label>
+        <p-select
+          ngDefaultControl
+          inputId="disclosure-status-filter"
+          [options]="disclosureOptions"
+          [ngModel]="query().disclosureStatus"
+          (ngModelChange)="updateFilter({ disclosureStatus: $event })"
+          optionLabel="label"
+          optionValue="value"
+        ></p-select>
+      </div>
+
+      <label class="security-search__field">
+        <span>Min coupon</span>
+        <input
+          pInputText
+          type="number"
+          min="0"
+          step="0.125"
+          [ngModel]="query().minCoupon"
+          (ngModelChange)="updateFilter({ minCoupon: $event === null || $event === '' ? null : +$event })"
+          placeholder="5.5"
+        />
+      </label>
+
+      <label class="security-search__field">
+        <span>Settlement from</span>
+        <input
+          pInputText
+          type="date"
+          [ngModel]="query().settlementDateFrom"
+          (ngModelChange)="updateFilter({ settlementDateFrom: $event })"
+        />
+      </label>
+    </div>
+  </p-card>
+
+  <p-card class="security-search__table-card">
+    <ng-template #header>
+      <div class="security-search__card-header">
+        <div>
+          <div class="security-search__card-title">Securities</div>
+          <div class="security-search__card-subtitle">Lazy table rows projected from SecuritySearchRowVm</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <p-table
+      [value]="rows()"
+      [lazy]="true"
+      [loading]="loading()"
+      [paginator]="true"
+      [rows]="query().rows"
+      [first]="query().first"
+      [totalRecords]="totalRecords()"
+      [sortField]="query().sortField"
+      [sortOrder]="query().sortOrder"
+      (onLazyLoad)="onLazyLoad($event)"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="securityId">Security <p-sort-icon field="securityId"></p-sort-icon></th>
+          <th pSortableColumn="poolNumber">Pool <p-sort-icon field="poolNumber"></p-sort-icon></th>
+          <th pSortableColumn="coupon">Coupon <p-sort-icon field="coupon"></p-sort-icon></th>
+          <th pSortableColumn="currentBalance">Balance <p-sort-icon field="currentBalance"></p-sort-icon></th>
+          <th pSortableColumn="workflowStatus">Workflow <p-sort-icon field="workflowStatus"></p-sort-icon></th>
+          <th pSortableColumn="disclosureStatus">Disclosure <p-sort-icon field="disclosureStatus"></p-sort-icon></th>
+          <th pSortableColumn="settlementDate">Settlement <p-sort-icon field="settlementDate"></p-sort-icon></th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr>
+          <td>
+            <strong>{{ row.securityId }}</strong>
+            <span>{{ row.cusip }}</span>
+          </td>
+          <td>
+            <strong>{{ row.poolNumber }}</strong>
+            <span>{{ row.loanCount }} loans</span>
+          </td>
+          <td>{{ row.coupon / 100 | percent: '1.3-3' }}</td>
+          <td>{{ row.currentBalance | currency: 'USD': 'symbol': '1.0-0' }}</td>
+          <td>
+            <p-tag [value]="row.workflowStatus" [severity]="workflowSeverity(row.workflowStatus)"></p-tag>
+          </td>
+          <td>
+            <p-tag [value]="row.disclosureStatus" [severity]="disclosureSeverity(row.disclosureStatus)"></p-tag>
+          </td>
+          <td>{{ row.settlementDate }}</td>
+          <td>
+            <div class="security-search__row-actions">
+              <button pButton type="button" class="p-button-text" (click)="openDetails(row)">Details</button>
+              <button pButton type="button" class="p-button-text" (click)="exportDisclosure(row)">Export</button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="8">
+            {{ loading() ? 'Loading securities.' : 'No securities match the current filters.' }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <p-dialog
+    header="Security Detail"
+    [visible]="!!selectedRow()"
+    [modal]="true"
+    [style]="{ width: 'min(720px, 92vw)' }"
+    (visibleChange)="!$event && closeDetails()"
+  >
+    @if (selectedRow(); as row) {
+      <dl class="security-search__detail-grid">
+        <div>
+          <dt>Security</dt>
+          <dd>{{ row.securityId }} · {{ row.cusip }}</dd>
+        </div>
+        <div>
+          <dt>Pool</dt>
+          <dd>{{ row.poolNumber }} · {{ row.loanCount }} loans</dd>
+        </div>
+        <div>
+          <dt>Commitment</dt>
+          <dd>{{ row.commitmentId }} · {{ row.commitmentType }}</dd>
+        </div>
+        <div>
+          <dt>Disclosure file</dt>
+          <dd>{{ row.disclosureFileId }} · {{ row.disclosureStatus }}</dd>
+        </div>
+        <div>
+          <dt>Issue / settlement</dt>
+          <dd>{{ row.issueDate }} / {{ row.settlementDate }}</dd>
+        </div>
+        <div>
+          <dt>Source</dt>
+          <dd>{{ row.sourceSystem }} · {{ row.lastUpdated }}</dd>
+        </div>
+      </dl>
+    }
+  </p-dialog>
+</section>

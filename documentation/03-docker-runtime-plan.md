@@ -8,13 +8,13 @@ The primary runtime target is Docker Compose. The normal command goal is:
 docker compose up --build
 ```
 
-Local non-Docker development can be added later as a convenience, but it should not become the main path in v1.
+Local non-Docker development is allowed as a convenience, but Docker Compose remains the main path in v1. Local development must keep proxy targets explicit because Docker service DNS names such as `spring-api` are not available to host-run `nx serve`.
 
 ## Container List
 
 | Service | Purpose |
 | --- | --- |
-| `architecture-dashboard` | Nginx container serving Angular and proxying browser-facing paths. |
+| `architecture-dashboard` | Angular development server today; target Nginx container serving Angular and proxying browser-facing paths. |
 | `spring-api` | Spring Boot source-of-truth API. |
 | `nest-api` | NestJS comparison API, gateway, diagnostics, Socket.IO. |
 | `postgres` | Durable database. |
@@ -86,6 +86,22 @@ flowchart LR
 ```
 
 > Note: When validating local tooling, prefer `http://127.0.0.1:5050` and `http://127.0.0.1:5540` for pgAdmin and Redis Insight. Some host environments resolve `localhost` to IPv6 and may return an empty reply even though the services are listening on the IPv4 loopback.
+
+## Angular Dev Proxy
+
+The Angular dev server uses `apps/architecture-dashboard/proxy.conf.cjs` for local development:
+
+- Default local target: `http://localhost:18080`
+- Docker override: `SPRING_API_TARGET=http://spring-api:8080`
+
+This keeps these two validation paths aligned:
+
+```text
+http://localhost:18080/api/personas
+http://localhost:4200/api/personas
+```
+
+If personas load through Spring direct but not through Angular, check the proxy target first. The Phase 5 visualization depends on persona permissions, so proxy drift will appear as missing personas or inaccessible routes before it appears as a graph problem.
 
 ## What This Teaches
 

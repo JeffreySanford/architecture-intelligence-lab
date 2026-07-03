@@ -34,15 +34,34 @@
         <div class="map-inspector__table-subtitle">Current DTO-to-ViewModel lookup state</div>
       </div>
     </ng-template>
-    <p-table [value]="dashboardStore.mapInspectorRows()" [responsiveLayout]="'scroll'">
-      <ng-template pTemplate="header">
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter index rows"
+        [ngModel]="globalFilter()"
+        (ngModelChange)="globalFilter.set($event)"
+      />
+    </div>
+    <p-table
+      [value]="filteredRows()"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      sortMode="multiple"
+      sortField="key"
+      [sortOrder]="1"
+      showCurrentPageReport="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    >
+      <ng-template #header>
         <tr>
-          <th>Index</th>
-          <th>Key</th>
-          <th>Value</th>
+          <th pSortableColumn="indexName">Index <p-sort-icon field="indexName"></p-sort-icon></th>
+          <th pSortableColumn="key">Key <p-sort-icon field="key"></p-sort-icon></th>
+          <th pSortableColumn="value">Value <p-sort-icon field="value"></p-sort-icon></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-row>
+      <ng-template #body let-row>
         <tr>
           <td>{{ row.indexName }}</td>
           <td>{{ row.key }}</td>

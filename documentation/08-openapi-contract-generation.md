@@ -45,16 +45,24 @@ libs/generated/
   spring-api-client/
     project.json
     src/
-      models/
-      services/
+      generated/
   nest-api-client/
     project.json
     src/
-      models/
-      services/
+      generated/
 ```
 
-Current checkpoint: `spring-api-client` and `nest-api-client` exist as Nx-discoverable placeholder libraries. They contain only placeholder exports until Spring and Nest OpenAPI documents exist and generation is wired.
+Current checkpoint: `spring-api-client` and `nest-api-client` exist as Nx-discoverable libraries. The Spring client is generated and wrapped by Angular facades for current persona/dashboard calls. The Nest client remains planned until the gateway OpenAPI document is implemented.
+
+Phase 5 implication: generated Nest models should include comparison metric rows and realtime event DTOs with stable ids (`pathId`, `eventId`) so the D3 graph and PrimeNG tables can bind to contract-backed data.
+
+Priority note: OpenAPI generation should move ahead of broad additional visualization work. The enterprise pattern to reinforce is:
+
+```text
+Spring OpenAPI -> generated Angular client -> facade -> store -> PrimeNG view
+```
+
+The Security Search screen currently uses a deterministic local facade with `SecuritySearchRowVm`. It should become an explicit consumer of facade-wrapped generated DTOs once the security/pool/commitment/disclosure API shape exists.
 
 ## What This Teaches
 

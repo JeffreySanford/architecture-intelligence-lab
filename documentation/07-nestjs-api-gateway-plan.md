@@ -27,6 +27,25 @@ NestJS provides comparison, gateway, realtime, diagnostics, and its own OpenAPI 
 | `POST` | `/gateway/realtime/emit-one` | Emit one demo realtime event. |
 | `POST` | `/gateway/realtime/emit-burst` | Emit a burst of demo realtime events. |
 
+## Comparison Response Contract
+
+The comparison endpoint should return frontend-ready metric rows that can drive the Phase 5 PrimeNG table and D3 path highlighting without shape guessing.
+
+Minimum row fields:
+
+| Field | Purpose |
+| --- | --- |
+| `pathId` | Stable id such as `spring-direct`, `nest-direct`, or `nest-proxy`. |
+| `label` | Human label for table display. |
+| `latencyMs` | End-to-end backend measurement when available. |
+| `payloadBytes` | Serialized response size. |
+| `recordCount` | Number of returned records. |
+| `status` | `ok`, `warning`, or `error`. |
+| `errorMessage` | Error details when a path fails. |
+| `observedAt` | Timestamp for trend and event correlation. |
+
+`pathId` should match the Angular Phase 5 graph link model so a selected metric row can highlight its request path.
+
 ## Socket Events
 
 | Event | Purpose |
@@ -34,6 +53,20 @@ NestJS provides comparison, gateway, realtime, diagnostics, and its own OpenAPI 
 | `realtime.connected` | Confirm Socket.IO connection. |
 | `loan.status.updated` | Notify Angular about a loan status update. |
 | `realtime.metrics` | Send event throughput and cache metrics. |
+
+Realtime emit endpoints should return an event id. Socket.IO events should include the same id so Angular can correlate the POST response, event history row, D3 path highlight, and eventual state patch.
+
+Minimum realtime event fields:
+
+| Field | Purpose |
+| --- | --- |
+| `eventId` | Correlation id for POST response and Socket.IO event. |
+| `loanId` | Updated loan. |
+| `oldStatus` | Previous status code when available. |
+| `newStatus` | New status code. |
+| `emittedAt` | Server timestamp. |
+| `deliveryState` | `emitted`, `received`, `applied`, or `failed`. |
+| `errorMessage` | Error details when delivery or patching fails. |
 
 ## Module Boundaries
 
@@ -57,4 +90,4 @@ apps/nest-api/src/
 - Direct reads and proxy reads reveal different tradeoffs.
 - Socket.IO events should patch client state, not blindly refetch everything.
 - Nest OpenAPI is useful even when Spring owns the official business contract.
-
+- Gateway response shapes should be designed for visualization and diagnostics, not just raw data transport.

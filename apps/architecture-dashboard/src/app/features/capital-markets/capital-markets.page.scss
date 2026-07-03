@@ -1,0 +1,33 @@
+.capital-markets {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.capital-markets__controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.capital-markets__filter-row {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.capital-markets__search {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.capital-markets__table-card {
+  width: 100%;
+}
+
+.capital-markets__eyebrow {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}

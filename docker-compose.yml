@@ -10,8 +10,9 @@ services:
       - "${ARCHITECTURE_DASHBOARD_PORT:-4200}:4200"
     environment:
       NODE_ENV: development
+      SPRING_API_TARGET: http://spring-api:8080
     volumes:
-      - ./apps/architecture-dashboard/proxy.conf.json:/workspace/apps/architecture-dashboard/proxy.conf.json:ro
+      - ./apps/architecture-dashboard/proxy.conf.cjs:/workspace/apps/architecture-dashboard/proxy.conf.cjs:ro
     depends_on:
       - spring-api
       - nest-api

@@ -1,0 +1,126 @@
+.security-search {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.security-search__header,
+.security-search__card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.security-search__eyebrow,
+.security-search__card-subtitle {
+  color: #64748b;
+}
+
+.security-search__eyebrow {
+  margin: 0 0 0.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.security-search h1 {
+  margin: 0;
+}
+
+.security-search__summary,
+.security-search__message {
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  border-radius: 0.5rem;
+}
+
+.security-search__summary {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  white-space: nowrap;
+}
+
+.security-search__message {
+  padding: 0.75rem 1rem;
+  margin: 0;
+}
+
+.security-search__card-title {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.security-search__filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.security-search__field {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.security-search__field input,
+.security-search__field p-select {
+  width: 100%;
+}
+
+.security-search__table-card {
+  overflow: hidden;
+}
+
+.security-search td strong,
+.security-search td span {
+  display: block;
+}
+
+.security-search td span {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.security-search__row-actions {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.security-search__detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.security-search__detail-grid div {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.security-search__detail-grid dt {
+  color: #64748b;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.security-search__detail-grid dd {
+  margin: 0;
+  color: #0f172a;
+}
+
+@media (max-width: 720px) {
+  .security-search__header,
+  .security-search__card-header {
+    display: grid;
+  }
+
+  .security-search__summary {
+    white-space: normal;
+  }
+}

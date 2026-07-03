@@ -2,13 +2,14 @@ import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angula
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ChipModule } from 'primeng/chip';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import { SelectModule } from 'primeng/select';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { AuthStore } from '../../core/auth/auth.store';
+import { DashboardStore, type BackendMode, type DatasetSize } from '../../core/dashboard/dashboard.store';
 
 @Component({
   standalone: true,
@@ -16,12 +17,11 @@ import { AuthStore } from '../../core/auth/auth.store';
   imports: [
     CommonModule,
     FormsModule,
-    RouterLink,
     ButtonModule,
     CardModule,
     ChipModule,
-    DropdownModule,
-    InputSwitchModule,
+    SelectModule,
+    ToggleSwitchModule,
   ],
   templateUrl: './landing.page.html',
   styleUrl: './landing.page.scss',
@@ -29,6 +29,7 @@ import { AuthStore } from '../../core/auth/auth.store';
 export class LandingPage implements OnInit {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly dashboardStore = inject(DashboardStore);
   protected readonly authStore = inject(AuthStore);
   protected readonly personas = this.authStore.personas;
 
@@ -44,7 +45,7 @@ export class LandingPage implements OnInit {
     'Nest direct',
     'Nest proxy',
     'Compare all',
-  ];
+  ] as const;
   protected readonly backendOptions = [
     { label: 'Spring direct', value: 'Spring direct' },
     { label: 'Nest direct', value: 'Nest direct' },
@@ -111,21 +112,33 @@ export class LandingPage implements OnInit {
       });
   }
 
-  protected selectPersona(personaId?: string): void {
+  selectPersona(personaId?: string): void {
     if (personaId) {
       this.selectedPersonaId.set(personaId);
     }
   }
 
-  protected enterLab(): void {
+  openCurrentUserLab(): void {
+    void this.router.navigate(['/lab/dashboard']);
+  }
+
+  enterLab(): void {
+    const dataset = this.selectedDatasetSize().toLowerCase() as DatasetSize;
+    const backend = this.selectedBackendMode()
+      .toLowerCase()
+      .replace(/\s+/g, '-') as BackendMode;
+
+    this.dashboardStore.selectedDataset.set(dataset);
+    this.dashboardStore.selectedBackendMode.set(backend);
+
     this.authStore
       .selectPersona(this.selectedPersonaId())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         void this.router.navigate(['/lab/dashboard'], {
           queryParams: {
-            dataset: this.selectedDatasetSize().toLowerCase(),
-            backend: this.selectedBackendMode().toLowerCase().replace(/\s+/g, '-'),
+            dataset,
+            backend,
             explain: this.explainMode(),
           },
         });

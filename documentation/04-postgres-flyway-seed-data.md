@@ -59,10 +59,11 @@ JSON seed files are educational fixtures. They make the domain easier to inspect
 | Large | 5,000 | Map and computed ViewModel performance. |
 | Stress | 50,000 | Explicit stress mode for performance teaching. |
 
+Current checkpoint: the first Flyway seed uses a compact Small dataset with five loans so API, persona, Map inspector, and Phase 5 access work can be verified quickly. The target Small/Medium/Large/Stress sizes above remain the planned teaching dataset progression.
+
 ## What This Teaches
 
 - Database migrations are executable documentation.
 - Seed data can be both runnable and readable.
 - Schema drift and API drift are different risks.
 - Large datasets make Map indexing benefits visible.
-

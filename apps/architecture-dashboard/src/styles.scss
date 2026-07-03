@@ -1,6 +1,4 @@
 @import 'primeicons/primeicons.css';
-@import 'primeng/resources/themes/saga-blue/theme.css';
-@import 'primeng/resources/primeng.min.css';
 @import 'primeflex/primeflex.css';
 
 html,
@@ -13,6 +11,21 @@ body {
   font-family: Inter, Roboto, 'Helvetica Neue', Arial, sans-serif;
   background: #f7f8fb;
   color: #172033;
+}
+
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.table-toolbar input,
+.table-toolbar .p-inputtext {
+  min-width: 240px;
+  width: 100%;
+  max-width: 420px;
 }
 
 * {

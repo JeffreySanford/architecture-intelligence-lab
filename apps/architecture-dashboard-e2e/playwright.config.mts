@@ -1,9 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // For CI, you may want to set BASE_URL to the deployed application.
 const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
+const configDir = dirname(fileURLToPath(import.meta.url));
+const baseUrlPort = new URL(baseURL).port || '4200';
 
 /**
  * Read environment variables from file.
@@ -22,19 +26,24 @@ const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
  * (.ts/.js/.mts/.mjs/.cts/.cjs).
  */
 export default defineConfig({
-  ...nxE2EPreset(import.meta.dirname, { testDir: './src' }),
+  ...nxE2EPreset(configDir, { testDir: './src' }),
+  workers: Number(process.env['PLAYWRIGHT_WORKERS'] ?? 4),
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
-  /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm nx run architecture-dashboard:serve',
-    url: 'http://localhost:4200',
-    reuseExistingServer: true,
-    cwd: workspaceRoot
+    command: `pnpm nx run architecture-dashboard:serve --port=${baseUrlPort}`,
+    url: baseURL,
+    env: {
+      E2E_MOCKED_BACKENDS: '1',
+    },
+    // Use a fresh server by default so e2e assertions verify the current source.
+    // Set PLAYWRIGHT_REUSE_SERVER=1 when intentionally testing an existing dev server.
+    reuseExistingServer: process.env['PLAYWRIGHT_REUSE_SERVER'] === '1',
+    cwd: workspaceRoot,
   },
   projects: [
     {
