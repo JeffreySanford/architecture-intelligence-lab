@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { catchError, finalize, map, Observable, of, tap } from 'rxjs';
 import { CurrentUserDto, PersonaDto } from '../api/lab-api.models';
 import { SpringApiFacade } from '../api/spring-api.facade';
 
@@ -21,17 +21,23 @@ export class AuthStore {
     this.error.set(null);
 
     return this.api.getPersonas().pipe(
-      tap((personas) => this.personas.set(personas)),
-      tap(() => this.loading.set(false)),
+      tap((personas) => {
+        this.personas.set(personas);
+        console.debug('[AuthStore] loaded personas', personas);
+      }),
+      finalize(() => this.loading.set(false)),
       catchError((error: unknown) => {
-        this.loading.set(false);
         this.error.set('Unable to load personas from Spring.');
         throw error;
       }),
     );
   }
 
-  selectPersona(personaId: string): Observable<CurrentUserDto> {
+  selectPersona(personaId?: string): Observable<CurrentUserDto> {
+    if (!personaId) {
+      throw new Error('Persona id is required');
+    }
+
     this.loading.set(true);
     this.error.set(null);
 

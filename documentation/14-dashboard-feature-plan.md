@@ -9,7 +9,7 @@ The dashboard is the primary working surface. It shows loan cards, loan tables, 
 | Capability | Description |
 | --- | --- |
 | Loan cards | Compact cards with borrower, amount, status, document count, risk band. |
-| Loan table | Angular Material table with sorting, filtering, and status chips. |
+| Loan table | PrimeNG table with sorting, filtering, and status chips. |
 | Dataset selector | Small, Medium, Large, Stress. |
 | Backend selector | Spring direct, Nest direct, Nest proxy, Compare all. |
 | Credit score bands | Visual grouping for borrower risk. |
@@ -27,7 +27,7 @@ flowchart LR
   Facade --> RawState[SignalStore raw state]
   RawState --> Maps[Map and Set indexes]
   Maps --> VMs[Computed ViewModels]
-  VMs --> Material[Material cards and table]
+  VMs --> UI[PrimeNG cards and table]
   VMs --> ChartJs[Chart.js charts]
   VMs --> D3[D3 explanation overlays]
 ```

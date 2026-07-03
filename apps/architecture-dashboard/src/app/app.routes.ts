@@ -74,6 +74,19 @@ export const appRoutes: Routes = [
         },
       },
       {
+        path: 'infrastructure',
+        loadComponent: () =>
+          import('./features/infrastructure/infrastructure.page').then(
+            (m) => m.InfrastructurePage,
+          ),
+        data: {
+          title: 'Infrastructure Status',
+          eyebrow: 'Docker and tooling health',
+          description:
+            'Review Spring health and quick access links for pgAdmin, Redis Insight, and APIs.',
+        },
+      },
+      {
         path: 'realtime',
         loadComponent: () =>
           import('./features/placeholder/placeholder.page').then(

@@ -56,8 +56,8 @@ NestJS may read directly from PostgreSQL for comparison and diagnostics, and it 
 | `/socket.io` | NestJS Socket.IO gateway |
 | `/swagger/spring` | Spring Swagger UI |
 | `/swagger/nest` | Nest Swagger UI |
-| `/pgadmin` | pgAdmin, if proxied |
-| `/redis-insight` | Redis Insight, if proxied |
+| `/pgadmin` | pgAdmin, proxied through Nginx |
+| `/redis-insight` | Redis Insight, proxied through Nginx |
 
 ## Backend Modes
 

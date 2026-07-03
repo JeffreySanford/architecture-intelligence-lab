@@ -96,7 +96,7 @@ Goal: Bring up durable infrastructure and the source-of-truth API.
 
 Stories:
 
-- [ ] As a developer, I can start PostgreSQL, Redis, pgAdmin, and Redis Insight.
+- [X] As a developer, I can start PostgreSQL, Redis, pgAdmin, and Redis Insight.
 - [X] As a learner, I can inspect seeded database data.
 - [X] As a user, I can select a persona and load `/api/me`.
 - [X] As a frontend consumer, I can request a dashboard snapshot DTO.
@@ -105,11 +105,13 @@ Deliverables:
 
 - [X] Postgres migrations
 - [X] Seed users, roles, permissions, personas, loans, borrowers, documents, status codes
-- [ ] Redis config
-- [ ] pgAdmin container
-- [ ] Redis Insight container
+- [X] Redis config
+- [X] pgAdmin container
+- [X] Redis Insight container
 - [X] Spring Boot DTO endpoints
 - [X] Persona httpOnly-cookie auth
+- [X] Nginx proxy routes for pgAdmin and Redis Insight
+- [X] `/lab/infrastructure` status view
 - [ ] Spring Swagger UI
 
 Acceptance criteria:
@@ -118,6 +120,8 @@ Acceptance criteria:
 - [X] `/api/dev-auth/personas/{personaId}/select` sets cookie.
 - [X] `/api/me` returns roles and permissions.
 - [X] `/api/dashboard/snapshot` returns data for at least the Small dataset.
+- [X] pgAdmin is reachable at `http://127.0.0.1:5050`.
+- [X] Redis Insight is reachable at `http://127.0.0.1:5540`.
 
 ## Sprint 3: Nest Gateway, Comparison, And Generated Contracts
 
@@ -126,8 +130,10 @@ Goal: Add NestJS comparison paths and generate frontend clients.
 Stories:
 
 - [ ] As a learner, I can compare Spring direct, Nest direct, and Nest proxy paths.
-- [ ] As a developer, I can inspect Nest Swagger UI.
+- [ ] As a capital markets analyst, I can compare backend paths for portfolio data and see latency, payload, and contract differences.
+- [ ] As a compliance reviewer, I can inspect persona access and API contract behavior across backend paths.
 - [ ] As a frontend developer, I can consume generated Angular clients through facades.
+- [ ] As a developer, I can keep the study lab focused on capital markets concepts without modeling full mortgage compliance.
 
 Deliverables:
 
@@ -165,7 +171,7 @@ Deliverables:
 - [X] `AuthStore`
 - [X] `DashboardStore`
 - [X] Map and Set indexes
-- [X] Loan cards and Material table
+- [X] Loan cards and PrimeNG table
 - [ ] Chart.js summary charts
 
 Acceptance criteria:
@@ -239,5 +245,5 @@ Acceptance criteria:
 
 ## Unresolved Questions
 
-- [ ] Should pgAdmin and Redis Insight be proxied through Nginx in v1 or exposed on separate local ports first?
+- [X] pgAdmin and Redis Insight should be proxied through Nginx in v1 while keeping direct local ports available for learners.
 - [ ] Should CSRF token handling be implemented in v1 or documented as a v1.1 hardening task?

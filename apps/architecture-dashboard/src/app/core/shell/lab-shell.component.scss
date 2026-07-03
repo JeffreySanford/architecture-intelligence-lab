@@ -29,8 +29,42 @@
   font-size: 0.875rem;
 }
 
-.lab-shell__nav-item--active {
+.lab-shell__nav-divider {
+  height: 1px;
+  margin: 0 16px;
+  background: #e5e9f0;
+}
+
+.lab-shell__nav-list {
+  padding: 16px;
+}
+
+.lab-shell__nav-item {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  text-align: left;
+  border-radius: 10px;
+  color: #172033;
+}
+
+.lab-shell__nav-item--active,
+.lab-shell__nav-item:hover,
+.lab-shell__nav-item:focus-visible {
   background: #e7f0ff;
+}
+
+.lab-shell__nav-item-label {
+  display: block;
+  font-weight: 700;
+}
+
+.lab-shell__nav-item-description {
+  display: block;
+  margin-top: 4px;
+  color: #5d6575;
+  font-size: 0.9rem;
 }
 
 .lab-shell__content {

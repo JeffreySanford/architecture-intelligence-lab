@@ -85,6 +85,8 @@ flowchart LR
   Nginx -->|/redis-insight| RedisInsight[Redis Insight]
 ```
 
+> Note: When validating local tooling, prefer `http://127.0.0.1:5050` and `http://127.0.0.1:5540` for pgAdmin and Redis Insight. Some host environments resolve `localhost` to IPv6 and may return an empty reply even though the services are listening on the IPv4 loopback.
+
 ## What This Teaches
 
 - Compose keeps service ownership visible.

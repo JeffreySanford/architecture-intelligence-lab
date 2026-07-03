@@ -23,12 +23,29 @@ h1 {
   color: #4f5868;
 }
 
-mat-card {
+.placeholder__card {
   max-width: 640px;
-  border-radius: 8px;
+  border-radius: 16px;
 }
 
-mat-chip-set {
-  display: block;
+.placeholder__card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.placeholder__card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.placeholder__card-subtitle {
+  color: #5d6575;
+}
+
+.placeholder__status-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 16px;
 }

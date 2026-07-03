@@ -30,11 +30,25 @@ h1 {
   margin-bottom: 20px;
 }
 
-mat-card {
-  border-radius: 8px;
+.map-inspector__stat-card {
+  border-radius: 16px;
 }
 
-table {
+.map-inspector__stat-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.map-inspector__stat-subtitle {
+  color: #5d6575;
+  margin-top: 6px;
+}
+
+.map-inspector__table-card {
+  border-radius: 16px;
+}
+
+.p-datatable {
   width: 100%;
 }
 

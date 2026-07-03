@@ -1,40 +1,46 @@
-<mat-sidenav-container class="lab-shell">
-  <mat-sidenav mode="side" opened class="lab-shell__nav" fixedInViewport>
+<div class="lab-shell">
+  <aside class="lab-shell__nav">
     <div class="lab-shell__brand">
-      <a matButton="tonal" routerLink="/">Architecture Lab</a>
+      <a pButton type="button" label="Architecture Lab" class="p-button-text" routerLink="/">
+        Architecture Lab
+      </a>
       <p>Training workspace</p>
     </div>
 
-    <mat-divider></mat-divider>
+    <div class="lab-shell__nav-divider"></div>
 
-    <mat-nav-list aria-label="Lab views">
+    <nav aria-label="Lab views" class="lab-shell__nav-list">
       @for (item of visibleNavItems(); track item.route) {
         <a
-          mat-list-item
+          pButton
+          type="button"
+          class="lab-shell__nav-item p-button-text"
           [routerLink]="item.route"
           routerLinkActive="lab-shell__nav-item--active"
         >
-          <span matListItemTitle>{{ item.label }}</span>
-          <span matListItemLine>{{ item.description }}</span>
+          <span class="lab-shell__nav-item-label">{{ item.label }}</span>
+          <span class="lab-shell__nav-item-description">{{ item.description }}</span>
         </a>
       }
-    </mat-nav-list>
-  </mat-sidenav>
+    </nav>
+  </aside>
 
-  <mat-sidenav-content class="lab-shell__content">
-    <mat-toolbar class="lab-shell__toolbar">
+  <div class="lab-shell__content">
+    <div class="lab-shell__toolbar">
       <span>Architecture Intelligence Lab</span>
       <span class="lab-shell__spacer"></span>
       @if (currentUser(); as user) {
         <span class="lab-shell__persona">
-          {{ user.persona.name }} · {{ user.persona.role }}
+          {{ user.persona?.name ?? 'Unknown' }} · {{ user.persona?.role ?? 'Unknown' }}
         </span>
       }
-      <a matButton routerLink="/">Change Persona</a>
-    </mat-toolbar>
+      <a pButton type="button" label="Change Persona" class="p-button-text" routerLink="/">
+        Change Persona
+      </a>
+    </div>
 
     <main class="lab-shell__main">
       <router-outlet></router-outlet>
     </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</div>

@@ -1,14 +1,15 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatTableModule } from '@angular/material/table';
+import { CardModule } from 'primeng/card';
+import { ChipModule } from 'primeng/chip';
+import { TableModule } from 'primeng/table';
 import { DashboardStore } from '../../core/dashboard/dashboard.store';
 
 @Component({
+  standalone: true,
   selector: 'app-dashboard-page',
-  imports: [CurrencyPipe, MatCardModule, MatChipsModule, MatTableModule],
+  imports: [CommonModule, CurrencyPipe, CardModule, ChipModule, TableModule],
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.scss',
 })

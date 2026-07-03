@@ -60,7 +60,7 @@ flowchart TB
 | `PersonaCardVm` | Persona selector card. |
 | `VisibleNavItemVm` | Permission-filtered nav item. |
 | `LoanCardVm` | Dashboard card display. |
-| `LoanTableRowVm` | Material table row display. |
+| `LoanTableRowVm` | PrimeNG table row display. |
 | `DashboardSummaryVm` | KPI and chart summary. |
 | `MapInspectorRowVm` | Map inspector table row. |
 | `SignalStoreNodeVm` | D3 SignalStore graph node. |

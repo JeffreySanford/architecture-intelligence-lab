@@ -11,9 +11,14 @@
     "target": "es2015",
     "module": "esnext",
     "lib": ["es2020", "dom"],
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "paths": {}
+    "paths": {
+      "@generated/spring-api-client": ["./libs/generated/spring-api-client/src/index.ts"],
+      "@generated/spring-api-client/*": ["./libs/generated/spring-api-client/src/*"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

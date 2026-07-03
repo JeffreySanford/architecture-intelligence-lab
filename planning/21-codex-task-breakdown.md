@@ -80,8 +80,8 @@ Expected files:
 - [ ] `apps/postgres/src/migrations`
 - [ ] `apps/postgres/src/seed`
 - [X] `apps/redis/src/config`
-- [ ] pgAdmin service config
-- [ ] Redis Insight service config
+- [X] pgAdmin service config
+- [X] Redis Insight service config
 
 Do not touch:
 
@@ -93,9 +93,9 @@ Test command:
 
 Acceptance criteria:
 
-- [ ] Infrastructure starts and health checks pass.
-- [ ] pgAdmin is reachable.
-- [ ] Redis Insight is reachable.
+- [X] Infrastructure starts and health checks pass.
+- [X] pgAdmin is reachable.
+- [X] Redis Insight is reachable.
 
 ## Task 5: Add Spring Boot App
 
@@ -154,6 +154,7 @@ Expected files:
 - [X] Shell
 - [X] Landing page
 - [X] Guards
+- [X] Infrastructure status UI (`/lab/infrastructure`)
 - [ ] Interceptors
 
 Do not touch:
@@ -217,7 +218,7 @@ Expected files:
 
 - [ ] D3 graphs
 - [ ] Chart.js charts
-- [ ] Material dashboard components
+- [ ] PrimeNG dashboard components
 
 Do not touch:
 

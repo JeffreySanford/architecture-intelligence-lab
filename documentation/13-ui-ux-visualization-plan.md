@@ -8,7 +8,7 @@ The UI should feel like a guided architecture workshop. It should be professiona
 
 | Tool | Best use |
 | --- | --- |
-| Angular Material | Cards, tables, tabs, chips, sliders, forms, shell, dialogs. |
+| PrimeNG | Cards, tables, tabs, chips, sliders, forms, shell, dialogs. |
 | Chart.js | Standard charts such as status distribution, latency trends, payload sizes. |
 | D3/SVG | Educational architecture diagrams, dependency graphs, request animations. |
 | Angular 22 native animations | Route/content enter and leave transitions with `animate.enter` and `animate.leave`. |

@@ -38,3 +38,5 @@ Completed foundation work:
 - [X] Generated-client library placeholders exist.
 - [X] Nginx route skeleton exists.
 - [X] `.env.example` exists.
+- [X] pgAdmin and Redis Insight service configuration and proxy routes exist.
+- [X] pgAdmin and Redis Insight are reachable on localhost ports 5050 and 5540.

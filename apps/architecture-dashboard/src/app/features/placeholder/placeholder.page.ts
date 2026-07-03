@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
+import { CardModule } from 'primeng/card';
+import { ChipModule } from 'primeng/chip';
 
 type PlaceholderData = {
   title?: string;
@@ -11,7 +11,7 @@ type PlaceholderData = {
 
 @Component({
   selector: 'app-placeholder-page',
-  imports: [MatCardModule, MatChipsModule],
+  imports: [CardModule, ChipModule],
   templateUrl: './placeholder.page.html',
   styleUrl: './placeholder.page.scss',
 })

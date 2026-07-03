@@ -34,5 +34,13 @@ export default [
         ],
         // Override or add rules here
         rules: {}
+    },
+    {
+        files: [
+            "**/spring-api.facade.ts"
+        ],
+        rules: {
+            "@nx/enforce-module-boundaries": "off"
+        }
     }
 ];

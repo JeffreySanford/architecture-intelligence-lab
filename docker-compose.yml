@@ -10,6 +10,8 @@ services:
       - "${ARCHITECTURE_DASHBOARD_PORT:-4200}:4200"
     environment:
       NODE_ENV: development
+    volumes:
+      - ./apps/architecture-dashboard/proxy.conf.json:/workspace/apps/architecture-dashboard/proxy.conf.json:ro
     depends_on:
       - spring-api
       - nest-api
@@ -74,5 +76,28 @@ services:
       timeout: 5s
       retries: 5
 
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: architecture-lab-pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  redis-insight:
+    image: redislabs/redisinsight:latest
+    container_name: architecture-lab-redis-insight
+    ports:
+      - "${REDIS_INSIGHT_PORT:-5540}:5540"
+    depends_on:
+      redis:
+        condition: service_healthy
+
 volumes:
   postgres-data:
+  pgadmin-data:
+  redis-insight-data:

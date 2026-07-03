@@ -29,7 +29,7 @@ Grill-me questions:
 
 Answers:
 
-- Still ambiguous: whether pgAdmin and Redis Insight are proxied through Nginx in v1 or exposed on local ports first, and whether CSRF token handling is implemented in v1 or documented as v1.1 hardening.
+- Still ambiguous: whether CSRF token handling is implemented in v1 or documented as v1.1 hardening. Proxy routing for pgAdmin and Redis Insight is now resolved in v1.
 - New developer reading order: start with `documentation/README.md`, then `documentation/00-executive-summary.md`, `documentation/01-system-architecture.md`, `documentation/09-angular-standalone-architecture.md`, and `planning/20-build-phases-and-acceptance-criteria.md`.
 
 ## Phase 1: Nx Workspace Scaffolding
@@ -85,15 +85,23 @@ Deliverables:
 - [X] Redis config folder placeholder
 - [X] Health checks for Postgres and Redis
 - [X] Volumes
-- [ ] pgAdmin container
-- [ ] Redis Insight container
-- [ ] Inspection tool routes or ports
+- [X] pgAdmin container
+- [X] Redis Insight container
+- [X] Proxy routes for `/pgadmin` and `/redis-insight`
+- [X] Infrastructure status view in the dashboard
+- [X] Infrastructure route topology and port mapping card
+- [X] Links or routes for pgAdmin and Redis Insight
+- [X] Implementation note: add `/lab/infrastructure` dashboard route that checks `/api/health` and exposes pgAdmin/Redis Insight links
 
 Acceptance criteria:
 
-- [ ] `docker compose up --build` starts full infrastructure.
-- [ ] pgAdmin is reachable.
-- [ ] Redis Insight is reachable.
+- [X] `docker compose up --build` starts full infrastructure.
+- [X] pgAdmin is reachable at `http://127.0.0.1:5050`.
+- [X] Redis Insight is reachable at `http://127.0.0.1:5540`.
+- [X] The dashboard includes an infrastructure status view showing service health and tooling links.
+- [X] The dashboard shows direct ports and Nginx proxy paths for infrastructure services.
+- [X] Infrastructure routes/ports are documented for quick access.
+- [X] `/lab/infrastructure` can be opened from the lab shell and shows Spring API health plus local tool URLs.
 
 ## Phase 4: Spring Boot Source-Of-Truth API
 
@@ -143,11 +151,13 @@ Deliverables:
 - [ ] Generation scripts
 - [ ] Drift check command
 - [ ] Data-access facades
+- [ ] OpenAPI Contract Lab scaffold
 
 Acceptance criteria:
 
 - [ ] Generated clients build.
 - [ ] Components do not inject generated services directly.
+- [ ] OpenAPI Contract Lab exists in the workspace.
 
 ## Phase 7: Angular Standalone Shell
 
@@ -157,7 +167,7 @@ Deliverables:
 
 - [X] `app.config.ts`
 - [X] `app.routes.ts`
-- [X] Material shell
+- [X] PrimeNG shell
 - [X] Landing page
 - [X] Persona selector
 - [X] Backend selector
@@ -238,12 +248,18 @@ Deliverables:
 - [ ] Contract lab
 - [ ] Swagger links
 - [ ] Generated client status
+- [ ] `/v3/api-docs` endpoint health check
+- [ ] Generated models vs local app shape summary
 - [ ] MCP setup checklist
 - [ ] Command guide
+- [ ] OpenAPI contract drift dashboard
 
 Acceptance criteria:
 
 - [ ] Contract lab explains drift boundaries clearly.
+- [ ] OpenAPI Contract Lab shows generated client status.
+- [ ] OpenAPI Contract Lab compares Spring API endpoints vs generated DTOs.
+- [ ] OpenAPI Contract Lab surfaces contract drift/warnings.
 - [ ] MCP dashboard does not execute arbitrary browser commands.
 
 ## Phase 12: Full Test Suite

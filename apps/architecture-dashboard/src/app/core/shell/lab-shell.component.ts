@@ -1,11 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { ButtonModule } from 'primeng/button';
 import { AuthStore } from '../auth/auth.store';
 
 type LabNavItem = {
@@ -16,17 +12,14 @@ type LabNavItem = {
 };
 
 @Component({
+  standalone: true,
   selector: 'app-lab-shell',
   imports: [
+    CommonModule,
     RouterLink,
     RouterLinkActive,
     RouterOutlet,
-    MatButtonModule,
-    MatDividerModule,
-    MatIconModule,
-    MatListModule,
-    MatSidenavModule,
-    MatToolbarModule,
+    ButtonModule,
   ],
   templateUrl: './lab-shell.component.html',
   styleUrl: './lab-shell.component.scss',
@@ -67,6 +60,11 @@ export class LabShellComponent {
       route: '/lab/backend-comparison',
       description: 'Spring, Nest, proxy',
       permission: 'backend-comparison:view',
+    },
+    {
+      label: 'Infrastructure Status',
+      route: '/lab/infrastructure',
+      description: 'Docker and tooling health',
     },
     {
       label: 'Realtime Lab',

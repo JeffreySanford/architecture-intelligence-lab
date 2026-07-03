@@ -3,17 +3,19 @@
   <h1>{{ pageData().title }}</h1>
   <p>{{ pageData().description }}</p>
 
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Implementation checkpoint</mat-card-title>
-      <mat-card-subtitle>Route shell is active</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-chip-set aria-label="Feature status">
-        <mat-chip>Routed</mat-chip>
-        <mat-chip>Sidebar linked</mat-chip>
-        <mat-chip>Data pending</mat-chip>
-      </mat-chip-set>
-    </mat-card-content>
-  </mat-card>
+  <p-card class="placeholder__card">
+    <ng-template pHeader>
+      <div class="placeholder__card-title-group">
+        <div class="placeholder__card-title">Implementation checkpoint</div>
+        <div class="placeholder__card-subtitle">Route shell is active</div>
+      </div>
+    </ng-template>
+    <div class="placeholder__card-content">
+      <div class="placeholder__status-chips" aria-label="Feature status">
+        <p-chip label="Routed"></p-chip>
+        <p-chip label="Sidebar linked"></p-chip>
+        <p-chip label="Data pending"></p-chip>
+      </div>
+    </div>
+  </p-card>
 </section>

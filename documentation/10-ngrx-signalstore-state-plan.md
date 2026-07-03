@@ -52,7 +52,7 @@ flowchart LR
   DTOs[Generated DTOs] --> Store[SignalStore raw state]
   Store --> Indexes[Computed Map and Set indexes]
   Indexes --> ViewModels[Computed ViewModels]
-  ViewModels --> UI[Material cards, tables, charts]
+  ViewModels --> UI[PrimeNG cards, tables, charts]
   SocketEvent[Socket.IO event] --> Store
 ```
 

@@ -26,7 +26,7 @@ Mermaid diagrams are embedded directly in the relevant Markdown files. Step-by-s
 | Repo management | Nx monorepo |
 | Frontend | Angular 22 standalone |
 | State | NgRx SignalStore |
-| UI | Angular Material, D3, Chart.js, Angular 22 native animations, CSS transitions |
+| UI | PrimeNG, D3, Chart.js, Angular 22 native animations, CSS transitions |
 | Source-of-truth backend | Spring Boot Maven API |
 | Comparison backend | NestJS API, gateway, Socket.IO realtime |
 | Database | PostgreSQL |

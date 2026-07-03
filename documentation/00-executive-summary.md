@@ -27,7 +27,7 @@ The final app should let a developer open one browser entrypoint, select a perso
 - Angular 22 standalone frontend
 - Angular CLI MCP server for AI-assisted development workflows
 - NgRx SignalStore
-- Angular Material
+- PrimeNG
 - Angular 22 native enter/leave animations
 - D3
 - Chart.js

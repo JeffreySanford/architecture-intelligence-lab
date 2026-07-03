@@ -35,7 +35,7 @@ apps/architecture-dashboard/src/app/
     ui/
     charts/
     d3/
-    material/
+    primeng/
     models/
 ```
 

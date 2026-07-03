@@ -37,7 +37,9 @@ export class DashboardStore {
   readonly borrowersById = computed(() => {
     const map = new Map<string, BorrowerDto>();
     for (const borrower of this.snapshot()?.borrowers ?? []) {
-      map.set(borrower.id, borrower);
+      if (borrower.id) {
+        map.set(borrower.id, borrower);
+      }
     }
     return map;
   });
@@ -45,7 +47,9 @@ export class DashboardStore {
   readonly statusByCode = computed(() => {
     const map = new Map<string, LoanStatusCodeDto>();
     for (const status of this.snapshot()?.statusCodes ?? []) {
-      map.set(status.code, status);
+      if (status.code) {
+        map.set(status.code, status);
+      }
     }
     return map;
   });
@@ -53,7 +57,9 @@ export class DashboardStore {
   readonly loansById = computed(() => {
     const map = new Map<string, LoanDto>();
     for (const loan of this.snapshot()?.loans ?? []) {
-      map.set(loan.id, loan);
+      if (loan.id) {
+        map.set(loan.id, loan);
+      }
     }
     return map;
   });
@@ -61,37 +67,41 @@ export class DashboardStore {
   readonly documentsByLoanId = computed(() => {
     const map = new Map<string, LoanDocumentDto[]>();
     for (const document of this.snapshot()?.documents ?? []) {
-      map.set(document.loanId, [...(map.get(document.loanId) ?? []), document]);
+      if (document.loanId) {
+        map.set(document.loanId, [...(map.get(document.loanId) ?? []), document]);
+      }
     }
     return map;
   });
 
   readonly loanCards = computed<LoanCardVm[]>(() =>
-    (this.snapshot()?.loans ?? []).map((loan) => {
-      const borrower = this.borrowersById().get(loan.borrowerId);
-      const status = this.statusByCode().get(loan.statusCode);
-      return {
-        id: loan.id,
-        loanNumber: loan.loanNumber,
-        borrowerName: borrower?.name ?? 'Unknown borrower',
-        amount: loan.amount,
-        statusLabel: status?.label ?? loan.statusCode,
-        documentCount: this.documentsByLoanId().get(loan.id)?.length ?? 0,
-        riskBand: borrower?.riskBand ?? 'Unknown',
-      };
-    }),
+    (this.snapshot()?.loans ?? [])
+      .filter((loan): loan is LoanDto & { id: string; borrowerId: string; statusCode: string } => !!loan.id && !!loan.borrowerId && !!loan.statusCode)
+      .map((loan) => {
+        const borrower = this.borrowersById().get(loan.borrowerId);
+        const status = this.statusByCode().get(loan.statusCode);
+        return {
+          id: loan.id,
+          loanNumber: loan.loanNumber ?? 'Unknown loan',
+          borrowerName: borrower?.name ?? 'Unknown borrower',
+          amount: loan.amount ?? 0,
+          statusLabel: status?.label ?? loan.statusCode,
+          documentCount: this.documentsByLoanId().get(loan.id)?.length ?? 0,
+          riskBand: borrower?.riskBand ?? 'Unknown',
+        };
+      }),
   );
 
   readonly mapInspectorRows = computed<MapInspectorRowVm[]>(() => [
     ...Array.from(this.loansById()).map(([key, loan]) => ({
       indexName: 'loansById',
       key,
-      value: loan.loanNumber,
+      value: loan.loanNumber ?? 'Unknown loan',
     })),
     ...Array.from(this.borrowersById()).map(([key, borrower]) => ({
       indexName: 'borrowersById',
       key,
-      value: borrower.name,
+      value: borrower.name ?? 'Unknown borrower',
     })),
     ...Array.from(this.documentsByLoanId()).map(([key, documents]) => ({
       indexName: 'documentsByLoanId',
@@ -101,7 +111,7 @@ export class DashboardStore {
     ...Array.from(this.statusByCode()).map(([key, status]) => ({
       indexName: 'statusByCode',
       key,
-      value: status.label,
+      value: status.label ?? 'Unknown status',
     })),
   ]);
 

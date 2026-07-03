@@ -1,25 +1,31 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CurrentUserDto, DashboardSnapshotDto, PersonaDto } from './lab-api.models';
-import { SpringApiClientService } from '../../../../libs/generated/spring-api-client/src/spring-api-client.service';
+import { LabControllerApiService } from '@generated/spring-api-client';
+
+type SpringApiRequestOptions = Parameters<LabControllerApiService['personas']>[2];
 
 @Injectable({ providedIn: 'root' })
 export class SpringApiFacade {
-  private readonly api = inject(SpringApiClientService);
+  private readonly api = inject(LabControllerApiService);
+
+  private readonly jsonAcceptOptions = {
+    httpHeaderAccept: 'application/json',
+  } as unknown as SpringApiRequestOptions;
 
   getPersonas(): Observable<PersonaDto[]> {
-    return this.api.getPersonas();
+    return this.api.personas(undefined, false, this.jsonAcceptOptions);
   }
 
   selectPersona(personaId: string): Observable<CurrentUserDto> {
-    return this.api.selectPersona(personaId);
+    return this.api.selectPersona(personaId, undefined, false, this.jsonAcceptOptions);
   }
 
   getCurrentUser(): Observable<CurrentUserDto> {
-    return this.api.getCurrentUser();
+    return this.api.me(undefined, undefined, false, this.jsonAcceptOptions);
   }
 
   getDashboardSnapshot(dataset: string): Observable<DashboardSnapshotDto> {
-    return this.api.getDashboardSnapshot(dataset);
+    return this.api.dashboardSnapshot(dataset, undefined, false, this.jsonAcceptOptions);
   }
 }

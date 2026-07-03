@@ -9,6 +9,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(appRoutes),
-    provideApi('/api')
+    provideApi('')
   ]
 };

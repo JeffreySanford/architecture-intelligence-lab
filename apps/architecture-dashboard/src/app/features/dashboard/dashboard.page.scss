@@ -35,8 +35,24 @@ h1 {
   margin-bottom: 20px;
 }
 
-mat-card {
-  border-radius: 8px;
+.dashboard__card {
+  border-radius: 16px;
+}
+
+.dashboard__card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashboard__card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.dashboard__card-subtitle {
+  color: #5d6575;
+  font-size: 0.95rem;
 }
 
 .dashboard__amount {
@@ -44,6 +60,13 @@ mat-card {
   color: #172033;
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+.dashboard__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .dashboard__table-card {

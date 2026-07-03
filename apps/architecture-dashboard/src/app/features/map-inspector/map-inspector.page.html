@@ -7,51 +7,48 @@
   </p>
 
   <div class="map-inspector__summary">
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <mat-card-title>{{ dashboardStore.loansById().size }}</mat-card-title>
-        <mat-card-subtitle>loansById entries</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <mat-card-title>{{ dashboardStore.borrowersById().size }}</mat-card-title>
-        <mat-card-subtitle>borrowersById entries</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <mat-card-title>{{ authStore.permissionSet().size }}</mat-card-title>
-        <mat-card-subtitle>permissionSet entries</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
+    <p-card class="map-inspector__stat-card">
+      <ng-template pHeader>
+        <div class="map-inspector__stat-title">{{ dashboardStore.loansById().size }}</div>
+        <div class="map-inspector__stat-subtitle">loansById entries</div>
+      </ng-template>
+    </p-card>
+    <p-card class="map-inspector__stat-card">
+      <ng-template pHeader>
+        <div class="map-inspector__stat-title">{{ dashboardStore.borrowersById().size }}</div>
+        <div class="map-inspector__stat-subtitle">borrowersById entries</div>
+      </ng-template>
+    </p-card>
+    <p-card class="map-inspector__stat-card">
+      <ng-template pHeader>
+        <div class="map-inspector__stat-title">{{ authStore.permissionSet().size }}</div>
+        <div class="map-inspector__stat-subtitle">permissionSet entries</div>
+      </ng-template>
+    </p-card>
   </div>
 
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Index Rows</mat-card-title>
-      <mat-card-subtitle>Current DTO-to-ViewModel lookup state</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <table mat-table [dataSource]="dashboardStore.mapInspectorRows()">
-        <ng-container matColumnDef="indexName">
-          <th mat-header-cell *matHeaderCellDef>Index</th>
-          <td mat-cell *matCellDef="let row">{{ row.indexName }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="key">
-          <th mat-header-cell *matHeaderCellDef>Key</th>
-          <td mat-cell *matCellDef="let row">{{ row.key }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="value">
-          <th mat-header-cell *matHeaderCellDef>Value</th>
-          <td mat-cell *matCellDef="let row">{{ row.value }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
+  <p-card class="map-inspector__table-card">
+    <ng-template pHeader>
+      <div>
+        <div class="map-inspector__table-title">Index Rows</div>
+        <div class="map-inspector__table-subtitle">Current DTO-to-ViewModel lookup state</div>
+      </div>
+    </ng-template>
+    <p-table [value]="dashboardStore.mapInspectorRows()" [responsiveLayout]="'scroll'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Index</th>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td>{{ row.indexName }}</td>
+          <td>{{ row.key }}</td>
+          <td>{{ row.value }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
 </section>

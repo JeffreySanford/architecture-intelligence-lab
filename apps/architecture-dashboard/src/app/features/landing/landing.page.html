@@ -10,85 +10,93 @@
     </div>
 
     <div class="landing__actions">
-      <a matButton routerLink="/lab/dashboard">Open Current User Lab</a>
-      <button matButton="filled" type="button" (click)="enterLab()">
+      <a pButton type="button" label="Open Current User Lab" class="p-button-outlined" routerLink="/lab/dashboard">
+        Open Current User Lab
+      </a>
+      <button pButton type="button" label="Enter As {{ selectedPersona().name }}" class="p-button-filled" (click)="enterLab()">
         Enter As {{ selectedPersona().name }}
       </button>
     </div>
+    <p class="landing__status">
+      Loaded {{ personaCount() }} personas from Spring.
+      @if (isLoadingPersonas()) { Loading personas... }
+    </p>
   </section>
 
   @if (authStore.error(); as error) {
     <p class="landing__error">{{ error }}</p>
   }
 
+  <!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
   <section class="landing__controls" aria-label="Lab setup controls">
-    <mat-form-field appearance="outline">
-      <mat-label>JWT persona</mat-label>
-      <mat-select
-        [value]="selectedPersonaId()"
-        (valueChange)="selectedPersonaId.set($event)"
-      >
-        @for (persona of personas(); track persona.id) {
-          <mat-option [value]="persona.id">
-            {{ persona.name }} · {{ persona.role }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+    <div class="field">
+      <label for="persona-select">JWT persona</label>
+      <p-dropdown
+        inputId="persona-select"
+        [options]="personaOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="selectedPersonaId()"
+        (ngModelChange)="selectedPersonaId.set($event)"
+        placeholder="Select a persona"
+      ></p-dropdown>
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Dataset</mat-label>
-      <mat-select
-        [value]="selectedDatasetSize()"
-        (valueChange)="selectedDatasetSize.set($event)"
-      >
-        @for (size of datasetSizes; track size) {
-          <mat-option [value]="size">{{ size }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+    <div class="field">
+      <label for="dataset-select">Dataset</label>
+      <p-dropdown
+        inputId="dataset-select"
+        [options]="datasetOptions"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="selectedDatasetSize()"
+        (ngModelChange)="selectedDatasetSize.set($event)"
+        placeholder="Select dataset"
+      ></p-dropdown>
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Backend mode</mat-label>
-      <mat-select
-        [value]="selectedBackendMode()"
-        (valueChange)="selectedBackendMode.set($event)"
-      >
-        @for (mode of backendModes; track mode) {
-          <mat-option [value]="mode">{{ mode }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+    <div class="field">
+      <label for="backend-select">Backend mode</label>
+      <p-dropdown
+        inputId="backend-select"
+        [options]="backendOptions"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="selectedBackendMode()"
+        (ngModelChange)="selectedBackendMode.set($event)"
+        placeholder="Select backend"
+      ></p-dropdown>
+    </div>
 
-    <mat-slide-toggle
-      [checked]="explainMode()"
-      (change)="explainMode.set($event.checked)"
-    >
-      Explain Mode
-    </mat-slide-toggle>
+    <div class="field field-switch">
+      <p-inputSwitch
+        [ngModel]="explainMode()"
+        (ngModelChange)="explainMode.set($event)"
+      ></p-inputSwitch>
+      <label>Explain Mode</label>
+    </div>
   </section>
 
   <section class="landing__personas" aria-label="Demo personas">
-    @for (persona of personas(); track persona.id) {
-      <mat-card
+    @for (persona of safePersonaList(); track persona.id) {
+      <p-card
         class="landing__persona"
-        [class.landing__persona--selected]="persona.id === selectedPersonaId()"
-        appearance="outlined"
+        [ngClass]="{ 'landing__persona--selected': persona.id === selectedPersonaId() }"
         (click)="selectPersona(persona.id)"
       >
-        <mat-card-header>
-          <mat-card-title>{{ persona.name }}</mat-card-title>
-          <mat-card-subtitle>{{ persona.role }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ persona.description }}</p>
-          <mat-chip-set aria-label="Persona permissions">
-            @for (permission of persona.permissions; track permission) {
-              <mat-chip>{{ permission }}</mat-chip>
-            }
-          </mat-chip-set>
-        </mat-card-content>
-      </mat-card>
+        <ng-template pTemplate="title">
+          {{ persona.name }}
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+          {{ persona.role }}
+        </ng-template>
+        <p>{{ persona.description }}</p>
+        <div class="persona-chips">
+          @for (permission of safePersonaPermissions(persona.permissions); track permission) {
+            <p-chip [label]="permission"></p-chip>
+          }
+        </div>
+      </p-card>
     }
   </section>
 </main>
