@@ -213,6 +213,7 @@ Unit and e2e coverage:
 - [X] Permission guard unit tests verify allowed, missing-permission, and current-user-load-failure behavior.
 - [X] Playwright e2e covers landing page persona load and successful dashboard entry.
 - [X] Playwright e2e covers Phase 5 backend comparison access, identity, and persona guard behavior.
+- [X] Playwright e2e covers focused Phase 5 core route with comparison metrics, live reads, and realtime history.
 - [X] Playwright e2e covers Phase 5 checklist, comparison metrics, and realtime event history rendering without requiring live Spring or Nest containers by mocking persona/current-user/dashboard/Nest gateway API calls.
 
 ## Phase 30.5: Phase 5 Tables and Data Visualizations

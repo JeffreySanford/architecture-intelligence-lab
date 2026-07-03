@@ -373,6 +373,17 @@ test('Backend comparison route redirects Contract Admin persona to dashboard', a
   await expect(page.locator('app-dashboard-page h1', { hasText: 'Dashboard' })).toBeVisible();
 });
 
+test('Backend Comparison route is protected for Contract Admin but accessible to Realtime Operator', async ({ page }) => {
+  await mockApiForPersona(page, 'fiona-contract-admin');
+  await page.goto('/lab/backend-comparison');
+  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
+
+  await mockApiForPersona(page, 'grace-realtime-operator');
+  await page.goto('/lab/backend-comparison');
+  await expect(page).toHaveURL(/.*\/lab\/backend-comparison$/, { timeout: 15000 });
+  await expect(page.locator('app-phase-five-page h1', { hasText: 'NestJS Comparison And Realtime API' })).toBeVisible();
+});
+
 test('Contract Admin can open OpenAPI Contract Lab and see placeholder content', async ({ page }) => {
   await mockApiForPersona(page, 'fiona-contract-admin');
 
