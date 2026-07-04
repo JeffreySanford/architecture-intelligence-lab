@@ -299,6 +299,15 @@ Expected files:
 - [ ] OpenAPI D3 contract tree
 - [ ] Chart.js charts
 - [ ] PrimeNG dashboard components
+- [ ] Shared animation tokens or utility classes for Angular native `animate.enter` / `animate.leave` usage
+- [ ] Route/page transition styles for landing, lab dashboard, and protected feature pages
+- [ ] Sidebar and permission-aware navigation enter/exit transitions
+- [ ] Landing selector transitions for persona, dataset, backend mode, Compare all, and Explain Mode state changes
+- [ ] PrimeNG table row, loading, empty, filter-result, and dialog transitions
+- [ ] D3/SVG request-path, metric-bar, selected-path, and realtime-event transitions
+- [ ] Map inspector, SignalStore inspector, and OpenAPI tree expand/collapse transitions
+- [ ] Toast, inline error, health-check, and status-banner enter/exit transitions
+- [ ] Reduced-motion CSS coverage for route, list, table, chart, and SVG animation surfaces
 - [X] Prime UI view review and route coverage notes
 - [X] PrimeNG Security Search table screen
 - [X] Phase 5 PrimeNG deliverables table
@@ -320,6 +329,8 @@ Test command:
 - [X] Angular tests.
 - [X] Focused Playwright Phase 5 e2e spec.
 - [ ] Playwright visual smoke where applicable.
+- [ ] Playwright animation smoke for desktop, mobile, route transition, permission change, and reduced-motion paths.
+- [ ] Unit tests for animation-related state projection where ViewModels decide visible rows, cards, routes, or graph nodes.
 
 Acceptance criteria:
 
@@ -336,6 +347,11 @@ Acceptance criteria:
 - [X] Mock comparison data binds without replacing the Phase 5 view model structure.
 - [X] Mock realtime event history binds without replacing the Phase 5 view model structure.
 - [X] Live comparison and realtime data can be bound without replacing the Phase 5 view model structure.
+- [ ] Angular native enter/exit animations are wired through state-driven DOM insertion/removal, not imperative timers.
+- [ ] Animation tokens keep durations and easing consistent across app shell, tables, cards, charts, and overlays.
+- [ ] Animated route, nav, table, chart, dialog, and status changes honor `prefers-reduced-motion`.
+- [ ] Animated views avoid layout shift, clipped text, and overlapping content at desktop and mobile breakpoints.
+- [ ] Playwright covers at least one animated route transition, one permission-driven nav change, one table row/list update, and one reduced-motion assertion.
 
 Phase 5 visualization methodology:
 
@@ -345,6 +361,15 @@ Phase 5 visualization methodology:
 - Filter deliverables by current persona permissions, and show the full role matrix so access behavior is explainable.
 - Add live data in layers: mock comparison metrics first, live comparison metrics second, then event history, then Redis adapter/cache health.
 - Validate local runtime through both direct Spring (`localhost:18080`) and proxied Angular (`localhost:4200/api`) paths.
+
+Phase 9 animation candidates:
+
+- Use `.enter` and `.exit` classes with Angular native enter/leave APIs for route shell, dashboard sections, permission-gated navigation, and selector summary changes.
+- Use PrimeNG-compatible CSS classes for Security Search and Contract Lab table row insert/remove, filtered-result swaps, loading skeletons, empty states, and detail dialogs.
+- Use D3/SVG transitions for request path movement, selected backend path highlighting, comparison metric bars, realtime event markers, architecture links, SignalStore nodes, and OpenAPI tree expansion.
+- Use lightweight CSS transitions for toast messages, inline errors, health banners, Explain Mode callouts, status chips, and card state changes.
+- Keep animation connected to typed ViewModels so persona, dataset, backend mode, realtime history, Map buckets, SignalStore recomputation, and OpenAPI drift state are testable before rendering.
+- Add reduced-motion styles before broad rollout so Playwright and manual checks can prove motion can be disabled without hiding state changes.
 
 ## Task 11: Add Tests
 
@@ -367,3 +392,43 @@ Test command:
 Acceptance criteria:
 
 - [ ] Tests cover the accepted learner journey.
+
+## Task 12: Add Material Design 3 Express Styling System
+
+Expected files:
+
+- [ ] `apps/architecture-dashboard/src/styles.scss`
+- [ ] `apps/architecture-dashboard/src/styles/_colors.scss`
+- [ ] `apps/architecture-dashboard/src/styles/_vars.scss`
+- [ ] `apps/architecture-dashboard/src/styles/_typography.scss`
+- [ ] `apps/architecture-dashboard/src/styles/_surfaces.scss`
+- [ ] `apps/architecture-dashboard/src/styles/_components.scss`
+- [ ] `apps/architecture-dashboard/src/styles/_animations.scss`
+- [ ] `apps/architecture-dashboard/src/styles/_charts.scss`
+- [ ] `apps/architecture-dashboard/src/styles/_accessibility.scss`
+- [ ] Updated route/page/component SCSS for landing, dashboard, security search, backend comparison, realtime, OpenAPI contract, Map inspector, SignalStore inspector, MCP, and admin/persona views.
+- [ ] Playwright visual smoke coverage for desktop, mobile, overlays, tables, charts, route shell, and reduced-motion paths.
+
+Do not touch:
+
+- [ ] Backend business rules.
+- [ ] DTO contracts or generated clients unless a style-only import path needs to move.
+- [ ] Existing permission logic except where visual state classes need to bind to already-computed visibility.
+
+Test command:
+
+- [ ] `pnpm nx lint architecture-dashboard`
+- [ ] `pnpm nx test architecture-dashboard`
+- [ ] `pnpm nx build architecture-dashboard`
+- [ ] `pnpm nx e2e architecture-dashboard-e2e`
+
+Acceptance criteria:
+
+- [ ] `styles.scss` is the single global entrypoint and imports style partials in this order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
+- [ ] Colors, spacing, elevation, radius, typography, density, focus rings, z-index, animation timing, and chart palettes are centralized in the `styles` folder.
+- [ ] Angular views do not introduce one-off palette colors, shadows, breakpoints, or animation timings when a shared token exists.
+- [ ] PrimeNG tables, filters, dialogs, menus, tooltips, toasts, cards, buttons, inputs, chips, and tags follow the MD3 Express token system.
+- [ ] D3/SVG and Chart.js visuals use the shared chart/status tokens and remain readable on desktop and mobile.
+- [ ] Contrast is checked for default, hover, active, focus, disabled, error, warning, success, info, and selected states.
+- [ ] Phase 9 enter/exit animation classes and reduced-motion behavior still work after the style migration.
+- [ ] Playwright visual smoke proves key routes, overlays, tables, charts, and mobile navigation do not overlap or clip text.

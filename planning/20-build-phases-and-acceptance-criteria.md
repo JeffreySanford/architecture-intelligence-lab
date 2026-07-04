@@ -311,6 +311,9 @@ Deliverables:
 - [X] GitHub issue created to track Phase 6.5 security work
 - [X] Targeted Playwright e2e security checks exist for OpenAPI credential forwarding, guarded docs access, and protected realtime route behavior
 - [X] Formal Phase 6.5 remediation backlog documented with prioritized follow-up tasks, owners, and next-sprint actions
+- [ ] Nest realtime/gateway endpoints are protected with explicit auth guards
+- [ ] Socket.IO gateway origin policy is restricted from `origin: '*'` to local dev hosts only
+- [ ] Dev auth cookie integrity is documented and migrated from plain `access_token` to signed or tokenized auth before wider exposure
 
 Acceptance criteria:
 
@@ -319,6 +322,7 @@ Acceptance criteria:
 - [X] Dashboard UI does not expose generated client internals or raw OpenAPI metadata without explicit permission.
 - [X] Authentication and authorization gaps are mapped for Spring API, Nest gateway, and Angular lab flows.
 - [X] Security remediation tasks are actionable and prioritized for the next sprint.
+- [ ] The docs and admin monitoring pages explicitly call out auth guard, origin, and cookie integrity issues as watch/issue items.
 
 ### Immediate Phase 6.5 findings
 
@@ -327,6 +331,7 @@ Acceptance criteria:
 - Spring dev auth uses a plain `access_token` persona id cookie with no signature or token integrity verification; this is a dev-only auth model and should be locked down if the lab is ever treated as more than a local training environment.
 - The OpenAPI docs endpoints (`/v3/api-docs`, `/swagger-json`) are linked from the contract lab, and Spring/Nest backend protections have been added so only authorized personas can access raw contract metadata.
 - The OpenAPI Contract Lab is permission-gated, and backend raw docs protection is now implemented; production-grade auth review remains follow-up hardening.
+- Phase 6.5 remains active follow-up work as Phase 8 progress continues.
 
 ## Phase 7: Angular Standalone Shell
 
@@ -357,6 +362,13 @@ Current note:
 - [X] `/lab` now calls `/api/me`; no-cookie requests use the demo Alice Viewer fallback until signed JWT auth is added.
 - [X] Added app.config provider coverage and persona guard edge-case tests to validate shell bootstrap and route permission handling.
 
+### Phase 7 release summary
+- Delivered the Angular standalone shell with `app.config.ts`, `app.routes.ts`, PrimeNG shell layout, public landing route, persona selector, backend mode selector, Explain Mode toggle, and protected lab route structure.
+- Added route-level permission metadata and `permissionGuard` behavior to ensure lab routes are only visible and accessible for authorized personas.
+- Added new coverage for `app.config` bootstrap providers and guard edge cases to validate shell startup and persona-based navigation.
+- Completed Phase 7 validation with repository lint, unit tests, and Playwright end-to-end tests.
+- Continued Phase 6.5 OpenAPI security mapping, docs protection, and risk-tracking items as active follow-up work in the markdown.
+
 ## Phase 8: Signal Store Dashboard
 
 Goal: Implement DTO-to-ViewModel state flow.
@@ -368,25 +380,30 @@ Deliverables:
 - [X] Permission Set
 - [X] Loan cards
 - [X] Loan table
-- [ ] Unit tests for `borrowersById`, `documentsByLoanId`, and `statusByCode`
-- [ ] Unit tests for permission Set membership
+- [X] Unit tests for `borrowersById`, `documentsByLoanId`, and `statusByCode`
+- [X] Unit tests for permission Set membership
 - [X] Unit tests for visible nav filtering
-- [ ] Unit tests for loan/security row fallback behavior
-- [ ] Chart.js dashboard charts
+- [X] Unit tests for loan/security row fallback behavior
+- [X] Chart.js dashboard charts
 
 Acceptance criteria:
 
-- [ ] Dataset size selector changes loaded data.
+- [X] Dataset size selector changes loaded data.
 - [X] Map inspector reflects current state.
-- [ ] Tests prove what changes in computed state after persona, dataset, backend, or realtime actions.
+- [X] Tests prove what changes in computed state after persona, dataset, backend, or realtime actions.
 
 Current note:
 
 - [X] The current stores use Angular signals directly. `@ngrx/signals` remains the target once an Angular 22-compatible package is available.
+- [X] DashboardStore computed indexes (`borrowersById`, `documentsByLoanId`, `statusByCode`) are implemented and loan cards / Map Inspector views are driving from those indexes.
+- [X] Dashboard page now renders loan cards and a PrimeNG loan table from the computed ViewModel.
+- [X] DashboardStore unit tests for `borrowersById`, `documentsByLoanId`, `statusByCode`, permission set membership, fallback loan card behavior, and dataset-driven computed state updates are now implemented and verified.
+- [X] Chart.js dashboard chart is now implemented and integrated into the dashboard page.
+- [X] Phase 8 delivery is complete; Phase 6.5 security hardening remains tracked as follow-up work while Phase 9 visuals begin next.
 
 ## Phase 9: Visualizations
 
-Goal: Add D3 and Explain Mode learning visuals across the lab after the PrimeNG-heavy Capital Markets table workflow is underway. Phase 5 owns the first implemented D3 control surface for backend comparison and realtime topology.
+Goal: Add D3, Explain Mode learning visuals, and Angular native enter/exit animation patterns across the lab after the PrimeNG-heavy Capital Markets table workflow is underway. Phase 5 owns the first implemented D3 control surface for backend comparison and realtime topology.
 
 Deliverables:
 
@@ -395,15 +412,32 @@ Deliverables:
 - [ ] Architecture graph
 - [ ] Map bucket diagram
 - [ ] SignalStore graph
-- [ ] Request path animation using Angular 22 native enter/leave APIs and CSS transitions
+- [ ] Request path animation using Angular 22 native enter/leave APIs, `.enter`/`.exit` CSS classes, and local SVG transitions
 - [ ] OpenAPI contract tree
 - [ ] Optional Grafana/Chart.js/Highcharts dashboard for historical comparison metrics after metrics are persisted
+- [ ] Shared frontend animation tokens for duration, easing, stagger timing, and reduced-motion behavior
+- [ ] Route and page-shell transitions for landing, lab dashboard, and protected feature views
+- [ ] Sidebar and navigation link enter/exit transitions when persona permissions change visible routes
+- [ ] Landing page selector summary transitions for persona, dataset size, backend mode, Compare all, and Explain Mode changes
+- [ ] Dashboard card, metric, chart, and status-panel enter/exit transitions when backend mode or dataset changes
+- [ ] PrimeNG table row, filter result, loading, empty, and detail-dialog transitions for Security Search and Contract Lab screens
+- [ ] Comparison metric bar, selected-path highlight, and realtime event-history insertion transitions
+- [ ] Map inspector bucket/key enter/exit transitions for copy-on-write updates
+- [ ] SignalStore inspector node and recomputation transitions for raw state, computed state, and method effects
+- [ ] OpenAPI contract tree expand/collapse, generated-client status, and drift-warning enter/exit transitions
+- [ ] Toast, inline error, health-check, and runtime-status banner enter/exit transitions
+- [ ] Playwright visual smoke coverage for animated views at desktop, mobile, and reduced-motion settings
 
 Acceptance criteria:
 
 - [X] The Phase 5 topology renders on desktop and mobile without blocking the route.
 - [ ] Explain Mode overlays connect to real state.
 - [ ] Visuals render on desktop and mobile without overlap.
+- [ ] Enter/exit animations are state-driven from typed ViewModels, route data, or signal state rather than arbitrary timers.
+- [ ] Animation is purposeful: it clarifies route changes, permission-driven visibility, live events, request paths, state recomputation, or data refresh.
+- [ ] `prefers-reduced-motion` is honored across route, list, table, chart, SVG, and overlay animations.
+- [ ] Animated insertions/removals do not cause unreadable layout shift, clipped text, or overlapping controls on desktop or mobile.
+- [ ] User-visible animation behavior has focused unit tests where logic is involved and Playwright coverage where layout or route transitions are involved.
 
 ## Phase 9A: PrimeNG Capital Markets Table Lab
 
@@ -489,3 +523,32 @@ Acceptance criteria:
 
 - [ ] Main quality gates pass after full implementation.
 - [ ] Playwright covers the core learner journey.
+
+## Phase 13: Material Design 3 Express Styling System
+
+Goal: Vibrantly and consistently restyle all Angular views using a shared Material Design 3 Express SCSS architecture while preserving PrimeNG workflow density, D3 readability, and accessibility.
+
+Deliverables:
+
+- [ ] Global `apps/architecture-dashboard/src/styles.scss` entrypoint imports shared style layers.
+- [ ] `apps/architecture-dashboard/src/styles/_colors.scss` for MD3 Express source colors, semantic roles, status colors, chart colors, and PrimeNG token mappings.
+- [ ] `apps/architecture-dashboard/src/styles/_vars.scss` for spacing, sizing, breakpoints, radius, elevation, z-index, density, focus rings, and layout constants.
+- [ ] `apps/architecture-dashboard/src/styles/_typography.scss` for display, headline, title, body, label, numeric, and table text scales.
+- [ ] `apps/architecture-dashboard/src/styles/_surfaces.scss` for app shell, page backgrounds, panels, cards, sidebars, toolbars, and section bands.
+- [ ] `apps/architecture-dashboard/src/styles/_components.scss` for PrimeNG, Material-compatible, form, table, chip, button, dialog, tooltip, toast, and overlay overrides.
+- [ ] `apps/architecture-dashboard/src/styles/_animations.scss` for MD3 Express motion tokens, Angular enter/exit classes, and reduced-motion fallbacks.
+- [ ] `apps/architecture-dashboard/src/styles/_charts.scss` for D3, Chart.js, topology, comparison metric, and status visualization tokens.
+- [ ] `apps/architecture-dashboard/src/styles/_accessibility.scss` for contrast, focus-visible, high-contrast, disabled, error, warning, success, and reduced-motion rules.
+- [ ] Landing, dashboard, security search, backend comparison, realtime, OpenAPI contract, Map inspector, SignalStore inspector, MCP, and admin/persona views use the shared style system.
+- [ ] Hard-coded visual values in view SCSS are migrated into the shared style layer where they are reusable.
+
+Acceptance criteria:
+
+- [ ] The app has a vibrant but professional MD3 Express visual identity across every frontend route.
+- [ ] `styles.scss` imports the style partials in the agreed order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
+- [ ] PrimeNG components and overlays match the shared token system instead of using isolated overrides.
+- [ ] D3/SVG and Chart.js visuals use shared chart/status tokens.
+- [ ] Contrast is validated for default, hover, active, focus, disabled, error, warning, success, info, and selected states.
+- [ ] Responsive layouts remain stable with no clipped text, overlapping controls, or card-in-card regressions.
+- [ ] Phase 9 enter/exit animation and reduced-motion behavior remain intact.
+- [ ] Lint, unit tests, build, and Playwright visual smoke pass after implementation.

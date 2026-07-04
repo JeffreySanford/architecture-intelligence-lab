@@ -84,6 +84,30 @@ table {
   }
 }
 
+.dashboard__chart-section {
+  margin-bottom: 24px;
+}
+
+.dashboard__chart-card {
+  min-height: 360px;
+}
+
+.dashboard__chart-shell {
+  height: 320px;
+  padding: 1rem;
+}
+
+.dashboard__chart-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 960px) {
+  .dashboard__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 620px) {
   .dashboard__cards {
     grid-template-columns: 1fr;

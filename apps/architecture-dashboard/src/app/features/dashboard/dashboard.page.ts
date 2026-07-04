@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -8,6 +8,7 @@ import { ChipModule } from 'primeng/chip';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { DashboardStore, type BackendMode, type DatasetSize } from '../../core/dashboard/dashboard.store';
+import { Chart, type ChartConfiguration } from 'chart.js';
 
 @Component({
   standalone: true,
@@ -16,12 +17,20 @@ import { DashboardStore, type BackendMode, type DatasetSize } from '../../core/d
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.scss',
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit, AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
   protected readonly dashboardStore = inject(DashboardStore);
   protected readonly globalFilter = signal('');
   protected rowsPerPageOptions: number[] = [5, 10, 25];
+
+  @ViewChild('dashboardChart', { static: true })
+  private readonly dashboardChart?: ElementRef<HTMLCanvasElement>;
+
+  private chart?: Chart<'bar', number[], string>;
+
+  protected readonly chartLabels = computed(() => this.dashboardStore.loanCards().map((loan) => loan.loanNumber));
+  protected readonly chartData = computed(() => this.dashboardStore.loanCards().map((loan) => loan.amount));
 
   protected readonly filteredLoanCards = computed(() => {
     const filterText = this.globalFilter().trim().toLowerCase();
@@ -60,5 +69,74 @@ export class DashboardPage implements OnInit {
       .loadSnapshot(this.dashboardStore.selectedDataset())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
+  }
+
+  ngAfterViewInit(): void {
+    this.createChart();
+    effect(() => {
+      if (!this.chart) {
+        return;
+      }
+
+      this.chart.data.labels = this.chartLabels();
+      this.chart.data.datasets[0].data = this.chartData();
+      this.chart.update();
+    });
+  }
+
+  private createChart(): void {
+    const canvas = this.dashboardChart?.nativeElement;
+    const context = canvas?.getContext('2d');
+    if (!context) {
+      return;
+    }
+
+    const config: ChartConfiguration<'bar', number[], string> = {
+      type: 'bar',
+      data: {
+        labels: this.chartLabels(),
+        datasets: [
+          {
+            label: 'Loan amount',
+            data: this.chartData(),
+            backgroundColor: '#3b82f6',
+            borderColor: '#1d4ed8',
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: 'Loan Amounts by Loan Number',
+          },
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Loan Number',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Amount',
+            },
+            ticks: {
+              callback: (value) => `$${value}`,
+            },
+          },
+        },
+      },
+    };
+
+    this.chart = new Chart(context, config);
   }
 }

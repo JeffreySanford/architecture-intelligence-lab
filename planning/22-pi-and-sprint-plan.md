@@ -292,6 +292,8 @@ Stories:
 
 - [ ] As a learner, I can see a D3 architecture flow diagram.
 - [ ] As a learner, I can inspect SignalStore raw and computed state.
+- [ ] As a learner, I can see route, data, permission, and realtime state changes through clear enter/exit animation instead of abrupt content swaps.
+- [ ] As a keyboard or reduced-motion user, I can use every animated view with motion reduced and state changes still visible.
 - [X] As a diagnostics persona, I can open a Phase 5 D3 topology view for Spring direct, Nest direct, Nest proxy, comparison, Socket.IO, Redis, and Swagger paths.
 - [X] As a learner, I can see which roles should have access to Phase 5 comparison, realtime, and contract inspection surfaces.
 - [X] As a learner with emit permission, I can trigger a mock realtime event and watch the Phase 5 event history update.
@@ -317,6 +319,15 @@ Deliverables:
 - [X] Socket.IO client
 - [ ] Copy-on-write Map update
 - [ ] Redis cache hit/miss panel
+- [ ] Angular native enter/exit animation utilities for shared app-shell, list, table, card, and overlay patterns
+- [ ] Route transitions for landing, dashboard, backend comparison, realtime, contract, Map, and SignalStore views
+- [ ] Permission-aware sidebar/nav enter/exit transitions when selected persona changes visible routes
+- [ ] Landing selector transitions for persona, dataset size, backend mode, Compare all, and Explain Mode changes
+- [ ] Dashboard metric/card/chart transitions when dataset or backend mode changes
+- [ ] PrimeNG table, loading, empty, filtered-result, and detail-dialog transitions for Security Search and Contract Lab
+- [ ] D3/SVG transitions for architecture links, request paths, comparison bars, selected backend path, realtime markers, SignalStore nodes, and OpenAPI tree nodes
+- [ ] Toast, health-check, inline error, runtime status, and Explain Mode overlay transitions
+- [ ] Reduced-motion fallback styles and Playwright checks for key animated flows
 
 Acceptance criteria:
 
@@ -342,6 +353,11 @@ Acceptance criteria:
 - [ ] Realtime `loan.status.updated` event updates dashboard card, table, and chart.
 - [X] Compare-all mode renders metrics for all backend modes.
 - [ ] Explain Mode overlays connect visual explanations to live state.
+- [ ] Enter/exit animation is used in multiple frontend surfaces: route shell, sidebar/nav, selector summaries, dashboard cards, PrimeNG tables, D3/SVG visuals, dialogs, and status messages.
+- [ ] Animated visibility is driven by current persona, permissions, dataset, backend mode, realtime events, or contract state rather than decorative timers.
+- [ ] Motion can be reduced through `prefers-reduced-motion` without losing route, permission, loading, error, or data-update meaning.
+- [ ] Desktop and mobile Playwright smoke tests prove animated surfaces do not overlap, clip text, or block primary controls.
+- [ ] Unit tests cover animation-related ViewModel projection where state determines visible cards, rows, nav links, graph nodes, or warning panels.
 
 Visualization methodology:
 
@@ -351,6 +367,9 @@ Visualization methodology:
 - Keep Phase 5 visuals role-aware. The current persona determines available deliverables, while the role matrix explains the full intended permission model.
 - Ship the static learning surface before the backend is complete, bind deterministic mock comparison APIs first, bind realtime history second, then bind live APIs and socket subscriptions into the existing graph/table model.
 - Runtime validation must check both `http://localhost:18080/api/personas` and `http://localhost:4200/api/personas` so local proxy and Docker proxy behavior do not drift.
+- Use Angular native `animate.enter` and `animate.leave` with `.enter`/`.exit` CSS classes for DOM insertion/removal patterns before adding custom imperative animation.
+- Keep animation tokens centralized so duration, easing, stagger, and reduced-motion behavior are consistent across app shell, PrimeNG, D3/SVG, and overlay surfaces.
+- Treat D3 animation as part of graph state: request-path movement, node expansion, bar updates, and selected-path highlighting should derive from the same typed node/link/metric ViewModels as the static render.
 
 ## Sprint 6: Contract Lab, MCP Dashboard, Tests, And Hardening
 
@@ -378,6 +397,43 @@ Acceptance criteria:
 - [ ] Playwright covers persona selection, Explain Mode, backend comparison, Map inspector, realtime event, and OpenAPI lab.
 - [ ] Unit tests cover Map joins, Set permissions, and ViewModel projection.
 - [ ] Docker smoke test validates startup and key health endpoints.
+
+## Sprint 7: Material Design 3 Express Styling System
+
+Goal: Vibrantly restyle all Angular views with a consistent Material Design 3 Express visual language while keeping PrimeNG, D3, and dashboard surfaces aligned through shared SCSS tokens.
+
+Stories:
+
+- [ ] As a learner, I can move across landing, dashboard, lab, contract, realtime, Map, SignalStore, and admin views and see one cohesive visual system.
+- [ ] As a maintainer, I can update colors, spacing, typography, elevation, radius, animation, and component overrides from shared SCSS partials instead of page-specific one-offs.
+- [ ] As an accessibility-focused user, I can read text, identify focus, and use dialogs, menus, tables, charts, and status messages with sufficient contrast in default, hover, active, disabled, success, warning, and error states.
+
+Deliverables:
+
+- [ ] `apps/architecture-dashboard/src/styles.scss` becomes the global style entrypoint that imports the shared style layers.
+- [ ] `apps/architecture-dashboard/src/styles/_colors.scss` defines MD3 Express source colors, semantic roles, status colors, chart colors, and PrimeNG token mappings.
+- [ ] `apps/architecture-dashboard/src/styles/_vars.scss` defines spacing, sizing, breakpoints, border radius, elevation, z-index, density, focus rings, and layout constants.
+- [ ] `apps/architecture-dashboard/src/styles/_typography.scss` defines display, headline, title, body, label, numeric, and table text scales without viewport-based font scaling.
+- [ ] `apps/architecture-dashboard/src/styles/_surfaces.scss` defines page backgrounds, panels, cards, app shell, sidebars, toolbars, and section bands.
+- [ ] `apps/architecture-dashboard/src/styles/_components.scss` defines shared PrimeNG, Material-compatible, form, table, chip, button, dialog, tooltip, toast, and overlay overrides.
+- [ ] `apps/architecture-dashboard/src/styles/_animations.scss` centralizes MD3 Express motion tokens, Angular enter/exit classes, reduced-motion fallbacks, and D3/SVG animation variables.
+- [ ] `apps/architecture-dashboard/src/styles/_charts.scss` defines D3, Chart.js, status sparkline, topology graph, and comparison metric color/shape conventions.
+- [ ] `apps/architecture-dashboard/src/styles/_accessibility.scss` defines focus-visible, high-contrast, disabled, error, warning, success, and reduced-motion guardrails.
+- [ ] All Angular views are audited and updated to remove hard-coded visual values that belong in shared tokens.
+- [ ] PrimeNG tables, filters, dialogs, menus, tooltips, toasts, cards, and status tags match the MD3 Express token system.
+- [ ] D3/SVG and Chart.js visuals use shared chart/status tokens rather than local color literals.
+- [ ] Playwright visual smoke captures landing, dashboard, security search, backend comparison, realtime, OpenAPI contract, Map inspector, SignalStore inspector, and mobile sidebar layouts.
+
+Acceptance criteria:
+
+- [ ] Every frontend view uses shared style tokens for color, spacing, radius, elevation, focus, and animation.
+- [ ] `styles.scss` imports the style partials in a predictable order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
+- [ ] No view-specific SCSS introduces new one-off palette colors, shadows, animation timings, or breakpoints without adding them to the shared style layer first.
+- [ ] PrimeNG overlays, dialogs, dropdowns, tooltips, menus, and toast/snackbar-style messages have verified contrast against their surfaces.
+- [ ] Status colors remain distinguishable for success, warning, error, info, disabled, selected, hover, active, and focus states.
+- [ ] Dashboard cards, tables, charts, and D3 visuals remain readable on desktop and mobile without text clipping or overlapping controls.
+- [ ] Reduced-motion behavior from Phase 9 remains intact after the MD3 Express styling pass.
+- [ ] Lint, unit tests, build, and Playwright visual smoke pass after the styling rollout.
 
 ## PI Risks
 

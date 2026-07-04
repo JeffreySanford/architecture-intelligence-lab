@@ -33,6 +33,22 @@
     }
   </section>
 
+  <section class="dashboard__chart-section">
+    <p-card class="dashboard__chart-card">
+      <ng-template pHeader>
+        <div class="dashboard__chart-header">
+          <div>
+            <h2>Loan Amount Chart</h2>
+            <p>Visualizing loan amounts across the current snapshot.</p>
+          </div>
+        </div>
+      </ng-template>
+      <div class="dashboard__chart-shell">
+        <canvas #dashboardChart class="dashboard__chart-canvas" aria-label="Dashboard loan amount bar chart"></canvas>
+      </div>
+    </p-card>
+  </section>
+
   <p-card class="dashboard__table-card">
     <ng-template pHeader>
       <div class="dashboard__table-header">

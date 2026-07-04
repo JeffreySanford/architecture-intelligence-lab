@@ -86,4 +86,11 @@ describe('AuthStore', () => {
     expect(currentUser.roles).toEqual(['viewer']);
     expect(authStore.currentUser()?.permissions).toContain('dashboard:view');
   });
+
+  it('should compute permission set membership correctly', async () => {
+    await firstValueFrom(authStore.selectPersona('fiona'));
+
+    expect(authStore.permissionSet().has('contracts:view')).toBe(true);
+    expect(authStore.permissionSet().has('dashboard:view')).toBe(false);
+  });
 });
