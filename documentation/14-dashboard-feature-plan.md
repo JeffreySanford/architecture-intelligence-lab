@@ -22,7 +22,7 @@ The dashboard remains useful for DTO-to-ViewModel mapping, and `/lab/security-se
 
 ## Data Flow
 
-Current checkpoint: Angular calls Spring `/api/dashboard/snapshot?dataset=small`, stores the DTO in `DashboardStore`, builds computed `Map` indexes, and renders the first loan cards, loan table, and Map Inspector. Dataset sizes beyond Small and Chart.js summaries are still planned.
+Current checkpoint: Angular calls Spring `/api/dashboard/snapshot?dataset=small`, stores the DTO in `DashboardStore`, builds computed `Map` indexes, and renders the first loan cards, loan table, and Map Inspector. Chart.js summaries are implemented on the dashboard; dataset sizes beyond Small remain planned.
 
 ```mermaid
 flowchart LR

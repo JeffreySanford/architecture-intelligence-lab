@@ -15,10 +15,21 @@
   </div>
 
   @if (exportMessage(); as message) {
-    <p class="security-search__message">{{ message }}</p>
+    <p class="security-search__message" animate.enter="enter" animate.leave="exit">{{ message }}</p>
   }
 
-  <p-card class="security-search__filters">
+  @if (explainMode(); as explain) {
+    <p-card class="security-search__explain-card" animate.enter="enter" animate.leave="exit">
+      <ng-template pHeader>
+        <span>Explain Mode</span>
+      </ng-template>
+      <p>
+        Explain Mode is active. This page highlights the lazy query state, empty result behavior, and detail dialog transitions.
+      </p>
+    </p-card>
+  }
+
+  <p-card class="security-search__filters" animate.enter="enter" animate.leave="exit">
     <ng-template #header>
       <div class="security-search__card-header">
         <div>
@@ -92,7 +103,12 @@
     </div>
   </p-card>
 
-  <p-card class="security-search__table-card">
+  <p-card
+    class="security-search__table-card"
+    [attr.data-table-state]="tableState()"
+    animate.enter="enter"
+    animate.leave="exit"
+  >
     <ng-template #header>
       <div class="security-search__card-header">
         <div>
@@ -127,7 +143,7 @@
         </tr>
       </ng-template>
       <ng-template #body let-row>
-        <tr>
+        <tr class="security-search__row" animate.enter="row-enter">
           <td>
             <strong>{{ row.securityId }}</strong>
             <span>{{ row.cusip }}</span>
@@ -154,7 +170,7 @@
         </tr>
       </ng-template>
       <ng-template #emptymessage>
-        <tr>
+        <tr class="security-search__empty-row" animate.enter="row-enter">
           <td colspan="8">
             {{ loading() ? 'Loading securities.' : 'No securities match the current filters.' }}
           </td>
@@ -165,13 +181,15 @@
 
   <p-dialog
     header="Security Detail"
+    animate.enter="scale-enter"
+    animate.leave="exit"
     [visible]="!!selectedRow()"
     [modal]="true"
     [style]="{ width: 'min(720px, 92vw)' }"
     (visibleChange)="!$event && closeDetails()"
   >
     @if (selectedRow(); as row) {
-      <dl class="security-search__detail-grid">
+      <dl class="security-search__detail-grid" animate.enter="enter" animate.leave="exit">
         <div>
           <dt>Security</dt>
           <dd>{{ row.securityId }} · {{ row.cusip }}</dd>

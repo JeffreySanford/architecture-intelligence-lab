@@ -6,6 +6,10 @@
 
 This repo intentionally keeps the current modern study stack: Angular 22, Nx 23 beta, TypeScript 6, Spring Boot 4.x, Java 17, NestJS 11, PostgreSQL, Redis, Docker, OpenAPI, D3, and PrimeNG 22 RC. The conservative enterprise baseline to understand alongside it is Angular 18/19/20, PrimeNG 18/19/20/21, Java 17/21, Spring Boot 3.x, PostgreSQL, Docker, and OpenAPI.
 
+- [X] Phase 9A Security Search implementation is complete and unit-tested.
+- [X] Phase 9 visual smoke coverage is green for route, nav, table, overlay, chart, SVG, mobile, and reduced-motion paths.
+- [ ] Remaining Phase 9 effort is live realtime dashboard animation.
+
 PrimeNG has been moved to the Angular 22-aligned release-candidate line (`22.0.0-rc.1`) with `@angular/cdk` installed as its peer dependency. Treat PrimeNG 22 APIs as allowed only after local build/test validation, because this is still an RC dependency.
 
 The domain emphasis is Capital Markets architecture practice, not a generic mortgage demo. Existing loan data remains useful as source material, but future screens should prefer vocabulary such as securities, pools, commitments, disclosure files, trade events, backend metrics, and contract snapshots.

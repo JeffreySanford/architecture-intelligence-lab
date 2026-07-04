@@ -1,0 +1,186 @@
+.architecture-flow {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 1140px;
+}
+
+.architecture-flow__eyebrow {
+  margin: 0;
+  color: var(--color-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.78rem;
+}
+
+.architecture-flow h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+}
+
+.architecture-flow > p {
+  margin: 0;
+  max-width: 66rem;
+  color: var(--color-text-muted);
+}
+
+.architecture-flow__path-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.architecture-flow__path-button {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  padding: 0.75rem 1rem;
+  transition: background var(--motion-duration-fast) var(--motion-ease),
+    transform var(--motion-duration-fast) var(--motion-ease),
+    border-color var(--motion-duration-fast) var(--motion-ease);
+}
+
+.architecture-flow__path-button:hover,
+.architecture-flow__path-button:focus-visible {
+  background: var(--color-surface-alt);
+  transform: translateY(-1px);
+}
+
+.architecture-flow__path-button--active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-container);
+  color: var(--color-primary-text);
+}
+
+.architecture-flow__explain-card {
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+}
+
+.architecture-flow__explain-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.architecture-flow__graph-frame {
+  min-height: 420px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.architecture-flow__graph {
+  width: 100%;
+  height: 420px;
+}
+
+.architecture-flow__link {
+  stroke: var(--color-border);
+  opacity: 0.25;
+  stroke-dasharray: 10 8;
+  stroke-dashoffset: 0;
+  transition: stroke var(--motion-duration-medium) var(--motion-ease),
+    opacity var(--motion-duration-medium) var(--motion-ease),
+    stroke-width var(--motion-duration-medium) var(--motion-ease),
+    stroke-dashoffset var(--motion-duration-medium) var(--motion-ease);
+  will-change: stroke, opacity, stroke-width, stroke-dashoffset;
+}
+
+.architecture-flow__link--active {
+  stroke: var(--color-primary);
+  opacity: 1;
+  stroke-width: 4px;
+  stroke-dashoffset: -18;
+}
+
+.request-path__panel {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  transition: opacity var(--motion-duration-medium) var(--motion-ease),
+    transform var(--motion-duration-medium) var(--motion-ease),
+    border-color var(--motion-duration-medium) var(--motion-ease);
+  will-change: opacity, transform, border-color;
+}
+
+.request-path__panel strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.request-path__panel p {
+  margin: 0;
+}
+
+.request-path__panel p + p {
+  margin-top: 0.65rem;
+}
+
+.architecture-flow__path-help {
+  color: var(--color-text-muted);
+}
+
+.request-path__panel.enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.request-path__panel.enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.request-path__panel.exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.request-path__panel.exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .architecture-flow__path-button,
+  .architecture-flow__link,
+  .request-path__panel {
+    transition: none !important;
+  }
+}
+
+.architecture-flow__node circle {
+  fill: var(--color-surface);
+  stroke: var(--color-border);
+  stroke-width: 2px;
+}
+
+.architecture-flow__node-label {
+  fill: var(--color-text);
+  font-size: 0.96rem;
+  pointer-events: none;
+}
+
+.architecture-flow__legend {
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .architecture-flow__path-button,
+  .architecture-flow__link,
+  .architecture-flow__node {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .architecture-flow__path-controls {
+    flex-direction: column;
+  }
+}

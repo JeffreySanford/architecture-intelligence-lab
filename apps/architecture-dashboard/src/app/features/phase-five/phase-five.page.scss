@@ -12,7 +12,7 @@
 
 .phase-five__eyebrow {
   margin: 0 0 8px;
-  color: #365f8f;
+  color: var(--color-primary);
   font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -20,7 +20,7 @@
 
 h1 {
   margin: 0;
-  color: #172033;
+  color: var(--color-text);
   font-size: 2.25rem;
   line-height: 1.12;
 }
@@ -28,16 +28,16 @@ h1 {
 .phase-five__header p:not(.phase-five__eyebrow) {
   max-width: 780px;
   margin: 14px 0 0;
-  color: #4f5868;
+  color: var(--color-text-muted);
 }
 
 .phase-five__identity {
   min-width: 210px;
   padding: 14px 16px;
-  border: 1px solid #d7dde8;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #4f5868;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
 }
 
 .phase-five__identity span,
@@ -47,7 +47,7 @@ h1 {
 
 .phase-five__identity strong {
   margin-top: 4px;
-  color: #172033;
+  color: var(--color-text);
 }
 
 .phase-five__summary,
@@ -63,7 +63,7 @@ h1 {
 }
 
 .phase-five__stat-value {
-  color: #172033;
+  color: var(--color-text);
   font-size: 1.8rem;
   font-weight: 700;
 }
@@ -76,7 +76,7 @@ h1 {
 .phase-five__stat-label,
 .phase-five__card-subtitle {
   margin-top: 5px;
-  color: #5d6575;
+  color: var(--color-text-muted);
 }
 
 .phase-five__graph-card,
@@ -86,7 +86,7 @@ h1 {
 }
 
 .phase-five__card-title {
-  color: #172033;
+  color: var(--color-text);
   font-weight: 700;
 }
 
@@ -106,12 +106,22 @@ h1 {
 }
 
 .phase-five__status-label {
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-size: 0.94rem;
 }
 
+.phase-five__explain-card {
+  margin-bottom: 20px;
+  border-radius: var(--radius-lg);
+}
+
+.phase-five__explain-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
 .phase-five__link {
-  color: #2563eb;
+  color: var(--color-primary);
   font-weight: 700;
   text-decoration: none;
 }
@@ -127,18 +137,18 @@ h1 {
 .phase-five__graph-shell {
   width: 100%;
   overflow: hidden;
-  border: 1px solid #e0e5ee;
-  border-radius: 8px;
-  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-alt);
 }
 
 .phase-five__chart-shell {
   width: 100%;
   overflow: hidden;
   margin-top: 14px;
-  border: 1px solid #e0e5ee;
-  border-radius: 8px;
-  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
 }
 
 .phase-five__graph {
@@ -160,21 +170,53 @@ h1 {
 }
 
 .phase-five__active-row {
-  background: #eff6ff;
+  background: var(--color-surface-alt);
+  border-left: 3px solid var(--color-primary);
 }
 
 .phase-five__muted-row {
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .phase-five__metric-row {
   cursor: pointer;
+  transition: background var(--motion-duration-fast) var(--motion-ease);
 }
 
+.phase-five__metric-row:hover {
+  background: var(--color-primary-soft);
+}
+
+.phase-five__comparison-bar {
+  transition: opacity 220ms ease, fill 220ms ease, stroke 220ms ease, filter 220ms ease;
+}
+
+.phase-five__comparison-bar--selected {
+  stroke: var(--color-primary-strong);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 10px var(--color-primary-shadow));
+}
+
+.phase-five__new-event-row {
+  background: var(--color-event-highlight);
+  animation: phase-five-new-event 1.4s ease-out;
+}
+
+@keyframes phase-five-new-event {
+  0% {
+    background: var(--color-event-highlight-strong);
+  }
+  40% {
+    background: var(--color-event-highlight);
+  }
+  100% {
+    background: transparent;
+  }
+}
 
 .phase-five__error {
   margin: 0 0 14px;
-  color: #b42318;
+  color: var(--color-danger);
   font-weight: 600;
 }
 
@@ -187,20 +229,20 @@ h1 {
 .phase-five__table th,
 .phase-five__table td {
   padding: 12px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--color-border);
   text-align: left;
   vertical-align: top;
 }
 
 .phase-five__table th {
-  color: #374151;
+  color: var(--color-text);
   font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 .phase-five__table td {
-  color: #1f2937;
+  color: var(--color-text);
 }
 
 @media (max-width: 900px) {

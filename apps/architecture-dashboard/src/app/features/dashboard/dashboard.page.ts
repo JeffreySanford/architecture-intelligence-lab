@@ -8,7 +8,17 @@ import { ChipModule } from 'primeng/chip';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { DashboardStore, type BackendMode, type DatasetSize } from '../../core/dashboard/dashboard.store';
-import { Chart, type ChartConfiguration } from 'chart.js';
+import {
+  BarController,
+  BarElement,
+  CategoryScale,
+  Chart,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+  type ChartConfiguration,
+} from 'chart.js';
 
 @Component({
   standalone: true,
@@ -22,6 +32,7 @@ export class DashboardPage implements OnInit, AfterViewInit {
   private readonly route = inject(ActivatedRoute);
   protected readonly dashboardStore = inject(DashboardStore);
   protected readonly globalFilter = signal('');
+  protected readonly explainMode = this.dashboardStore.explainMode;
   protected rowsPerPageOptions: number[] = [5, 10, 25];
 
   @ViewChild('dashboardChart', { static: true })
@@ -65,6 +76,13 @@ export class DashboardPage implements OnInit, AfterViewInit {
       this.dashboardStore.selectedBackendMode.set(queryBackend);
     }
 
+    const queryExplain = this.route.snapshot.queryParamMap.get('explain');
+    if (queryExplain === 'true') {
+      this.dashboardStore.explainMode.set(true);
+    } else if (queryExplain === 'false') {
+      this.dashboardStore.explainMode.set(false);
+    }
+
     this.dashboardStore
       .loadSnapshot(this.dashboardStore.selectedDataset())
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -85,10 +103,21 @@ export class DashboardPage implements OnInit, AfterViewInit {
   }
 
   private createChart(): void {
+    Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Title, Tooltip);
+
     const canvas = this.dashboardChart?.nativeElement;
-    const context = canvas?.getContext('2d');
+    if (!canvas) {
+      return;
+    }
+
+    const context = canvas.getContext('2d');
     if (!context) {
       return;
+    }
+
+    const prefersReducedMotion = this.prefersReducedMotion();
+    if (prefersReducedMotion) {
+      canvas.dataset['prefersReducedMotion'] = 'true';
     }
 
     const config: ChartConfiguration<'bar', number[], string> = {
@@ -108,6 +137,7 @@ export class DashboardPage implements OnInit, AfterViewInit {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: prefersReducedMotion ? false : { duration: 420, easing: 'easeOutQuart' },
         plugins: {
           legend: {
             display: false,
@@ -138,5 +168,11 @@ export class DashboardPage implements OnInit, AfterViewInit {
     };
 
     this.chart = new Chart(context, config);
+  }
+
+  private prefersReducedMotion(): boolean {
+    return typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
   }
 }

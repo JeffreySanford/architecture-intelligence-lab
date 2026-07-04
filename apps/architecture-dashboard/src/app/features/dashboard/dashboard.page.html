@@ -8,13 +8,25 @@
     projecting loan cards and table rows through computed Map indexes.
   </p>
 
+  @if (explainMode(); as explain) {
+    <p-card class="dashboard__explain-card" animate.enter="enter" animate.leave="exit">
+      <ng-template pHeader>
+        <span>Explain Mode</span>
+      </ng-template>
+      <p>
+        Explain mode is active. This page shows how Spring snapshot DTOs are projected into loan cards,
+        dashboard charts, and ViewModel table rows using computed map indexes.
+      </p>
+    </p-card>
+  }
+
   @if (dashboardStore.error(); as error) {
-    <p class="dashboard__error">{{ error }}</p>
+    <p class="dashboard__error" animate.enter="enter" animate.leave="exit">{{ error }}</p>
   }
 
   <section class="dashboard__cards" aria-label="Loan cards">
     @for (loan of dashboardStore.loanCards(); track loan.id) {
-      <p-card class="dashboard__card">
+      <p-card class="dashboard__card" animate.enter="scale-enter" animate.leave="exit">
         <ng-template pHeader>
           <div class="dashboard__card-header">
             <div class="dashboard__card-title">{{ loan.loanNumber }}</div>
@@ -34,7 +46,7 @@
   </section>
 
   <section class="dashboard__chart-section">
-    <p-card class="dashboard__chart-card">
+    <p-card class="dashboard__chart-card" animate.enter="enter" animate.leave="exit">
       <ng-template pHeader>
         <div class="dashboard__chart-header">
           <div>
@@ -49,7 +61,7 @@
     </p-card>
   </section>
 
-  <p-card class="dashboard__table-card">
+  <p-card class="dashboard__table-card" animate.enter="enter" animate.leave="exit">
     <ng-template pHeader>
       <div class="dashboard__table-header">
         <div>
@@ -89,7 +101,7 @@
         </tr>
       </ng-template>
       <ng-template #body let-loan>
-        <tr>
+        <tr animate.enter="row-enter">
           <td>{{ loan.loanNumber }}</td>
           <td>{{ loan.borrowerName }}</td>
           <td>{{ loan.amount | currency }}</td>

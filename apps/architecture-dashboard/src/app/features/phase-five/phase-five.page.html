@@ -17,26 +17,36 @@
     }
   </div>
 
+  @if (explainMode(); as explain) {
+    <p-card class="phase-five__explain-card" animate.enter="enter" animate.leave="exit">
+      <div class="phase-five__card-title">Explain Mode</div>
+      <p>
+        Explain mode is active. The Phase 5 view highlights live backend comparison,
+        runtime flow, and how Socket.IO event history connects to the current selected mode.
+      </p>
+    </p-card>
+  }
+
   <div class="phase-five__summary" aria-label="Current access">
-    <p-card class="phase-five__stat">
+    <p-card class="phase-five__stat" animate.enter="scale-enter">
       <div class="phase-five__stat-value">{{ visibleDeliverables().length }}</div>
       <div class="phase-five__stat-label">visible deliverables</div>
     </p-card>
-    <p-card class="phase-five__stat">
+    <p-card class="phase-five__stat" animate.enter="scale-enter">
       <div class="phase-five__stat-value">{{ canViewComparison() ? 'Yes' : 'No' }}</div>
       <div class="phase-five__stat-label">comparison access</div>
     </p-card>
-    <p-card class="phase-five__stat">
+    <p-card class="phase-five__stat" animate.enter="scale-enter">
       <div class="phase-five__stat-value">{{ canEmitRealtime() ? 'Yes' : 'No' }}</div>
       <div class="phase-five__stat-label">event emit access</div>
     </p-card>
-    <p-card class="phase-five__stat">
+    <p-card class="phase-five__stat" animate.enter="scale-enter">
       <div class="phase-five__stat-value phase-five__stat-value--mode">{{ selectedBackendMode() }}</div>
       <div class="phase-five__stat-label">landing backend mode · {{ selectedDataset() }}</div>
     </p-card>
   </div>
 
-  <p-card class="phase-five__graph-card">
+  <p-card class="phase-five__graph-card" animate.enter="enter" animate.leave="exit">
     <div class="phase-five__card-title">Runtime Flow</div>
     <div class="phase-five__card-subtitle">D3 map of comparison and realtime paths</div>
     <div class="phase-five__graph-shell">
@@ -44,7 +54,7 @@
     </div>
   </p-card>
 
-  <p-card class="phase-five__chart-card">
+  <p-card class="phase-five__chart-card" animate.enter="enter" animate.leave="exit">
     <div class="phase-five__card-title">Measured Metrics Visualization</div>
     <div class="phase-five__card-subtitle">
       D3 grouped bars for latency, payload size, and records returned by the comparison endpoint
@@ -54,14 +64,14 @@
     </div>
   </p-card>
 
-  <p-card class="phase-five__table-card">
+  <p-card class="phase-five__table-card" animate.enter="enter" animate.leave="exit">
     <div class="phase-five__card-title">Comparison Metrics</div>
     <div class="phase-five__card-subtitle">
       Live Nest gateway response for Spring direct, Nest direct, and Nest proxy
     </div>
 
     @if (comparisonError(); as error) {
-      <p class="phase-five__error">{{ error }}</p>
+      <p class="phase-five__error" animate.enter="enter" animate.leave="exit">{{ error }}</p>
     }
 
     <div class="table-toolbar">
@@ -102,6 +112,7 @@
           data-testid="comparison-metric-row"
           [attr.data-path-id]="row.pathId"
           [class.phase-five__active-row]="selectedComparisonPath() === row.pathId"
+          animate.enter="row-enter"
           (click)="selectComparisonPath(row.pathId)"
         >
           <td>{{ row.label }}</td>
@@ -122,7 +133,7 @@
     </p-table>
   </p-card>
 
-  <p-card class="phase-five__table-card">
+  <p-card class="phase-five__table-card" animate.enter="enter" animate.leave="exit">
     <div class="phase-five__card-title">Live Gateway Loan Reads</div>
     <div class="phase-five__card-subtitle">
       Direct and proxy loan read responses from the Nest gateway. Pager, filter, and status indicators show current available reads.
@@ -160,7 +171,7 @@
         </tr>
       </ng-template>
       <ng-template #body let-row>
-        <tr data-testid="loan-read-row" [attr.data-path-id]="row.pathId">
+        <tr data-testid="loan-read-row" [attr.data-path-id]="row.pathId" animate.enter="row-enter">
           <td>{{ row.label }}</td>
           <td>
             <p-tag
@@ -183,7 +194,7 @@
     </p-table>
   </p-card>
 
-  <p-card class="phase-five__table-card">
+  <p-card class="phase-five__table-card" animate.enter="enter" animate.leave="exit">
     <div class="phase-five__card-header">
       <div>
         <div class="phase-five__card-title">Realtime Event History</div>
@@ -225,7 +236,7 @@
     </div>
 
     @if (realtimeError(); as error) {
-      <p class="phase-five__error">{{ error }}</p>
+      <p class="phase-five__error" animate.enter="enter" animate.leave="exit">{{ error }}</p>
     }
 
     <div class="table-toolbar">
@@ -261,7 +272,12 @@
         </tr>
       </ng-template>
       <ng-template #body let-event>
-        <tr data-testid="realtime-event-row" [attr.data-event-id]="event.eventId">
+        <tr
+          data-testid="realtime-event-row"
+          [attr.data-event-id]="event.eventId"
+          [class.phase-five__new-event-row]="highlightedRealtimeEventId() === event.eventId"
+          animate.enter="row-enter"
+        >
           <td>{{ event.type }}</td>
           <td>{{ event.loanNumber }}</td>
           <td>{{ event.previousStatus }}</td>
@@ -281,7 +297,7 @@
   </p-card>
 
   <div class="phase-five__grid">
-    <p-card class="phase-five__table-card">
+    <p-card class="phase-five__table-card" animate.enter="enter" animate.leave="exit">
       <div class="phase-five__card-title">Deliverables</div>
       <div class="phase-five__card-subtitle">Filtered to what this persona can inspect</div>
 
@@ -315,7 +331,7 @@
           </tr>
         </ng-template>
         <ng-template #body let-item>
-          <tr data-testid="phase-five-deliverable-row">
+          <tr data-testid="phase-five-deliverable-row" animate.enter="row-enter">
             <td>{{ item.label }}</td>
             <td>{{ item.area }}</td>
             <td><p-chip [label]="item.permission"></p-chip></td>
@@ -330,7 +346,7 @@
       </p-table>
     </p-card>
 
-    <p-card class="phase-five__table-card">
+    <p-card class="phase-five__table-card" animate.enter="enter" animate.leave="exit">
       <div class="phase-five__card-title">Acceptance Criteria</div>
       <div class="phase-five__card-subtitle">Sprint checks and required permissions</div>
 
@@ -363,7 +379,7 @@
           </tr>
         </ng-template>
         <ng-template #body let-item>
-          <tr [class.phase-five__muted-row]="!hasAnyPermission([item.permission])">
+          <tr [class.phase-five__muted-row]="!hasAnyPermission([item.permission])" animate.enter="row-enter">
             <td>{{ item.label }}</td>
             <td>{{ item.roleAccess.join(', ') }}</td>
             <td>
@@ -378,7 +394,7 @@
     </p-card>
   </div>
 
-  <p-card class="phase-five__table-card">
+  <p-card class="phase-five__table-card" animate.enter="enter" animate.leave="exit">
     <div class="phase-five__card-title">Role Access Matrix</div>
     <div class="phase-five__card-subtitle">Seeded personas and Phase 5 permissions</div>
 
@@ -412,7 +428,7 @@
         </tr>
       </ng-template>
       <ng-template #body let-row>
-        <tr [class.phase-five__active-row]="hasAnyPermission(row.permissions)">
+        <tr [class.phase-five__active-row]="hasAnyPermission(row.permissions)" animate.enter="row-enter">
           <td>{{ row.role }}</td>
           <td>{{ row.persona }}</td>
           <td>

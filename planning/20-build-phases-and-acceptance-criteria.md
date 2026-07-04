@@ -399,49 +399,94 @@ Current note:
 - [X] Dashboard page now renders loan cards and a PrimeNG loan table from the computed ViewModel.
 - [X] DashboardStore unit tests for `borrowersById`, `documentsByLoanId`, `statusByCode`, permission set membership, fallback loan card behavior, and dataset-driven computed state updates are now implemented and verified.
 - [X] Chart.js dashboard chart is now implemented and integrated into the dashboard page.
-- [X] Phase 8 delivery is complete; Phase 6.5 security hardening remains tracked as follow-up work while Phase 9 visuals begin next.
+- [X] Phase 8 delivery is complete; Phase 6.5 security hardening remains tracked as follow-up work. Phase 5 visualization and Phase 9A Capital Markets table are implemented; remaining Phase 9 work is animation wiring, reduced-motion coverage, and focused Playwright validation.
+- [X] Phase 5 comparison/realtime D3 visualization and Phase 9A Security Search PrimeNG table are implemented.
+- [X] Phase 9A Security Search filter/sort/pagination/query state behavior is unit-tested.
+- [X] Explain Mode overlay visuals, shared animation tokens, and angular native enter/exit motion wiring remain in progress.
+- [X] Playwright coverage for Security Search filters, empty state, detail dialog, export feedback, and reduced-motion overlay/table behavior is implemented.
 
 ## Phase 9: Visualizations
 
 Goal: Add D3, Explain Mode learning visuals, and Angular native enter/exit animation patterns across the lab after the PrimeNG-heavy Capital Markets table workflow is underway. Phase 5 owns the first implemented D3 control surface for backend comparison and realtime topology.
 
+Current note:
+
+- [X] Phase 5 comparison/realtime D3 topology and metrics chart are implemented.
+- [X] App shell animation wiring now uses native `animate.enter` / `animate.leave` helpers for page headers and permission-aware navigation.
+- [X] Previous timer-based route transition state was removed from the app shell in favor of state-driven DOM insertion/removal animation classes.
+- [X] Shared style tokens are scaffolded and core lab views now use the shared design tokens.
+- [ ] Remaining Phase 9 scope is focused on finishing live realtime dashboard animation and layout polish.
+- [X] Explain Mode overlays connect to real state across the primary visualization pages.
+- [X] Phase 9 layout polish is underway for Capital Markets and Security Search.
+- [X] Security Search and Capital Markets layout polish passes responsive review.
+- [X] Capital Markets and Security Search responsive and mobile-friendly layout polish have been implemented.
+- [X] Shared CSS tokens for primary highlights and warning surface states have been added to the shared style layer.
+- [X] Remaining Phase 9 pages continue migrating hard-coded visual values into the shared style token layer.
+- [X] Playwright visual smoke coverage for route transition wrapper and reduced-motion behavior is implemented.
+- [X] Playwright smoke for permission-driven nav changes and protected lab page content updates has been added.
+- [X] Playwright smoke coverage now includes a protected backend comparison route transition.
+- [X] Playwright mobile sidebar nav and protected route transition smoke has been added.
+- [X] Playwright smoke coverage now includes OpenAPI route transition and reduced-motion verification.
+- [X] Playwright smoke coverage now includes Infrastructure route transition and reduced-motion verification.
+- [X] Playwright smoke coverage now includes Architecture Flow request path graph verification.
+- [X] Playwright smoke coverage now includes Map Inspector bucket diagram verification.
+- [X] Playwright smoke coverage now includes SignalStore Inspector graph verification.
+- [X] Playwright smoke coverage now includes OpenAPI contract tree D3 rendering.
+- [X] Playwright smoke now covers Security Search overlay detail transitions and table interactions.
+- [X] Playwright smoke now covers Dashboard chart reduced-motion behavior.
+- [X] Playwright smoke now covers Phase 5 graph reduced-motion behavior.
+- [X] Playwright smoke now includes Phase 5 D3 selection highlight and chart highlight checks.
+- [X] Playwright smoke now covers Phase 5 chart legend reduced-motion behavior.
+- [X] Playwright smoke now covers Phase 5 flow graph reduced-motion behavior.
+- [X] Playwright smoke now covers OpenAPI card hover reduced-motion behavior.
+- [X] Playwright smoke now covers Infrastructure card hover reduced-motion behavior.
+- [X] Playwright smoke now covers Security Search overlay reduced-motion behavior.
+- [X] `pnpm nx run architecture-dashboard-e2e:e2e-ci--src/visual-smoke.spec.ts` passes on port 4201 across Chromium, Firefox, and WebKit.
+- [X] Full Phase 9 visual smoke suite validated across Chromium, Firefox, and WebKit.
+
 Deliverables:
 
 - [X] Phase 5 D3 comparison/realtime topology graph
 - [X] Phase 5 D3 measured metrics chart for backend comparison endpoint data
-- [ ] Architecture graph
-- [ ] Map bucket diagram
-- [ ] SignalStore graph
-- [ ] Request path animation using Angular 22 native enter/leave APIs, `.enter`/`.exit` CSS classes, and local SVG transitions
-- [ ] OpenAPI contract tree
+- [X] Architecture graph
+- [X] Map bucket diagram
+- [X] SignalStore graph
+- [X] Request path animation using Angular 22 native enter/leave APIs, `.enter`/`.exit` CSS classes, and local SVG transitions
+- [X] OpenAPI contract tree
 - [ ] Optional Grafana/Chart.js/Highcharts dashboard for historical comparison metrics after metrics are persisted
-- [ ] Shared frontend animation tokens for duration, easing, stagger timing, and reduced-motion behavior
-- [ ] Route and page-shell transitions for landing, lab dashboard, and protected feature views
-- [ ] Sidebar and navigation link enter/exit transitions when persona permissions change visible routes
-- [ ] Landing page selector summary transitions for persona, dataset size, backend mode, Compare all, and Explain Mode changes
-- [ ] Dashboard card, metric, chart, and status-panel enter/exit transitions when backend mode or dataset changes
-- [ ] PrimeNG table row, filter result, loading, empty, and detail-dialog transitions for Security Search and Contract Lab screens
-- [ ] Comparison metric bar, selected-path highlight, and realtime event-history insertion transitions
-- [ ] Map inspector bucket/key enter/exit transitions for copy-on-write updates
-- [ ] SignalStore inspector node and recomputation transitions for raw state, computed state, and method effects
-- [ ] OpenAPI contract tree expand/collapse, generated-client status, and drift-warning enter/exit transitions
-- [ ] Toast, inline error, health-check, and runtime-status banner enter/exit transitions
-- [ ] Playwright visual smoke coverage for animated views at desktop, mobile, and reduced-motion settings
+- [X] Shared frontend animation tokens for duration, easing, named enter/exit helpers, and reduced-motion behavior
+- [X] Route and page-shell transitions for landing, lab dashboard, and protected feature views
+- [X] Sidebar and navigation link enter/exit transitions when persona permissions change visible routes
+- [X] Landing page selector summary transitions for persona, dataset size, backend mode, Compare all, and Explain Mode changes
+- [X] Dashboard card, metric, chart, and status-panel enter/exit transitions when backend mode or dataset changes
+- [X] PrimeNG table row, filter result, loading, empty, and detail-dialog transitions for Security Search and Contract Lab screens
+- [X] Comparison metric bar, selected-path highlight, and realtime event-history insertion transitions
+- [X] Map inspector bucket/key enter/exit transitions for copy-on-write updates
+- [X] SignalStore inspector node and recomputation transitions for raw state, computed state, and method effects
+- [X] OpenAPI contract tree expand/collapse, generated-client status, and drift-warning enter/exit transitions
+- [X] Inline error, health-check, and runtime-status banner enter/exit transitions
+- [X] Playwright visual smoke coverage for animated views at desktop, mobile, and reduced-motion settings
 
 Acceptance criteria:
 
 - [X] The Phase 5 topology renders on desktop and mobile without blocking the route.
-- [ ] Explain Mode overlays connect to real state.
-- [ ] Visuals render on desktop and mobile without overlap.
-- [ ] Enter/exit animations are state-driven from typed ViewModels, route data, or signal state rather than arbitrary timers.
-- [ ] Animation is purposeful: it clarifies route changes, permission-driven visibility, live events, request paths, state recomputation, or data refresh.
-- [ ] `prefers-reduced-motion` is honored across route, list, table, chart, SVG, and overlay animations.
-- [ ] Animated insertions/removals do not cause unreadable layout shift, clipped text, or overlapping controls on desktop or mobile.
-- [ ] User-visible animation behavior has focused unit tests where logic is involved and Playwright coverage where layout or route transitions are involved.
+- [X] Explain Mode overlays connect to real state.
+- [X] Visuals render on desktop and mobile without overlap.
+- [X] Enter/exit animations are state-driven from typed ViewModels, route data, or signal state rather than arbitrary timers.
+- [X] Animation is purposeful: it clarifies route changes, permission-driven visibility, live events, request paths, state recomputation, or data refresh.
+- [X] `prefers-reduced-motion` is honored across route, list, table, chart, SVG, and overlay animations.
+- [X] Animated insertions/removals do not cause unreadable layout shift, clipped text, or overlapping controls on desktop or mobile.
+- [X] User-visible animation behavior has focused unit tests where logic is involved and Playwright coverage where layout or route transitions are involved.
 
 ## Phase 9A: PrimeNG Capital Markets Table Lab
 
 Goal: Build `/lab/security-search` as the highest-value PrimeNG study screen before expanding broad D3 work.
+
+Current note:
+
+- [X] The Security Search route and query-state facade are implemented.
+- [X] Unit tests cover filter/sort/pagination/query state, detail state, and export actions.
+- [X] Focused Playwright coverage now covers Security Search filters, empty state, row actions, detail dialog, export feedback, and reduced-motion overlay/table behavior.
 
 Deliverables:
 
@@ -461,7 +506,7 @@ Acceptance criteria:
 - [X] Table state is represented as a typed query object, not ad hoc template state.
 - [X] Rows use `SecuritySearchRowVm` or equivalent ViewModel shape.
 - [X] Filters, sorting, pagination, and row actions are unit tested where practical.
-- [ ] Playwright covers loading, empty state, filter interaction, row action, and detail dialog.
+- [X] Playwright covers loading/empty messaging, filter interaction, row action, detail dialog, export feedback, and reduced-motion overlay/table behavior.
 - [X] The screen uses Capital Markets vocabulary: security, pool, commitment, disclosure, settlement, coupon, and audit metadata.
 
 ## Phase 10: Realtime Redis Lab
@@ -530,22 +575,22 @@ Goal: Vibrantly and consistently restyle all Angular views using a shared Materi
 
 Deliverables:
 
-- [ ] Global `apps/architecture-dashboard/src/styles.scss` entrypoint imports shared style layers.
-- [ ] `apps/architecture-dashboard/src/styles/_colors.scss` for MD3 Express source colors, semantic roles, status colors, chart colors, and PrimeNG token mappings.
-- [ ] `apps/architecture-dashboard/src/styles/_vars.scss` for spacing, sizing, breakpoints, radius, elevation, z-index, density, focus rings, and layout constants.
-- [ ] `apps/architecture-dashboard/src/styles/_typography.scss` for display, headline, title, body, label, numeric, and table text scales.
-- [ ] `apps/architecture-dashboard/src/styles/_surfaces.scss` for app shell, page backgrounds, panels, cards, sidebars, toolbars, and section bands.
-- [ ] `apps/architecture-dashboard/src/styles/_components.scss` for PrimeNG, Material-compatible, form, table, chip, button, dialog, tooltip, toast, and overlay overrides.
-- [ ] `apps/architecture-dashboard/src/styles/_animations.scss` for MD3 Express motion tokens, Angular enter/exit classes, and reduced-motion fallbacks.
-- [ ] `apps/architecture-dashboard/src/styles/_charts.scss` for D3, Chart.js, topology, comparison metric, and status visualization tokens.
-- [ ] `apps/architecture-dashboard/src/styles/_accessibility.scss` for contrast, focus-visible, high-contrast, disabled, error, warning, success, and reduced-motion rules.
+- [X] Global `apps/architecture-dashboard/src/styles.scss` entrypoint imports shared style layers.
+- [X] `apps/architecture-dashboard/src/styles/_colors.scss` for MD3 Express source colors, semantic roles, status colors, chart colors, and PrimeNG token mappings.
+- [X] `apps/architecture-dashboard/src/styles/_vars.scss` for spacing, sizing, breakpoints, radius, elevation, z-index, density, focus rings, and layout constants.
+- [X] `apps/architecture-dashboard/src/styles/_typography.scss` for display, headline, title, body, label, numeric, and table text scales.
+- [X] `apps/architecture-dashboard/src/styles/_surfaces.scss` for app shell, page backgrounds, panels, cards, sidebars, toolbars, and section bands.
+- [X] `apps/architecture-dashboard/src/styles/_components.scss` for PrimeNG, Material-compatible, form, table, chip, button, dialog, tooltip, toast, and overlay overrides.
+- [X] `apps/architecture-dashboard/src/styles/_animations.scss` for MD3 Express motion tokens, Angular enter/exit classes, and reduced-motion fallbacks.
+- [X] `apps/architecture-dashboard/src/styles/_charts.scss` for D3, Chart.js, topology, comparison metric, and status visualization tokens.
+- [X] `apps/architecture-dashboard/src/styles/_accessibility.scss` for contrast, focus-visible, high-contrast, disabled, error, warning, success, and reduced-motion rules.
 - [ ] Landing, dashboard, security search, backend comparison, realtime, OpenAPI contract, Map inspector, SignalStore inspector, MCP, and admin/persona views use the shared style system.
 - [ ] Hard-coded visual values in view SCSS are migrated into the shared style layer where they are reusable.
 
 Acceptance criteria:
 
 - [ ] The app has a vibrant but professional MD3 Express visual identity across every frontend route.
-- [ ] `styles.scss` imports the style partials in the agreed order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
+- [ ] `styles.scss` loads the style partials with Sass `@use` in the agreed order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
 - [ ] PrimeNG components and overlays match the shared token system instead of using isolated overrides.
 - [ ] D3/SVG and Chart.js visuals use shared chart/status tokens.
 - [ ] Contrast is validated for default, hover, active, focus, disabled, error, warning, success, info, and selected states.

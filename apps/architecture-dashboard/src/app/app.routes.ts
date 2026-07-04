@@ -26,8 +26,8 @@ export const appRoutes: Routes = [
       {
         path: 'architecture-flow',
         loadComponent: () =>
-          import('./features/placeholder/placeholder.page').then(
-            (m) => m.PlaceholderPage,
+          import('./features/architecture-flow/architecture-flow.page').then(
+            (m) => m.ArchitectureFlowPage,
           ),
         canActivate: [permissionGuard],
         data: {
@@ -101,8 +101,8 @@ export const appRoutes: Routes = [
       {
         path: 'signal-store-inspector',
         loadComponent: () =>
-          import('./features/placeholder/placeholder.page').then(
-            (m) => m.PlaceholderPage,
+          import('./features/signal-store-inspector/signal-store-inspector.page').then(
+            (m) => m.SignalStoreInspectorPage,
           ),
         canActivate: [permissionGuard],
         data: {

@@ -9,6 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import type { TableLazyLoadEvent } from 'primeng/types/table';
+import { DashboardStore } from '../../core/dashboard/dashboard.store';
 import {
   defaultSecuritySearchQuery,
   type DisclosureStatus,
@@ -41,6 +42,8 @@ type TagSeverity = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contr
 })
 export class SecuritySearchPage implements OnInit {
   protected readonly facade = inject(SecuritySearchFacade);
+  protected readonly dashboardStore = inject(DashboardStore);
+  protected readonly explainMode = this.dashboardStore.explainMode;
   protected readonly rows = signal<SecuritySearchRowVm[]>([]);
   protected readonly totalRecords = signal(0);
 
@@ -49,6 +52,13 @@ export class SecuritySearchPage implements OnInit {
   protected readonly loading = this.facade.loading;
   protected readonly exportMessage = this.facade.exportMessage;
   protected readonly hasRows = computed(() => this.rows().length > 0);
+  protected readonly tableState = computed<'loading' | 'empty' | 'results'>(() => {
+    if (this.loading()) {
+      return 'loading';
+    }
+
+    return this.hasRows() ? 'results' : 'empty';
+  });
 
   protected readonly workflowOptions: Array<{ label: string; value: SecurityWorkflowStatus | '' }> = [
     { label: 'All workflow statuses', value: '' },

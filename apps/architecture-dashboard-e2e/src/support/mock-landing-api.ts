@@ -19,7 +19,7 @@ const personas: TestPersona[] = [
     id: 'grace-admin',
     name: 'Grace Admin',
     role: 'Admin',
-    permissions: ['admin:view', 'dashboard:view', 'contracts:view'],
+    permissions: ['admin:view', 'contracts:view', 'dashboard:view', 'diagnostics:view', 'loans:view'],
   },
 ];
 
@@ -85,6 +85,116 @@ export async function mockLandingApi(page: Page): Promise<void> {
         ],
         documents: [{ id: 'doc-001', loanId: 'loan-001', type: 'Income Verification', status: 'received' }],
         statusCodes: [{ code: 'submitted', label: 'Submitted', sortOrder: 1 }],
+      }),
+    });
+  });
+
+  await page.route('**/gateway/comparison/loans', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        mode: 'mock',
+        subject: 'loans',
+        observedAt: '2026-07-03T00:00:00.000Z',
+        paths: [
+          {
+            pathId: 'spring-direct',
+            label: 'Spring direct',
+            latencyMs: 42,
+            payloadBytes: 768,
+            recordCount: 2,
+            status: 'ok',
+            observedAt: '2026-07-03T00:00:00.000Z',
+          },
+          {
+            pathId: 'nest-direct',
+            label: 'Nest direct',
+            latencyMs: 27,
+            payloadBytes: 742,
+            recordCount: 2,
+            status: 'ok',
+            observedAt: '2026-07-03T00:00:00.000Z',
+          },
+          {
+            pathId: 'nest-proxy',
+            label: 'Nest proxy',
+            latencyMs: 58,
+            payloadBytes: 790,
+            recordCount: 2,
+            status: 'ok',
+            observedAt: '2026-07-03T00:00:00.000Z',
+          },
+        ],
+      }),
+    });
+  });
+
+  await page.route('**/gateway/loans/direct', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        mode: 'live',
+        pathId: 'nest-direct',
+        recordCount: 1,
+        records: [
+          {
+            id: 'loan-001',
+            loanNumber: 'TL-1001',
+            borrowerName: 'Maya Chen',
+            amount: 325000,
+            status: 'Submitted',
+          },
+        ],
+        observedAt: '2026-07-03T00:00:00.000Z',
+      }),
+    });
+  });
+
+  await page.route('**/gateway/loans/proxy', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        mode: 'live',
+        pathId: 'nest-proxy',
+        recordCount: 1,
+        records: [
+          {
+            id: 'loan-001',
+            loanNumber: 'TL-1001',
+            borrowerName: 'Maya Chen',
+            amount: 325000,
+            status: 'Submitted',
+          },
+        ],
+        observedAt: '2026-07-03T00:00:00.000Z',
+      }),
+    });
+  });
+
+  await page.route('**/gateway/realtime/events', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        mode: 'mock',
+        namespace: '/gateway/realtime',
+        eventName: 'loan.status.updated',
+        observedAt: '2026-07-03T00:00:00.000Z',
+        events: [
+          {
+            eventId: 'event-seed-001',
+            type: 'loan.status.updated',
+            loanId: 'loan-001',
+            loanNumber: 'TL-1001',
+            previousStatus: 'Submitted',
+            nextStatus: 'In Review',
+            source: 'mock-http',
+            observedAt: '2026-07-03T00:00:00.000Z',
+          },
+        ],
       }),
     });
   });

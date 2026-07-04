@@ -49,7 +49,7 @@ This file turns the architecture roadmap into a PI and sprint plan. Use `[X]` fo
 - [X] Sprint 1 foundation: Workspace rename, pnpm, Docker shell, and baseline verification.
 - [ ] Sprint 2: Infrastructure and source-of-truth API.
 - [ ] Sprint 3: Gateway, comparison, and contracts.
-- [ ] Sprint 4: Angular lab shell, dashboard mapping, and PrimeNG Security Search.
+- [X] Sprint 4: Angular lab shell, dashboard mapping, and PrimeNG Security Search.
 - [ ] Sprint 5: Visual labs, backend comparison, and realtime.
 - [ ] Sprint 6: Contract/MCP labs and hardening.
 
@@ -208,10 +208,10 @@ Stories:
 - [X] As a user, I can select a persona and enter the lab.
 - [X] As a learner, I can toggle Explain Mode.
 - [X] As a learner, I can change dataset size and backend mode.
-- [ ] As a capital markets user, I can inspect security pools, commitment status, and disclosure metadata in a PrimeNG grid.
-- [ ] As a developer, I can see how commitment and delivery workflow state is represented with status tags and filters.
+- [X] As a capital markets user, I can inspect security pools, commitment status, and disclosure metadata in a PrimeNG grid.
+- [X] As a developer, I can see how commitment and delivery workflow state is represented with status tags and filters.
 - [X] As a developer, I can inspect Map/Set indexes derived from DTO state.
-- [ ] As a developer, I can explain table query state, row ViewModels, and lazy loading without relying on template-only filtering.
+- [X] As a developer, I can explain table query state, row ViewModels, and lazy loading without relying on template-only filtering.
 
 Deliverables:
 
@@ -233,9 +233,9 @@ Deliverables:
 - [X] Loading, empty, and error states
 - [X] Prime UI runtime config reader and ignored local license file
 - [X] Infrastructure Prime tables/tags for route and port status
-- [ ] Chart.js summary charts
-- [ ] PrimeNG table and filter skeleton for capital markets-style search and disclosure workflows
-- [ ] Commitment status tags, export actions, and file metadata display for disclosure results
+- [X] Chart.js summary charts
+- [X] PrimeNG table and filter skeleton for capital markets-style search and disclosure workflows
+- [X] Commitment status tags, export actions, and file metadata display for disclosure results
 
 Acceptance criteria:
 
@@ -243,13 +243,38 @@ Acceptance criteria:
 - [X] Dashboard renders Small dataset.
 - [X] Permission Set controls visible nav items.
 - [X] Map inspector displays `loansById`, `borrowersById`, `documentsByLoanId`, `statusByCode`, and `permissionSet`.
-- [ ] Unit tests cover `borrowersById`, `documentsByLoanId`, `statusByCode`, permission Set membership, visible nav filtering, and fallback rows.
+- [X] Unit tests cover `borrowersById`, `documentsByLoanId`, `statusByCode`, permission Set membership, visible nav filtering, and fallback rows.
 - [X] PrimeNG tables support sort/filter/pagination for security and commitment rows.
 - [X] Disclosure and commitment state is visible with status chips, dates, and audit-friendly metadata.
 - [X] Prime UI usage review covers Landing, Shell, Dashboard, Map Inspector, Infrastructure, Capital Markets, Security Search, Phase 5, and Placeholder views.
 - [X] Sprint 1-5 context and specific user-role access expectations are preserved in planning docs and authenticated lab views, not exposed as protected page links on the public landing view.
 - [X] Sidebar navigation hides every protected lab link unless the selected user has a matching permission.
-- [ ] Playwright covers Security Search loading, empty state, filters, sorting, row action, and detail dialog.
+- [X] Playwright covers Security Search empty state, filters, row action, detail dialog, export feedback, and reduced-motion table/overlay behavior.
+
+Current note:
+
+- [X] Phase 9A Security Search implementation is complete and unit-tested.
+- [X] App shell route transition wiring has begun with shared route transition classes.
+- [X] Route transition wrapper now includes page header and protected lab page content.
+- [X] Route transition wrapper now resets its animation state after each page change.
+- [X] Shared style tokens are scaffolded and core lab views now use the shared design tokens.
+- [ ] Remaining Phase 9 effort is live realtime dashboard animation.
+- [X] Playwright visual smoke coverage includes route transition and reduced-motion behavior.
+- [X] Playwright smoke coverage for permission-driven nav visibility and protected lab page content updates has been added.
+- [X] Playwright smoke coverage now includes the protected backend comparison route transition.
+- [X] Playwright mobile sidebar nav and protected route transition smoke has been added.
+- [X] Playwright smoke coverage now includes OpenAPI route transition and reduced-motion verification.
+- [X] Playwright smoke coverage now includes Infrastructure route transition and reduced-motion verification.
+- [X] Playwright smoke now covers Security Search overlay detail transitions and table interactions.
+- [X] Playwright smoke now covers Dashboard chart reduced-motion behavior.
+- [X] Playwright smoke now covers Phase 5 graph reduced-motion behavior.
+- [X] Playwright smoke now covers Phase 5 D3 selection highlight and chart highlight updates.
+- [X] Playwright smoke now covers Phase 5 chart legend reduced-motion behavior.
+- [X] Playwright smoke now covers Phase 5 flow graph reduced-motion behavior.
+- [X] Playwright smoke now covers OpenAPI card hover reduced-motion behavior.
+- [X] Playwright smoke now covers Infrastructure card hover reduced-motion behavior.
+- [X] Playwright smoke now covers Security Search overlay reduced-motion behavior.
+- [X] `pnpm nx run architecture-dashboard-e2e:e2e-ci--src/visual-smoke.spec.ts` passes on port 4201 across Chromium, Firefox, and WebKit.
 
 ## PrimeNG Capital Markets Study Task
 
@@ -290,10 +315,10 @@ Goal: Make architecture, state, comparison, and realtime behavior visible throug
 
 Stories:
 
-- [ ] As a learner, I can see a D3 architecture flow diagram.
-- [ ] As a learner, I can inspect SignalStore raw and computed state.
-- [ ] As a learner, I can see route, data, permission, and realtime state changes through clear enter/exit animation instead of abrupt content swaps.
-- [ ] As a keyboard or reduced-motion user, I can use every animated view with motion reduced and state changes still visible.
+- [X] As a learner, I can see a D3 architecture flow diagram.
+- [X] As a learner, I can inspect SignalStore raw and computed state.
+- [X] As a learner, I can see route, data, permission, and realtime state changes through clear enter/exit animation instead of abrupt content swaps.
+- [X] As a keyboard or reduced-motion user, I can use animated views with motion reduced and state changes still visible.
 - [X] As a diagnostics persona, I can open a Phase 5 D3 topology view for Spring direct, Nest direct, Nest proxy, comparison, Socket.IO, Redis, and Swagger paths.
 - [X] As a learner, I can see which roles should have access to Phase 5 comparison, realtime, and contract inspection surfaces.
 - [X] As a learner with emit permission, I can trigger a mock realtime event and watch the Phase 5 event history update.
@@ -309,8 +334,8 @@ Deliverables:
 - [X] PrimeNG realtime event history table bound to the Nest gateway facade
 - [X] PrimeNG role/persona access matrix
 - [X] Route-level permission guards for Phase 5 protected views
-- [ ] D3 architecture graph
-- [ ] SignalStore graph
+- [X] D3 architecture graph
+- [X] SignalStore graph
 - [ ] Optional Grafana/Chart.js/Highcharts dashboard once comparison metrics are persisted beyond the live response
 - [X] Backend comparison UI with mock metrics
 - [ ] Backend comparison UI with live Spring/Nest/proxy metrics
@@ -319,14 +344,14 @@ Deliverables:
 - [X] Socket.IO client
 - [ ] Copy-on-write Map update
 - [ ] Redis cache hit/miss panel
-- [ ] Angular native enter/exit animation utilities for shared app-shell, list, table, card, and overlay patterns
-- [ ] Route transitions for landing, dashboard, backend comparison, realtime, contract, Map, and SignalStore views
-- [ ] Permission-aware sidebar/nav enter/exit transitions when selected persona changes visible routes
-- [ ] Landing selector transitions for persona, dataset size, backend mode, Compare all, and Explain Mode changes
-- [ ] Dashboard metric/card/chart transitions when dataset or backend mode changes
+- [X] Angular native enter/exit animation utilities for shared app-shell, list, table, card, and overlay patterns
+- [X] Route transitions for landing, dashboard, backend comparison, realtime, contract, Map, and SignalStore views
+- [X] Permission-aware sidebar/nav enter/exit transitions when selected persona changes visible routes
+- [X] Landing selector transitions for persona, dataset size, backend mode, Compare all, and Explain Mode changes
+- [X] Dashboard metric/card/chart transitions when dataset or backend mode changes
 - [ ] PrimeNG table, loading, empty, filtered-result, and detail-dialog transitions for Security Search and Contract Lab
-- [ ] D3/SVG transitions for architecture links, request paths, comparison bars, selected backend path, realtime markers, SignalStore nodes, and OpenAPI tree nodes
-- [ ] Toast, health-check, inline error, runtime status, and Explain Mode overlay transitions
+- [X] D3/SVG transitions for architecture links, request paths, comparison bars, selected backend path, realtime markers, SignalStore nodes, and OpenAPI tree nodes
+- [X] Health-check, inline error, runtime status, and partial status overlay transitions
 - [ ] Reduced-motion fallback styles and Playwright checks for key animated flows
 
 Acceptance criteria:
@@ -352,12 +377,12 @@ Acceptance criteria:
   - Docker uses `SPRING_API_TARGET=http://spring-api:8080`
 - [ ] Realtime `loan.status.updated` event updates dashboard card, table, and chart.
 - [X] Compare-all mode renders metrics for all backend modes.
-- [ ] Explain Mode overlays connect visual explanations to live state.
-- [ ] Enter/exit animation is used in multiple frontend surfaces: route shell, sidebar/nav, selector summaries, dashboard cards, PrimeNG tables, D3/SVG visuals, dialogs, and status messages.
-- [ ] Animated visibility is driven by current persona, permissions, dataset, backend mode, realtime events, or contract state rather than decorative timers.
-- [ ] Motion can be reduced through `prefers-reduced-motion` without losing route, permission, loading, error, or data-update meaning.
+- [X] Explain Mode overlays connect visual explanations to live state.
+- [X] Enter/exit animation is used in multiple frontend surfaces: route shell, sidebar/nav, selector summaries, dashboard cards, PrimeNG tables, D3/SVG visuals, dialogs, and status messages.
+- [X] Animated visibility is driven by current persona, permissions, dataset, backend mode, realtime events, or contract state rather than decorative timers.
+- [X] Motion can be reduced through `prefers-reduced-motion` without losing route, permission, loading, error, or data-update meaning.
 - [ ] Desktop and mobile Playwright smoke tests prove animated surfaces do not overlap, clip text, or block primary controls.
-- [ ] Unit tests cover animation-related ViewModel projection where state determines visible cards, rows, nav links, graph nodes, or warning panels.
+- [X] Unit tests cover animation-related ViewModel projection where state determines visible cards, rows, nav links, graph nodes, or warning panels.
 
 Visualization methodology:
 
@@ -410,15 +435,15 @@ Stories:
 
 Deliverables:
 
-- [ ] `apps/architecture-dashboard/src/styles.scss` becomes the global style entrypoint that imports the shared style layers.
-- [ ] `apps/architecture-dashboard/src/styles/_colors.scss` defines MD3 Express source colors, semantic roles, status colors, chart colors, and PrimeNG token mappings.
-- [ ] `apps/architecture-dashboard/src/styles/_vars.scss` defines spacing, sizing, breakpoints, border radius, elevation, z-index, density, focus rings, and layout constants.
-- [ ] `apps/architecture-dashboard/src/styles/_typography.scss` defines display, headline, title, body, label, numeric, and table text scales without viewport-based font scaling.
-- [ ] `apps/architecture-dashboard/src/styles/_surfaces.scss` defines page backgrounds, panels, cards, app shell, sidebars, toolbars, and section bands.
-- [ ] `apps/architecture-dashboard/src/styles/_components.scss` defines shared PrimeNG, Material-compatible, form, table, chip, button, dialog, tooltip, toast, and overlay overrides.
-- [ ] `apps/architecture-dashboard/src/styles/_animations.scss` centralizes MD3 Express motion tokens, Angular enter/exit classes, reduced-motion fallbacks, and D3/SVG animation variables.
-- [ ] `apps/architecture-dashboard/src/styles/_charts.scss` defines D3, Chart.js, status sparkline, topology graph, and comparison metric color/shape conventions.
-- [ ] `apps/architecture-dashboard/src/styles/_accessibility.scss` defines focus-visible, high-contrast, disabled, error, warning, success, and reduced-motion guardrails.
+- [ ] `apps/architecture-dashboard/src/styles.scss` becomes the global style entrypoint that loads the shared style layers with Sass `@use`.
+- [X] `apps/architecture-dashboard/src/styles/_colors.scss` defines MD3 Express source colors, semantic roles, status colors, chart colors, and PrimeNG token mappings.
+- [X] `apps/architecture-dashboard/src/styles/_vars.scss` defines spacing, sizing, breakpoints, border radius, elevation, z-index, density, focus rings, and layout constants.
+- [X] `apps/architecture-dashboard/src/styles/_typography.scss` defines display, headline, title, body, label, numeric, and table text scales without viewport-based font scaling.
+- [X] `apps/architecture-dashboard/src/styles/_surfaces.scss` defines page backgrounds, panels, cards, app shell, sidebars, toolbars, and section bands.
+- [X] `apps/architecture-dashboard/src/styles/_components.scss` defines shared PrimeNG, Material-compatible, form, table, chip, button, dialog, tooltip, toast, and overlay overrides.
+- [X] `apps/architecture-dashboard/src/styles/_animations.scss` centralizes MD3 Express motion tokens, Angular enter/exit classes, reduced-motion fallbacks, and D3/SVG animation variables.
+- [X] `apps/architecture-dashboard/src/styles/_charts.scss` defines D3, Chart.js, status sparkline, topology graph, and comparison metric color/shape conventions.
+- [X] `apps/architecture-dashboard/src/styles/_accessibility.scss` defines focus-visible, high-contrast, disabled, error, warning, success, and reduced-motion guardrails.
 - [ ] All Angular views are audited and updated to remove hard-coded visual values that belong in shared tokens.
 - [ ] PrimeNG tables, filters, dialogs, menus, tooltips, toasts, cards, and status tags match the MD3 Express token system.
 - [ ] D3/SVG and Chart.js visuals use shared chart/status tokens rather than local color literals.
@@ -427,7 +452,7 @@ Deliverables:
 Acceptance criteria:
 
 - [ ] Every frontend view uses shared style tokens for color, spacing, radius, elevation, focus, and animation.
-- [ ] `styles.scss` imports the style partials in a predictable order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
+- [ ] `styles.scss` loads the style partials with Sass `@use` in a predictable order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
 - [ ] No view-specific SCSS introduces new one-off palette colors, shadows, animation timings, or breakpoints without adding them to the shared style layer first.
 - [ ] PrimeNG overlays, dialogs, dropdowns, tooltips, menus, and toast/snackbar-style messages have verified contrast against their surfaces.
 - [ ] Status colors remain distinguishable for success, warning, error, info, disabled, selected, hover, active, and focus states.

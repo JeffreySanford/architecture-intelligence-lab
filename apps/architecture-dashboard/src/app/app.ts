@@ -64,6 +64,18 @@ export class App implements OnInit {
       permission: 'dashboard:view',
     },
     {
+      label: 'SignalStore Inspector',
+      route: '/lab/signal-store-inspector',
+      description: 'Computed state',
+      permission: 'diagnostics:view',
+    },
+    {
+      label: 'Architecture Flow',
+      route: '/lab/architecture-flow',
+      description: 'Backend request paths',
+      permission: 'dashboard:view',
+    },
+    {
       label: 'Backend Comparison',
       route: '/lab/backend-comparison',
       description: 'Spring, Nest, proxy',

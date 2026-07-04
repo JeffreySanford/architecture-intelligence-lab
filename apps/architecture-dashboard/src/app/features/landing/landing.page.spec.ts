@@ -49,6 +49,7 @@ class MockAuthStore {
 class MockDashboardStore {
   readonly selectedDataset = signal<DatasetSize>('small');
   readonly selectedBackendMode = signal<BackendMode>('spring-direct');
+  readonly explainMode = signal(false);
 }
 
 describe('LandingPage', () => {
@@ -135,6 +136,7 @@ describe('LandingPage', () => {
     expect(authStore.selectPersona).toHaveBeenCalledWith('grace-realtime-operator');
     expect(dashboardStore.selectedDataset()).toBe('large');
     expect(dashboardStore.selectedBackendMode()).toBe('nest-proxy');
+    expect(dashboardStore.explainMode()).toBe(true);
     expect(navigateSpy).toHaveBeenCalledWith(
       ['/lab/dashboard'],
       {

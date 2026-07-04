@@ -4,7 +4,7 @@
 }
 
 .admin-page__eyebrow {
-  color: var(--text-secondary);
+  color: var(--color-text-muted);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 0.25rem;
@@ -35,7 +35,7 @@
 }
 
 .admin-page__artifact-card-links a {
-  color: var(--text-link);
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -44,11 +44,11 @@
 }
 
 .admin-page__artifact-separator {
-  color: var(--text-secondary);
+  color: var(--color-text-muted);
 }
 
 .admin-page__summary-label {
-  color: var(--text-secondary);
+  color: var(--color-text-muted);
 }
 
 .admin-page__card-header {
@@ -64,5 +64,5 @@
 }
 
 .admin-page__card-subtitle {
-  color: var(--text-secondary);
+  color: var(--color-text-muted);
 }

@@ -5,13 +5,13 @@
 
 .lab-shell {
   min-height: 100vh;
-  background: #f7f8fb;
+  background: var(--color-bg);
 }
 
 .lab-shell__nav {
   width: 292px;
-  border-right: 1px solid #d8dce6;
-  background: #ffffff;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .lab-shell__brand {
@@ -25,14 +25,14 @@
 
 .lab-shell__brand p {
   margin: 10px 0 0;
-  color: #5d6575;
+  color: var(--color-text-muted);
   font-size: 0.875rem;
 }
 
 .lab-shell__nav-divider {
   height: 1px;
   margin: 0 16px;
-  background: #e5e9f0;
+  background: var(--color-border);
 }
 
 .lab-shell__nav-list {
@@ -45,14 +45,14 @@
   padding: 14px 16px;
   margin-bottom: 8px;
   text-align: left;
-  border-radius: 10px;
-  color: #172033;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
 }
 
 .lab-shell__nav-item--active,
 .lab-shell__nav-item:hover,
 .lab-shell__nav-item:focus-visible {
-  background: #e7f0ff;
+  background: var(--color-surface-alt);
 }
 
 .lab-shell__nav-item-label {
@@ -63,7 +63,7 @@
 .lab-shell__nav-item-description {
   display: block;
   margin-top: 4px;
-  color: #5d6575;
+  color: var(--color-text-muted);
   font-size: 0.9rem;
 }
 
@@ -75,9 +75,9 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  border-bottom: 1px solid #d8dce6;
-  background: #ffffff;
-  color: #172033;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
 .lab-shell__spacer {
@@ -86,7 +86,7 @@
 
 .lab-shell__persona {
   margin-right: 16px;
-  color: #4f5868;
+  color: var(--color-text-muted);
   font-size: 0.875rem;
   white-space: nowrap;
 }

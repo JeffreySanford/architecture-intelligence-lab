@@ -1,0 +1,54 @@
+<section class="architecture-flow">
+  <p class="architecture-flow__eyebrow">Architecture graph</p>
+  <h1>Architecture Flow</h1>
+  <p>
+    Visualize how Angular, Spring, Nest, PostgreSQL, Redis, and inspection tools connect across request paths.
+  </p>
+
+  @if (explainMode(); as explain) {
+    <p-card class="architecture-flow__explain-card" animate.enter="enter" animate.leave="exit">
+      <ng-template pHeader>
+        <span>Explain Mode</span>
+      </ng-template>
+      <p>
+        Explain Mode is active. Select a path and observe how the current selection changes the highlighted architecture flow.
+      </p>
+    </p-card>
+  }
+
+  <div class="architecture-flow__path-controls">
+    @for (path of requestPaths; track path.key) {
+      <button
+        pButton
+        type="button"
+        class="architecture-flow__path-button"
+        [class.architecture-flow__path-button--active]="selectedPath()?.key === path.key"
+        (click)="selectPath(path.key)"
+      >
+        {{ path.label }}
+      </button>
+    }
+  </div>
+
+  @if (selectedPath(); as path) {
+    <section
+      class="architecture-flow__path-details request-path__panel"
+      animate.enter="enter"
+      animate.leave="exit"
+    >
+      <strong>{{ path.label }}</strong>
+      <p>{{ path.description }}</p>
+      <p class="architecture-flow__path-help">
+        The selected request path is highlighted in the graph with SVG path transitions.
+      </p>
+    </section>
+  }
+
+  <div class="architecture-flow__graph-frame">
+    <svg #architectureGraph class="architecture-flow__graph"></svg>
+  </div>
+
+  <div class="architecture-flow__legend">
+    <p>Use the path buttons to highlight backend and tooling flows. Reduced motion is honored by the browser preference.</p>
+  </div>
+</section>

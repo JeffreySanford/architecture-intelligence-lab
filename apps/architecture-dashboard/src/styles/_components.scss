@@ -1,0 +1,17 @@
+/* Shared component styles and PrimeNG overrides */
+.p-button,
+.p-card,
+.p-tag,
+.p-select,
+.p-inputtext,
+.p-dialog {
+  border-radius: var(--radius-sm);
+}
+
+.p-button {
+  font-weight: 700;
+}
+
+.p-tag {
+  font-size: 0.85rem;
+}

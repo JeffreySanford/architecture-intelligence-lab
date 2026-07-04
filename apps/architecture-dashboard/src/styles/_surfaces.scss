@@ -1,0 +1,20 @@
+/* Shared surface styles for cards, panels, and layouts */
+:root {
+  --surface-radius: var(--radius-md);
+  --surface-border: 1px solid var(--color-border);
+}
+
+.app-frame,
+.landing__controls,
+.security-search__filters,
+.security-search__table-card {
+  background: var(--color-surface);
+  border: var(--surface-border);
+  border-radius: var(--surface-radius);
+}
+
+.card,
+.p-card,
+.p-dialog {
+  box-shadow: var(--shadow-sm);
+}

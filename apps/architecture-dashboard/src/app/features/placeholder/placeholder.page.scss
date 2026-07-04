@@ -4,7 +4,7 @@
 
 .placeholder__eyebrow {
   margin: 0 0 8px;
-  color: #355f9f;
+  color: var(--color-primary);
   font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -12,7 +12,7 @@
 
 h1 {
   margin: 0;
-  color: #172033;
+  color: var(--color-text);
   font-size: 2.25rem;
   line-height: 1.12;
 }
@@ -20,12 +20,12 @@ h1 {
 .placeholder > p:not(.placeholder__eyebrow) {
   max-width: 760px;
   margin: 14px 0 24px;
-  color: #4f5868;
+  color: var(--color-text-muted);
 }
 
 .placeholder__card {
   max-width: 640px;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
 }
 
 .placeholder__card-title-group {
@@ -40,7 +40,7 @@ h1 {
 }
 
 .placeholder__card-subtitle {
-  color: #5d6575;
+  color: var(--color-text-muted);
 }
 
 .placeholder__status-chips {

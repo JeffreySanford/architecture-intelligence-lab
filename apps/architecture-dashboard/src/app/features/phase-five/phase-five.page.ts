@@ -90,6 +90,7 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
   protected readonly realtimeError = signal<string | null>(null);
   protected readonly realtimeLoading = signal(false);
   protected readonly realtimeEmitLoading = signal(false);
+  protected readonly highlightedRealtimeEventId = signal<string | null>(null);
   protected readonly socketConnected = signal(false);
   protected readonly socketError = signal<string | null>(null);
   protected readonly realtimeReadsLoading = signal(false);
@@ -97,6 +98,7 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
   protected readonly nestProxyReads = signal<GatewayLoanReadDto | null>(null);
   protected readonly selectedDataset = this.dashboardStore.selectedDataset;
   protected readonly selectedBackendMode = this.dashboardStore.selectedBackendMode;
+  protected readonly explainMode = this.dashboardStore.explainMode;
   protected readonly currentUser = this.authStore.currentUser;
   protected readonly canViewComparison = computed(() =>
     this.authStore.hasPermission('backend-comparison:view'),
@@ -510,6 +512,19 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
+    const getCssVar = (name: string) =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '';
+
+    const chartColors = {
+      axis: getCssVar('--color-chart-axis') || '#374151',
+      muted: getCssVar('--color-chart-muted') || '#5d6575',
+      grid: getCssVar('--color-chart-grid') || '#cbd5e1',
+      latency: getCssVar('--color-latency') || '#2563eb',
+      payload: getCssVar('--color-payload') || '#7c3aed',
+      records: getCssVar('--color-records') || '#15803d',
+      surface: getCssVar('--color-surface') || '#ffffff',
+    };
+
     const metrics = this.comparisonMetrics();
     const host = svgElement.parentElement;
     const width = Math.max(host?.clientWidth ?? 760, 360);
@@ -518,10 +533,13 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     const series = [
-      { key: 'latencyMs', label: 'Latency ms', color: '#2563eb' },
-      { key: 'payloadBytes', label: 'Payload bytes', color: '#7c3aed' },
-      { key: 'recordCount', label: 'Records', color: '#15803d' },
+      { key: 'latencyMs', label: 'Latency ms', color: chartColors.latency },
+      { key: 'payloadBytes', label: 'Payload bytes', color: chartColors.payload },
+      { key: 'recordCount', label: 'Records', color: chartColors.records },
     ] as const;
+
+    const prefersReducedMotion = this.prefersReducedMotion();
+    svgElement.dataset['prefersReducedMotion'] = String(prefersReducedMotion);
 
     const svg = d3
       .select(svgElement)
@@ -540,7 +558,7 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
         .attr('x', width / 2)
         .attr('y', height / 2)
         .attr('text-anchor', 'middle')
-        .attr('fill', '#5d6575')
+        .attr('fill', chartColors.muted)
         .attr('font-size', 14)
         .text('No comparison metrics available');
       return;
@@ -588,10 +606,10 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
           .tickFormat((pathId) => metrics.find((metric) => metric.pathId === pathId)?.label ?? pathId),
       )
       .call((axis) => {
-        axis.selectAll('path,line').attr('stroke', '#cbd5e1');
+        axis.selectAll('path,line').attr('stroke', chartColors.grid);
         axis
           .selectAll('text')
-          .attr('fill', '#374151')
+          .attr('fill', chartColors.axis)
           .attr('font-size', 11)
           .attr('font-weight', 700);
       });
@@ -600,32 +618,74 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
       .append('g')
       .call(d3.axisLeft(y).ticks(4).tickFormat((value) => `${Number(value) * 100}%`))
       .call((axis) => {
-        axis.selectAll('path,line').attr('stroke', '#cbd5e1');
-        axis.selectAll('text').attr('fill', '#5d6575').attr('font-size', 11);
+        axis.selectAll('path,line').attr('stroke', chartColors.grid);
+        axis.selectAll('text').attr('fill', chartColors.muted).attr('font-size', 11);
       });
 
     chart
       .append('text')
       .attr('x', 0)
       .attr('y', -10)
-      .attr('fill', '#374151')
+      .attr('fill', chartColors.axis)
       .attr('font-size', 12)
       .attr('font-weight', 700)
       .text('Normalized within each metric');
 
-    chart
-      .selectAll('rect')
-      .data(normalizedRows)
-      .join('rect')
-      .attr('x', (row) => (xPath(row.pathId) ?? 0) + (xSeries(row.series) ?? 0))
-      .attr('y', (row) => y(row.normalizedValue))
-      .attr('width', xSeries.bandwidth())
-      .attr('height', (row) => innerHeight - y(row.normalizedValue))
-      .attr('rx', 4)
-      .attr('fill', (row) => row.color)
-      .attr('opacity', (row) => row.pathId === this.selectedComparisonPath() ? 1 : 0.64)
-      .append('title')
-      .text((row) => `${row.pathLabel} ${row.series}: ${row.rawValue}`);
+    const selectedPath = this.selectedComparisonPath();
+    const barSelection = chart
+      .selectAll<SVGRectElement, { pathId: ComparisonPathId; series: string }>('rect')
+      .data(normalizedRows, (row) => `${row.pathId}-${row.series}`)
+      .join(
+        (enter) =>
+          enter
+            .append('rect')
+            .attr('class', 'phase-five__comparison-bar')
+            .attr('x', (row) => (xPath(row.pathId) ?? 0) + (xSeries(row.series) ?? 0))
+            .attr('y', innerHeight)
+            .attr('width', xSeries.bandwidth())
+            .attr('height', 0)
+            .attr('rx', 4)
+            .attr('fill', (row) => row.color)
+            .attr('opacity', (row) => (row.pathId === selectedPath ? 1 : 0.64))
+            .classed('phase-five__comparison-bar--selected', (row) => row.pathId === selectedPath)
+            .call((enter) => {
+              if (!prefersReducedMotion) {
+                enter
+                  .transition()
+                  .duration(420)
+                  .attr('y', (row) => y(row.normalizedValue))
+                  .attr('height', (row) => innerHeight - y(row.normalizedValue));
+              } else {
+                enter
+                  .attr('y', (row) => y(row.normalizedValue))
+                  .attr('height', (row) => innerHeight - y(row.normalizedValue));
+              }
+            }),
+        (update) =>
+          update.call((update) => {
+            update
+              .attr('opacity', (row) => (row.pathId === selectedPath ? 1 : 0.64))
+              .classed('phase-five__comparison-bar--selected', (row) => row.pathId === selectedPath);
+            if (!prefersReducedMotion) {
+              update
+                .transition()
+                .duration(320)
+                .attr('x', (row) => (xPath(row.pathId) ?? 0) + (xSeries(row.series) ?? 0))
+                .attr('y', (row) => y(row.normalizedValue))
+                .attr('width', xSeries.bandwidth())
+                .attr('height', (row) => innerHeight - y(row.normalizedValue));
+            } else {
+              update
+                .attr('x', (row) => (xPath(row.pathId) ?? 0) + (xSeries(row.series) ?? 0))
+                .attr('y', (row) => y(row.normalizedValue))
+                .attr('width', xSeries.bandwidth())
+                .attr('height', (row) => innerHeight - y(row.normalizedValue));
+            }
+          }),
+        (exit) => exit.remove(),
+      );
+
+    barSelection.append('title').text((row) => `${row.pathLabel} ${row.series}: ${row.rawValue}`);
 
     chart
       .selectAll('text.phase-five__chart-value')
@@ -661,7 +721,7 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
       .append('text')
       .attr('x', 18)
       .attr('y', 10)
-      .attr('fill', '#374151')
+      .attr('fill', chartColors.axis)
       .attr('font-size', 12)
       .text((item) => item.label);
   }
@@ -769,6 +829,8 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
             event,
             ...events.filter((existing) => existing.eventId !== event.eventId),
           ]);
+          this.highlightedRealtimeEventId.set(event.eventId);
+          setTimeout(() => this.highlightedRealtimeEventId.set(null), 1400);
           this.realtimeEmitLoading.set(false);
         },
         error: () => {
@@ -798,6 +860,8 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
 
     this.socket.on('loan.status.updated', (event: RealtimeEventDto) => {
       this.realtimeEvents.update((events) => [event, ...events.filter((existing) => existing.eventId !== event.eventId)]);
+      this.highlightedRealtimeEventId.set(event.eventId);
+      setTimeout(() => this.highlightedRealtimeEventId.set(null), 1400);
     });
 
     this.socket.on('connect_error', (error: Error) => {
@@ -841,10 +905,33 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
       { source: 'nest', target: 'swagger', label: 'docs', pathId: 'swagger-docs' },
     ];
 
+    const getCssVar = (name: string) =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '';
+
+    const flowColors = {
+      client: getCssVar('--color-flow-client') || '#2563eb',
+      spring: getCssVar('--color-flow-spring') || '#15803d',
+      nest: getCssVar('--color-flow-nest') || '#7c3aed',
+      redis: getCssVar('--color-flow-redis') || '#dc2626',
+      docs: getCssVar('--color-flow-docs') || '#b45309',
+      link: getCssVar('--color-chart-flow-link') || '#b7c0d1',
+      label: getCssVar('--color-text-muted') || '#4f5868',
+      nodeStroke: getCssVar('--color-chart-node-stroke') || '#ffffff',
+    };
+
     const color = d3
       .scaleOrdinal<FlowNode['group'], string>()
       .domain(['client', 'spring', 'nest', 'redis', 'docs'])
-      .range(['#2563eb', '#15803d', '#7c3aed', '#dc2626', '#b45309']);
+      .range([
+        flowColors.client,
+        flowColors.spring,
+        flowColors.nest,
+        flowColors.redis,
+        flowColors.docs,
+      ]);
+
+    const prefersReducedMotion = this.prefersReducedMotion();
+    svgElement.dataset['prefersReducedMotion'] = String(prefersReducedMotion);
 
     const svg = d3
       .select(svgElement)
@@ -859,20 +946,32 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
 
     const linkGroup = svg
       .append('g')
-      .attr('stroke', '#b7c0d1')
+      .attr('stroke', flowColors.link)
       .attr('stroke-width', 1.5);
-    const labelGroup = svg.append('g').attr('fill', '#4f5868');
+    const labelGroup = svg.append('g').attr('fill', flowColors.label);
     const nodeGroup = svg.append('g');
 
     const link = linkGroup
       .selectAll('line')
       .data(links)
       .join('line')
-      .attr('stroke', (item) => this.linkStroke(item))
-      .attr('stroke-width', (item) => this.linkStrokeWidth(item))
+      .attr('stroke', flowColors.link)
+      .attr('stroke-width', 1.5)
       .attr('stroke-dasharray', (item) =>
         item.label === 'emit' || item.label === 'adapter' ? '5 5' : '0',
       );
+
+    if (!prefersReducedMotion) {
+      link
+        .transition()
+        .duration(260)
+        .attr('stroke', (item) => this.linkStroke(item))
+        .attr('stroke-width', (item) => this.linkStrokeWidth(item));
+    } else {
+      link
+        .attr('stroke', (item) => this.linkStroke(item))
+        .attr('stroke-width', (item) => this.linkStrokeWidth(item));
+    }
 
     const linkLabel = labelGroup
       .selectAll('text')
@@ -892,7 +991,7 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
       .append('circle')
       .attr('r', 30)
       .attr('fill', (item) => color(item.group))
-      .attr('stroke', '#ffffff')
+      .attr('stroke', flowColors.nodeStroke)
       .attr('stroke-width', 3);
 
     node
@@ -909,45 +1008,83 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
       .attr('dy', (_text, index) => (index === 0 ? '-0.3em' : '1.15em'))
       .text((text) => text);
 
-    this.simulation = d3
-      .forceSimulation<FlowNode>(nodes)
-      .force(
-        'link',
-        d3
-          .forceLink<FlowNode, FlowLink>(links)
-          .id((item) => item.id)
-          .distance(width < 680 ? 92 : 130),
-      )
-      .force('charge', d3.forceManyBody().strength(-430))
-      .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide<FlowNode>().radius(48))
-      .on('tick', () => {
-        link
-          .attr('x1', (item) => this.nodeX(item.source))
-          .attr('y1', (item) => this.nodeY(item.source))
-          .attr('x2', (item) => this.nodeX(item.target))
-          .attr('y2', (item) => this.nodeY(item.target));
+    const fixedPositions = [
+      [width * 0.18, height * 0.25],
+      [width * 0.82, height * 0.25],
+      [width * 0.18, height * 0.7],
+      [width * 0.5, height * 0.7],
+      [width * 0.82, height * 0.7],
+      [width * 0.34, height * 0.12],
+      [width * 0.15, height * 0.9],
+      [width * 0.85, height * 0.12],
+    ];
 
-        linkLabel
-          .attr(
-            'x',
-            (item) => (this.nodeX(item.source) + this.nodeX(item.target)) / 2,
-          )
-          .attr(
-            'y',
-            (item) => (this.nodeY(item.source) + this.nodeY(item.target)) / 2,
-          );
-
-        node.attr(
-          'transform',
-          (item) =>
-            `translate(${this.clamp(item.x ?? width / 2, 40, width - 40)}, ${this.clamp(
-              item.y ?? height / 2,
-              40,
-              height - 40,
-            )})`,
-        );
+    if (prefersReducedMotion) {
+      nodes.forEach((item, index) => {
+        item.x = fixedPositions[index][0];
+        item.y = fixedPositions[index][1];
       });
+
+      link
+        .attr('x1', (item) => this.nodeX(item.source))
+        .attr('y1', (item) => this.nodeY(item.source))
+        .attr('x2', (item) => this.nodeX(item.target))
+        .attr('y2', (item) => this.nodeY(item.target));
+
+      linkLabel
+        .attr('x', (item) => (this.nodeX(item.source) + this.nodeX(item.target)) / 2)
+        .attr('y', (item) => (this.nodeY(item.source) + this.nodeY(item.target)) / 2);
+
+      node.attr(
+        'transform',
+        (item) =>
+          `translate(${this.clamp(item.x ?? width / 2, 40, width - 40)}, ${this.clamp(
+            item.y ?? height / 2,
+            40,
+            height - 40,
+          )})`,
+      );
+    } else {
+      this.simulation = d3
+        .forceSimulation<FlowNode>(nodes)
+        .force(
+          'link',
+          d3
+            .forceLink<FlowNode, FlowLink>(links)
+            .id((item) => item.id)
+            .distance(width < 680 ? 92 : 130),
+        )
+        .force('charge', d3.forceManyBody().strength(-430))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('collision', d3.forceCollide<FlowNode>().radius(48))
+        .on('tick', () => {
+          link
+            .attr('x1', (item) => this.nodeX(item.source))
+            .attr('y1', (item) => this.nodeY(item.source))
+            .attr('x2', (item) => this.nodeX(item.target))
+            .attr('y2', (item) => this.nodeY(item.target));
+
+          linkLabel
+            .attr(
+              'x',
+              (item) => (this.nodeX(item.source) + this.nodeX(item.target)) / 2,
+            )
+            .attr(
+              'y',
+              (item) => (this.nodeY(item.source) + this.nodeY(item.target)) / 2,
+            );
+
+          node.attr(
+            'transform',
+            (item) =>
+              `translate(${this.clamp(item.x ?? width / 2, 40, width - 40)}, ${this.clamp(
+                item.y ?? height / 2,
+                40,
+                height - 40,
+              )})`,
+          );
+        });
+    }
   }
 
   private wrapLabel(label: string): string[] {
@@ -980,5 +1117,11 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
 
   private linkStrokeWidth(link: FlowLink): number {
     return link.pathId === this.selectedComparisonPath() ? 3 : 1.5;
+  }
+
+  private prefersReducedMotion(): boolean {
+    return typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
   }
 }

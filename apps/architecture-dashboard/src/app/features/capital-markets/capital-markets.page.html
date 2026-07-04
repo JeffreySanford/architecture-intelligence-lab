@@ -6,8 +6,19 @@
     and disclosure status in a capital markets workflow.
   </p>
 
-  <section class="capital-markets__controls">
-    <div class="table-toolbar">
+  @if (explainMode(); as explain) {
+    <p-card class="capital-markets__explain-card" animate.enter="enter" animate.leave="exit">
+      <ng-template pHeader>
+        <span>Explain Mode</span>
+      </ng-template>
+      <p>
+        Explain Mode is active. The table rows are derived from the same dashboard snapshot state as the loan cards.
+      </p>
+    </p-card>
+  }
+
+  <section class="capital-markets__controls" animate.enter="enter" animate.leave="exit">
+    <div class="table-toolbar capital-markets__toolbar">
       <p-select
         ngDefaultControl
         [options]="statusOptions"
@@ -17,7 +28,6 @@
         optionValue="value"
         placeholder="Commitment type"
       ></p-select>
-      <span class="capital-markets__spacer"></span>
       <div class="capital-markets__search">
         <span>Global filter</span>
         <input
@@ -31,7 +41,7 @@
     </div>
   </section>
 
-  <p-card class="capital-markets__table-card">
+  <p-card class="capital-markets__table-card" animate.enter="enter" animate.leave="exit">
     <ng-template pHeader>
       <div class="capital-markets__table-header">
         <div>

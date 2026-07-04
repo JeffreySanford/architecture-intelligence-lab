@@ -55,8 +55,37 @@
   font-weight: 600;
 }
 
+.infrastructure__health-card,
+.infrastructure__links-card,
+.infrastructure__route-card,
+.infrastructure__ports-card {
+  transition: box-shadow var(--motion-duration-fast) var(--motion-ease),
+    transform var(--motion-duration-fast) var(--motion-ease),
+    background var(--motion-duration-fast) var(--motion-ease);
+  will-change: transform, box-shadow, background;
+}
+
+.infrastructure__health-card:hover,
+.infrastructure__links-card:hover,
+.infrastructure__route-card:hover,
+.infrastructure__ports-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
 .infrastructure__proxy-url {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infrastructure__health-card,
+  .infrastructure__links-card,
+  .infrastructure__route-card,
+  .infrastructure__ports-card {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
 }
 
 .infrastructure__status-tag {
@@ -65,5 +94,5 @@
 
 
 .infrastructure__error {
-  color: #b00020;
+  color: var(--color-danger);
 }

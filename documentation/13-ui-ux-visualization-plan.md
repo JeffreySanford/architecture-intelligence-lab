@@ -24,7 +24,7 @@ D3 remains important for topology and relationship explanations. It should not d
 
 The styling system should make the app feel vibrant, consistent, and purposeful while preserving the density expected from Capital Markets and architecture-lab workflows. Material Design 3 Express is the visual direction, applied through shared SCSS tokens and component overrides rather than page-by-page styling.
 
-`apps/architecture-dashboard/src/styles.scss` should remain the global entrypoint and import the shared layers from `apps/architecture-dashboard/src/styles/` in this order:
+`apps/architecture-dashboard/src/styles.scss` should remain the global entrypoint and load the shared layers from `apps/architecture-dashboard/src/styles/` with Sass `@use` in this order:
 
 - `_colors.scss`
 - `_vars.scss`

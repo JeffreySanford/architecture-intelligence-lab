@@ -4,7 +4,7 @@
 
 .dashboard__eyebrow {
   margin: 0 0 8px;
-  color: #355f9f;
+  color: var(--color-primary);
   font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -12,7 +12,7 @@
 
 h1 {
   margin: 0;
-  color: #172033;
+  color: var(--color-text);
   font-size: 2.25rem;
   line-height: 1.12;
 }
@@ -20,12 +20,22 @@ h1 {
 .dashboard > p:not(.dashboard__eyebrow, .dashboard__error) {
   max-width: 780px;
   margin: 14px 0 24px;
-  color: #4f5868;
+  color: var(--color-text-muted);
 }
 
 .dashboard__error {
-  color: #a32222;
+  color: var(--color-danger);
   font-weight: 700;
+}
+
+.dashboard__explain-card {
+  margin: 18px 0 24px;
+  border-radius: var(--radius-lg);
+}
+
+.dashboard__explain-card p {
+  margin: 0;
+  color: var(--color-text-muted);
 }
 
 .dashboard__cards {
@@ -37,7 +47,7 @@ h1 {
 
 
 .dashboard__card {
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
 }
 
 .dashboard__card-header {
@@ -52,13 +62,13 @@ h1 {
 }
 
 .dashboard__card-subtitle {
-  color: #5d6575;
+  color: var(--color-text-muted);
   font-size: 0.95rem;
 }
 
 .dashboard__amount {
   margin: 18px 0 8px;
-  color: #172033;
+  color: var(--color-text);
   font-size: 1.5rem;
   font-weight: 700;
 }

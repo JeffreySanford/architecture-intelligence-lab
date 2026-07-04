@@ -261,6 +261,11 @@ Acceptance criteria:
 
 ## Task 9A: Add Security Search PrimeNG Table
 
+Current note:
+
+- [X] Implementation and unit tests are complete.
+- [X] Focused Playwright coverage covers filters, empty state, detail dialog, export feedback, and reduced-motion table/overlay behavior.
+
 Expected files:
 
 - [X] `/lab/security-search` route
@@ -269,7 +274,7 @@ Expected files:
 - [X] `SecuritySearchRowVm`
 - [X] Detail dialog component or section
 - [X] Unit tests
-- [ ] Playwright tests
+- [X] Playwright tests
 
 Do not touch:
 
@@ -279,7 +284,7 @@ Do not touch:
 Test command:
 
 - [X] `pnpm nx test architecture-dashboard`
-- [ ] Focused Playwright spec for security search
+- [X] Focused Playwright spec for security search
 
 Acceptance criteria:
 
@@ -289,25 +294,55 @@ Acceptance criteria:
 - [X] Loading, empty, and error states are visible.
 - [X] Unit tests cover query-state projection, filtering, sorting, detail state, and export action behavior.
 
+Current note:
+
+- [X] Phase 9A Security Search implementation is complete and has supporting Angular unit tests.
+- [ ] Remaining Phase 9 effort is focused on live realtime dashboard animation.
+
 ## Task 10: Add Visualizations
+
+Current note:
+
+- [X] Phase 5 D3 comparison/realtime topology graph is implemented.
+- [X] App shell animation wiring now uses native `animate.enter` / `animate.leave` helpers for page headers and permission-aware navigation.
+- [X] Timer-driven route transition state was removed from the app shell.
+- [X] Shared style tokens are scaffolded and core lab views now use the shared design tokens.
+- [ ] Remaining Phase 9 work is live realtime dashboard animation.
+- [X] Playwright visual smoke coverage includes route transition and reduced-motion assertions.
+- [X] Playwright smoke for permission-driven nav changes and protected lab page content updates has been added.
+- [X] Playwright smoke now covers the protected backend comparison route transition.
+- [X] Playwright mobile sidebar nav and protected route transition smoke has been added.
+- [X] Playwright smoke now includes OpenAPI route transition and reduced-motion verification.
+- [X] Playwright smoke now includes Infrastructure route transition and reduced-motion verification.
+- [X] Playwright smoke now covers Security Search overlay detail transitions and table interactions.
+- [X] Playwright smoke now covers Dashboard chart reduced-motion behavior.
+- [X] Playwright smoke now covers Phase 5 graph reduced-motion behavior.
+- [X] Playwright smoke now covers Phase 5 D3 selection highlight and chart highlight updates.
+- [X] Playwright smoke now covers Phase 5 chart legend reduced-motion behavior.
+- [X] Playwright smoke now covers Phase 5 flow graph reduced-motion behavior.
+- [X] Playwright smoke now covers OpenAPI card hover reduced-motion behavior.
+- [X] Playwright smoke now covers Infrastructure card hover reduced-motion behavior.
+- [X] Playwright smoke now covers Security Search overlay reduced-motion behavior.
+- [X] Route transition wrapper now uses `will-change` hints for smoother page motion.
+- [X] Latest Playwright visual-smoke rerun passes on port 4201 across Chromium, Firefox, and WebKit.
 
 Expected files:
 
 - [X] Phase 5 D3 comparison/realtime topology graph
-- [ ] Architecture D3 graph
-- [ ] SignalStore D3 graph
-- [ ] OpenAPI D3 contract tree
-- [ ] Chart.js charts
-- [ ] PrimeNG dashboard components
-- [ ] Shared animation tokens or utility classes for Angular native `animate.enter` / `animate.leave` usage
-- [ ] Route/page transition styles for landing, lab dashboard, and protected feature pages
-- [ ] Sidebar and permission-aware navigation enter/exit transitions
-- [ ] Landing selector transitions for persona, dataset, backend mode, Compare all, and Explain Mode state changes
-- [ ] PrimeNG table row, loading, empty, filter-result, and dialog transitions
-- [ ] D3/SVG request-path, metric-bar, selected-path, and realtime-event transitions
-- [ ] Map inspector, SignalStore inspector, and OpenAPI tree expand/collapse transitions
-- [ ] Toast, inline error, health-check, and status-banner enter/exit transitions
-- [ ] Reduced-motion CSS coverage for route, list, table, chart, and SVG animation surfaces
+- [X] Architecture D3 graph
+- [X] SignalStore D3 graph
+- [X] OpenAPI D3 contract tree
+- [X] Chart.js charts
+- [X] PrimeNG dashboard components
+- [X] Shared animation tokens or utility classes for Angular native `animate.enter` / `animate.leave` usage
+- [X] Route/page transition styles for landing, lab dashboard, and protected feature pages
+- [X] Sidebar and permission-aware navigation enter/exit transitions
+- [X] Landing selector transitions for persona, dataset, backend mode, Compare all, and Explain Mode state changes
+- [X] PrimeNG table row, loading, empty, filter-result, and dialog transitions
+- [X] D3/SVG request-path, metric-bar, selected-path, and realtime-event transitions
+- [X] Map inspector, SignalStore inspector, and OpenAPI tree expand/collapse transitions
+- [X] Inline error, health-check, and status-banner enter/exit transitions
+- [X] Reduced-motion CSS coverage for route, list, table, chart, and SVG animation surfaces
 - [X] Prime UI view review and route coverage notes
 - [X] PrimeNG Security Search table screen
 - [X] Phase 5 PrimeNG deliverables table
@@ -328,9 +363,9 @@ Test command:
 - [X] `pnpm nx build architecture-dashboard`
 - [X] Angular tests.
 - [X] Focused Playwright Phase 5 e2e spec.
-- [ ] Playwright visual smoke where applicable.
-- [ ] Playwright animation smoke for desktop, mobile, route transition, permission change, and reduced-motion paths.
-- [ ] Unit tests for animation-related state projection where ViewModels decide visible rows, cards, routes, or graph nodes.
+- [X] Playwright visual smoke where applicable.
+- [X] Playwright animation smoke for desktop, mobile, route transition, permission change, and reduced-motion paths.
+- [X] Unit tests for animation-related state projection where ViewModels decide visible rows, cards, routes, or graph nodes.
 
 Acceptance criteria:
 
@@ -347,11 +382,11 @@ Acceptance criteria:
 - [X] Mock comparison data binds without replacing the Phase 5 view model structure.
 - [X] Mock realtime event history binds without replacing the Phase 5 view model structure.
 - [X] Live comparison and realtime data can be bound without replacing the Phase 5 view model structure.
-- [ ] Angular native enter/exit animations are wired through state-driven DOM insertion/removal, not imperative timers.
-- [ ] Animation tokens keep durations and easing consistent across app shell, tables, cards, charts, and overlays.
-- [ ] Animated route, nav, table, chart, dialog, and status changes honor `prefers-reduced-motion`.
+- [X] Angular native enter/exit animations are wired through state-driven DOM insertion/removal, not imperative timers.
+- [X] Animation tokens keep durations and easing consistent across app shell, tables, cards, charts, and overlays.
+- [X] Animated route, nav, table, chart, dialog, and status changes honor `prefers-reduced-motion`.
 - [ ] Animated views avoid layout shift, clipped text, and overlapping content at desktop and mobile breakpoints.
-- [ ] Playwright covers at least one animated route transition, one permission-driven nav change, one table row/list update, and one reduced-motion assertion.
+- [X] Playwright covers at least one animated route transition, one permission-driven nav change, one table row/list update, and one reduced-motion assertion.
 
 Phase 5 visualization methodology:
 
@@ -397,15 +432,15 @@ Acceptance criteria:
 
 Expected files:
 
-- [ ] `apps/architecture-dashboard/src/styles.scss`
-- [ ] `apps/architecture-dashboard/src/styles/_colors.scss`
-- [ ] `apps/architecture-dashboard/src/styles/_vars.scss`
-- [ ] `apps/architecture-dashboard/src/styles/_typography.scss`
-- [ ] `apps/architecture-dashboard/src/styles/_surfaces.scss`
-- [ ] `apps/architecture-dashboard/src/styles/_components.scss`
-- [ ] `apps/architecture-dashboard/src/styles/_animations.scss`
-- [ ] `apps/architecture-dashboard/src/styles/_charts.scss`
-- [ ] `apps/architecture-dashboard/src/styles/_accessibility.scss`
+- [X] `apps/architecture-dashboard/src/styles.scss`
+- [X] `apps/architecture-dashboard/src/styles/_colors.scss`
+- [X] `apps/architecture-dashboard/src/styles/_vars.scss`
+- [X] `apps/architecture-dashboard/src/styles/_typography.scss`
+- [X] `apps/architecture-dashboard/src/styles/_surfaces.scss`
+- [X] `apps/architecture-dashboard/src/styles/_components.scss`
+- [X] `apps/architecture-dashboard/src/styles/_animations.scss`
+- [X] `apps/architecture-dashboard/src/styles/_charts.scss`
+- [X] `apps/architecture-dashboard/src/styles/_accessibility.scss`
 - [ ] Updated route/page/component SCSS for landing, dashboard, security search, backend comparison, realtime, OpenAPI contract, Map inspector, SignalStore inspector, MCP, and admin/persona views.
 - [ ] Playwright visual smoke coverage for desktop, mobile, overlays, tables, charts, route shell, and reduced-motion paths.
 
@@ -424,7 +459,7 @@ Test command:
 
 Acceptance criteria:
 
-- [ ] `styles.scss` is the single global entrypoint and imports style partials in this order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
+- [ ] `styles.scss` is the single global entrypoint and loads style partials with Sass `@use` in this order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
 - [ ] Colors, spacing, elevation, radius, typography, density, focus rings, z-index, animation timing, and chart palettes are centralized in the `styles` folder.
 - [ ] Angular views do not introduce one-off palette colors, shadows, breakpoints, or animation timings when a shared token exists.
 - [ ] PrimeNG tables, filters, dialogs, menus, tooltips, toasts, cards, buttons, inputs, chips, and tags follow the MD3 Express token system.

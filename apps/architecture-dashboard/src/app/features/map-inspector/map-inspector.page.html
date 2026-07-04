@@ -6,6 +6,17 @@
     used by the dashboard cards and table.
   </p>
 
+  @if (explainMode(); as explain) {
+    <p-card class="map-inspector__explain-card" animate.enter="enter" animate.leave="exit">
+      <ng-template pHeader>
+        <span>Explain Mode</span>
+      </ng-template>
+      <p>
+        Explain Mode is active. This view ties the current Map index counts to the dashboard snapshot state.
+      </p>
+    </p-card>
+  }
+
   <div class="map-inspector__summary">
     <p-card class="map-inspector__stat-card">
       <ng-template pHeader>
@@ -27,7 +38,20 @@
     </p-card>
   </div>
 
-  <p-card class="map-inspector__table-card">
+  <p-card class="map-inspector__diagram-card" animate.enter="enter" animate.leave="exit">
+    <ng-template pHeader>
+      <div>
+        <div class="map-inspector__table-title">Map bucket diagram</div>
+        <div class="map-inspector__table-subtitle">Visualize Map and Set bucket counts for application state.</div>
+      </div>
+    </ng-template>
+
+    <div class="map-inspector__diagram-frame">
+      <svg #bucketDiagram class="map-inspector__diagram"></svg>
+    </div>
+  </p-card>
+
+  <p-card class="map-inspector__table-card" animate.enter="enter" animate.leave="exit">
     <ng-template pHeader>
       <div>
         <div class="map-inspector__table-title">Index Rows</div>

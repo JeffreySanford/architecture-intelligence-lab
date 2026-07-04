@@ -130,6 +130,7 @@ export class LandingPage implements OnInit {
 
     this.dashboardStore.selectedDataset.set(dataset);
     this.dashboardStore.selectedBackendMode.set(backend);
+    this.dashboardStore.explainMode.set(this.explainMode());
 
     this.authStore
       .selectPersona(this.selectedPersonaId())

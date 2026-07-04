@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <div class="landing__actions">
+    <div class="landing__actions" animate.enter="scale-enter">
       @if (authStore.currentUser(); as currentUser) {
         <button pButton type="button" class="p-button-outlined" (click)="openCurrentUserLab()">
           Open Current User Lab
@@ -26,12 +26,12 @@
   </section>
 
   @if (authStore.error(); as error) {
-    <p class="landing__error">{{ error }}</p>
+    <p class="landing__error" animate.enter="enter" animate.leave="exit">{{ error }}</p>
   }
 
   <!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
   <section class="landing__controls" aria-label="Lab setup controls">
-    <div class="field">
+    <div class="field" animate.enter="enter">
       <label for="persona-select">JWT persona</label>
       <p-select
         ngDefaultControl
@@ -45,7 +45,7 @@
       ></p-select>
     </div>
 
-    <div class="field">
+    <div class="field" animate.enter="enter">
       <label for="dataset-select">Dataset</label>
       <p-select
         ngDefaultControl
@@ -59,7 +59,7 @@
       ></p-select>
     </div>
 
-    <div class="field">
+    <div class="field" animate.enter="enter">
       <label for="backend-select">Backend mode</label>
       <p-select
         ngDefaultControl
@@ -73,7 +73,7 @@
       ></p-select>
     </div>
 
-    <div class="field field-switch">
+    <div class="field field-switch" animate.enter="enter">
       <p-toggleSwitch
         ngDefaultControl
         [ngModel]="explainMode()"
@@ -87,6 +87,8 @@
     @for (persona of safePersonaList(); track persona.id) {
       <p-card
         class="landing__persona"
+        animate.enter="scale-enter"
+        animate.leave="exit"
         [ngClass]="{ 'landing__persona--selected': persona.id === selectedPersonaId() }"
         (click)="selectPersona(persona.id)"
       >

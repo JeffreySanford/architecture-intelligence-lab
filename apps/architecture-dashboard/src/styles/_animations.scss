@@ -1,0 +1,91 @@
+:root {
+  --motion-duration-fast: 120ms;
+  --motion-duration-medium: 220ms;
+  --motion-duration-slow: 320ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-enter-distance: 12px;
+  --motion-exit-distance: -10px;
+}
+
+.enter,
+.exit {
+  transition: opacity var(--motion-duration-medium) var(--motion-ease),
+    transform var(--motion-duration-medium) var(--motion-ease);
+  will-change: opacity, transform;
+}
+
+.enter {
+  opacity: 1;
+  transform: translateY(0);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(var(--motion-enter-distance));
+  }
+}
+
+.exit {
+  opacity: 0;
+  transform: translateY(var(--motion-exit-distance));
+
+  @starting-style {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.exit-active {
+  opacity: 0;
+  transform: translateY(var(--motion-exit-distance));
+}
+
+.enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide-enter {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--motion-duration-medium) var(--motion-ease),
+    transform var(--motion-duration-medium) var(--motion-ease);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}
+
+.scale-enter {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity var(--motion-duration-medium) var(--motion-ease),
+    transform var(--motion-duration-medium) var(--motion-ease);
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+.row-enter {
+  opacity: 1;
+  transition: opacity var(--motion-duration-fast) var(--motion-ease);
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter,
+  .exit,
+  .enter-active,
+  .exit-active,
+  .slide-enter,
+  .scale-enter,
+  .row-enter {
+    transition: none !important;
+    transform: none !important;
+  }
+}

@@ -1,3 +1,12 @@
+@use './styles/colors';
+@use './styles/vars';
+@use './styles/typography';
+@use './styles/accessibility';
+@use './styles/surfaces';
+@use './styles/components';
+@use './styles/charts';
+@use './styles/animations';
+
 @import 'primeicons/primeicons.css';
 @import 'primeflex/primeflex.css';
 
@@ -9,8 +18,8 @@ body {
 
 body {
   font-family: Inter, Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background: #f7f8fb;
-  color: #172033;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .table-toolbar {

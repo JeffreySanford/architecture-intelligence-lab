@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
         preset: Aura,
       },
     }),
-    provideSpringApi({ withCredentials: true }),
-    provideNestApi({ withCredentials: true }),
+    provideSpringApi({ basePath: '', withCredentials: true }),
+    provideNestApi({ basePath: '', withCredentials: true }),
   ],
 };

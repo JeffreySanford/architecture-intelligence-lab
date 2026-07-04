@@ -2,23 +2,23 @@
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background: #f7f8fb;
-  color: #172033;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .app-frame__header,
 .app-frame__footer {
   width: 100%;
-  background: #ffffff;
-  border-color: #d8dce6;
+  background: var(--color-surface);
+  border-color: var(--color-border);
 }
 
 .app-frame__header {
-  border-bottom: 1px solid #d8dce6;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .app-frame__footer {
-  border-top: 1px solid #d8dce6;
+  border-top: 1px solid var(--color-border);
 }
 
 .app-frame__header-inner,
@@ -41,7 +41,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  color: #172033;
+  color: var(--color-text);
   text-decoration: none;
   min-width: 240px;
 }
@@ -52,8 +52,8 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 0.5rem;
-  background: #172033;
-  color: #ffffff;
+  background: var(--color-text);
+  color: var(--color-surface);
   font-weight: 800;
 }
 
@@ -68,7 +68,7 @@
 .app-frame__page-heading span,
 .app-frame__identity span,
 .app-frame__footer {
-  color: #5d6575;
+  color: var(--color-text-muted);
 }
 
 .app-frame__page-heading {
@@ -96,7 +96,7 @@
 }
 
 .app-frame__identity strong {
-  color: #172033;
+  color: var(--color-text);
 }
 
 .app-frame__body {
@@ -106,8 +106,8 @@
 }
 
 .app-frame__nav {
-  border-right: 1px solid #d8dce6;
-  background: #ffffff;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .app-frame__nav-section {
@@ -120,15 +120,15 @@
   display: block;
   padding: 0.85rem 1rem;
   margin-bottom: 0.5rem;
-  border-radius: 0.5rem;
-  color: #172033;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
   text-decoration: none;
 }
 
 .app-frame__nav-item--active,
 .app-frame__nav-item:hover,
 .app-frame__nav-item:focus-visible {
-  background: #e7f0ff;
+  background: var(--color-surface-alt);
 }
 
 .app-frame__nav-label,
@@ -142,7 +142,7 @@
 
 .app-frame__nav-description {
   margin-top: 0.25rem;
-  color: #5d6575;
+  color: var(--color-text-muted);
   font-size: 0.875rem;
 }
 
@@ -151,14 +151,18 @@
   padding: 1.5rem;
 }
 
+.route-transition {
+  min-width: 0;
+}
+
 .app-frame__main--landing {
-  background: #f7f8fb;
+  background: var(--color-bg);
 }
 
 .app-frame__content-header {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #d8dce6;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .app-frame__content-header h2 {
@@ -167,7 +171,7 @@
 }
 
 .app-frame__content-header span {
-  color: #4f5868;
+  color: var(--color-text-muted);
 }
 
 .app-frame__footer-inner {
@@ -190,7 +194,7 @@
 
   .app-frame__nav {
     border-right: 0;
-    border-bottom: 1px solid #d8dce6;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .app-frame__nav-section {

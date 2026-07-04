@@ -5,6 +5,14 @@
     Inspect generated Angular clients, facade ownership, backend DTO coverage, and the drift checks that keep the lab aligned.
   </p>
   <div class="openapi__artifact-links">
+    @if (explainMode(); as explain) {
+      <p-card class="openapi__explain-card" animate.enter="enter" animate.leave="exit">
+        <ng-template pHeader>
+          <span>Explain Mode</span>
+        </ng-template>
+        <p>Explain Mode is active. Use this page to compare generated client metadata, contract endpoints, and drift boundaries.</p>
+      </p-card>
+    }
     <p><strong>Phase 6.5 artifacts:</strong></p>
     <a [routerLink]="['/lab/security-risk-map']" target="_blank" rel="noopener">
       Security risk map
@@ -16,19 +24,19 @@
   </div>
 
   <div class="openapi__summary" aria-label="OpenAPI contract summary">
-    <p-card>
+    <p-card animate.enter="scale-enter">
       <div class="openapi__metric">
         <span>Generated clients</span>
         <strong>{{ generatedClients().length }}</strong>
       </div>
     </p-card>
-    <p-card>
+    <p-card animate.enter="scale-enter">
       <div class="openapi__metric">
         <span>Contract endpoints</span>
         <strong>{{ contractEndpoints().length }}</strong>
       </div>
     </p-card>
-    <p-card>
+    <p-card animate.enter="scale-enter">
       <div class="openapi__metric">
         <span>Facade boundary</span>
         <strong>Required</strong>
@@ -36,7 +44,7 @@
     </p-card>
   </div>
 
-  <p-card data-testid="openapi-drift-status">
+  <p-card data-testid="openapi-drift-status" animate.enter="enter" animate.leave="exit">
     <ng-template pHeader>
       <div class="openapi__card-header">
         <div>
@@ -55,7 +63,7 @@
     </div>
   </p-card>
 
-  <p-card>
+  <p-card animate.enter="enter" animate.leave="exit">
     <ng-template pHeader>
       <div class="openapi__card-header">
         <div>
@@ -77,6 +85,7 @@
         <a
           class="openapi__link"
           data-testid="swagger-link-row"
+          animate.enter="row-enter"
           [href]="link.href"
           target="_blank"
           rel="noreferrer noopener"
@@ -89,7 +98,7 @@
     </div>
   </p-card>
 
-  <p-card>
+  <p-card animate.enter="enter" animate.leave="exit">
     <ng-template pHeader>
       <div class="openapi__card-header">
         <div>
@@ -129,7 +138,7 @@
         </tr>
       </ng-template>
       <ng-template #body let-client>
-        <tr data-testid="generated-client-row">
+        <tr data-testid="generated-client-row" animate.enter="row-enter">
           <td>{{ client.client }}</td>
           <td>{{ client.source }}</td>
           <td><code>{{ client.facade }}</code></td>
@@ -141,14 +150,14 @@
         </tr>
       </ng-template>
       <ng-template #emptymessage>
-        <tr>
+        <tr animate.enter="row-enter">
           <td colspan="6">No generated clients match the current filter.</td>
         </tr>
       </ng-template>
     </p-table>
   </p-card>
 
-  <p-card>
+  <p-card animate.enter="enter" animate.leave="exit">
     <ng-template pHeader>
       <div class="openapi__card-header">
         <div>
@@ -187,7 +196,7 @@
         </tr>
       </ng-template>
       <ng-template #body let-endpoint>
-        <tr data-testid="contract-endpoint-row">
+        <tr data-testid="contract-endpoint-row" animate.enter="row-enter">
           <td>{{ endpoint.backend }}</td>
           <td><code>{{ endpoint.endpoint }}</code></td>
           <td><code>{{ endpoint.generatedService }}</code></td>
@@ -196,14 +205,29 @@
         </tr>
       </ng-template>
       <ng-template #emptymessage>
-        <tr>
+        <tr animate.enter="row-enter">
           <td colspan="5">No contract endpoints match the current filter.</td>
         </tr>
       </ng-template>
     </p-table>
   </p-card>
 
-  <p-card>
+  <p-card class="openapi__tree-card" animate.enter="enter" animate.leave="exit">
+    <ng-template pHeader>
+      <div class="openapi__card-header">
+        <div>
+          <div class="openapi__card-title">OpenAPI contract tree</div>
+          <div class="openapi__card-subtitle">Explore generated clients, endpoints, and drift boundaries in a D3 tree.</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="openapi__tree-frame">
+      <svg #contractTree class="openapi__tree"></svg>
+    </div>
+  </p-card>
+
+  <p-card animate.enter="enter" animate.leave="exit">
     <ng-template pHeader>
       <div class="openapi__card-header">
         <div>
@@ -242,7 +266,7 @@
         </tr>
       </ng-template>
       <ng-template #body let-boundary>
-        <tr data-testid="drift-boundary-row">
+        <tr data-testid="drift-boundary-row" animate.enter="row-enter">
           <td>{{ boundary.boundary }}</td>
           <td>{{ boundary.protectedBy }}</td>
           <td>{{ boundary.failureSignal }}</td>
@@ -253,7 +277,7 @@
         </tr>
       </ng-template>
       <ng-template #emptymessage>
-        <tr>
+        <tr animate.enter="row-enter">
           <td colspan="5">No drift boundaries match the current filter.</td>
         </tr>
       </ng-template>

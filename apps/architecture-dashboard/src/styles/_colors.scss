@@ -1,0 +1,33 @@
+/* Shared MD3 Express color tokens */
+:root {
+  --color-bg: #f7f8fb;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f2f4f8;
+  --color-surface-alt: #edf1f7;
+  --color-text: #172033;
+  --color-text-muted: #4f5868;
+  --color-primary: #355f9f;
+  --color-primary-strong: #235ea8;
+  --color-success: #2b7a4b;
+  --color-warning: #b07c15;
+  --color-danger: #a32222;
+  --color-info: #2067b5;
+  --color-border: #d8dce6;
+  --color-shadow: rgba(23, 32, 51, 0.08);
+  --color-primary-soft: rgba(53, 95, 159, 0.12);
+  --color-primary-strong: #2563eb;
+  --color-primary-shadow: rgba(37, 99, 235, 0.2);
+  --color-event-highlight: rgba(59, 130, 246, 0.12);
+  --color-event-highlight-strong: rgba(59, 130, 246, 0.24);
+  --color-warning-surface: rgba(176, 124, 21, 0.16);
+  --color-chart-axis: #374151;
+  --color-chart-muted: #5d6575;
+  --color-chart-grid: #cbd5e1;
+  --color-chart-node-stroke: #ffffff;
+  --color-chart-flow-link: #b7c0d1;
+  --color-flow-client: #2563eb;
+  --color-flow-spring: #15803d;
+  --color-flow-nest: #7c3aed;
+  --color-flow-redis: #dc2626;
+  --color-flow-docs: #b45309;
+}

@@ -168,6 +168,7 @@ class FailingNestApiFacade {
 class MockDashboardStore {
   readonly selectedDataset = signal<DatasetSize>('small');
   readonly selectedBackendMode = signal<BackendMode>('spring-direct');
+  readonly explainMode = signal(false);
 }
 
 type SocketListener = (payload?: unknown) => void;

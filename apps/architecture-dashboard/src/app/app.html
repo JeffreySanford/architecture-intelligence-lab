@@ -42,6 +42,8 @@
         @for (item of visibleNavItems(); track item.route) {
           <a
             class="app-frame__nav-item"
+            animate.enter="slide-enter"
+            animate.leave="exit"
             [routerLink]="item.route"
             routerLinkActive="app-frame__nav-item--active"
           >
@@ -53,13 +55,15 @@
     </aside>
 
     <main class="app-frame__main" [class.app-frame__main--landing]="isLandingRoute()">
-      <section class="app-frame__content-header" aria-label="Current page">
-        <p>{{ pageChrome().eyebrow }}</p>
-        <h2>{{ pageChrome().title }}</h2>
-        <span>{{ pageChrome().description }}</span>
-      </section>
+      <div class="route-transition">
+        <section class="app-frame__content-header" aria-label="Current page" animate.enter="enter">
+          <p>{{ pageChrome().eyebrow }}</p>
+          <h2>{{ pageChrome().title }}</h2>
+          <span>{{ pageChrome().description }}</span>
+        </section>
 
-      <router-outlet></router-outlet>
+        <router-outlet></router-outlet>
+      </div>
     </main>
   </div>
 

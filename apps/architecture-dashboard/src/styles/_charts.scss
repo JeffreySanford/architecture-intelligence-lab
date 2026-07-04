@@ -1,0 +1,7 @@
+/* Shared chart and metric surface styles */
+.p-chart,
+.chart-container,
+.phase-five__chart {
+  background: var(--color-surface-muted);
+  border-radius: var(--surface-radius);
+}

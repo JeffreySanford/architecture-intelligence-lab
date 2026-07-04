@@ -1,0 +1,112 @@
+✓ Lockfile passes supply-chain policies (verified 2h ago)
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+Done in 1.8s using pnpm v11.9.0
+Already up to date
+Done in 336ms using pnpm v11.9.0
+[isolated-plugin] spawned worker for "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\js" (pid: 27672, socket: \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-0-630.8115.sock)
+[isolated-plugin] spawned worker for "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\package-json" (pid: 28444, socket: \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-1-637.1506.sock)
+[isolated-plugin] spawned worker for "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\project-json\build-nodes\project-json" (pid: 21680, socket: \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-2-643.2744.sock)
+[isolated-plugin] spawned worker for "@nx/playwright/plugin" (pid: 46348, socket: \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-3-651.0232.sock)
+[isolated-plugin] spawned worker for "@nx/eslint/plugin" (pid: 20688, socket: \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-4-657.5709.sock)
+[isolated-plugin] spawned worker for "@nx/webpack/plugin" (pid: 14508, socket: \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-5-663.9355.sock)
+[isolated-plugin] spawned worker for "@nx/jest/plugin" (pid: 53312, socket: \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-6-671.2131.sock)
+[plugin-worker] "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\js" (pid: 27672) listening on \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-0-630.8115.sock
+[isolated-plugin] connected to worker for "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\js" (pid: 27672)
+[plugin-worker] "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\js" (pid: 27672) connected
+[plugin-worker] "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\package-json" (pid: 28444) listening on \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-1-637.1506.sock
+[plugin-worker] "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\project-json\build-nodes\project-json" (pid: 21680) listening on \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-2-643.2744.sock
+[plugin-worker] "@nx/eslint/plugin" (pid: 20688) listening on \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-4-657.5709.sock
+[plugin-worker] "@nx/playwright/plugin" (pid: 46348) listening on \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-3-651.0232.sock
+[plugin-worker] "@nx/webpack/plugin" (pid: 14508) listening on \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-5-663.9355.sock
+[plugin-worker] "@nx/jest/plugin" (pid: 53312) listening on \\.\pipe\nx\C:\Users\Sanford\AppData\Local\Temp\plugin48380-6-671.2131.sock
+[isolated-plugin] connected to worker for "@nx/jest/plugin" (pid: 53312)
+[plugin-worker] "@nx/jest/plugin" (pid: 53312) connected
+[plugin-worker] "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\js" (pid: 27672) loaded successfully
+[isolated-plugin] connected to worker for "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\package-json" (pid: 28444)
+[isolated-plugin] connected to worker for "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\project-json\build-nodes\project-json" (pid: 21680)
+[isolated-plugin] connected to worker for "@nx/playwright/plugin" (pid: 46348)
+[isolated-plugin] connected to worker for "@nx/eslint/plugin" (pid: 20688)
+[isolated-plugin] connected to worker for "@nx/webpack/plugin" (pid: 14508)
+[plugin-worker] "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\package-json" (pid: 28444) connected
+[plugin-worker] "@nx/webpack/plugin" (pid: 14508) connected
+[plugin-worker] "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\project-json\build-nodes\project-json" (pid: 21680) connected
+[plugin-worker] "@nx/eslint/plugin" (pid: 20688) connected
+[plugin-worker] "@nx/playwright/plugin" (pid: 46348) connected
+[plugin-worker] "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\project-json\build-nodes\project-json" (pid: 21680) loaded successfully
+[plugin-worker] "D:\repos\training-lab\node_modules\.pnpm\nx@23.1.0-beta.6\node_modules\nx\dist\src\plugins\package-json" (pid: 28444) loaded successfully
+[plugin-worker] "@nx/jest/plugin" (pid: 53312) loaded successfully
+[plugin-worker] "@nx/playwright/plugin" (pid: 46348) loaded successfully
+[plugin-worker] "@nx/eslint/plugin" (pid: 20688) loaded successfully
+[plugin-worker] "@nx/webpack/plugin" (pid: 14508) loaded successfully
+[isolated-plugin] shutting down worker for "nx/core/project-json" after createNodes
+[isolated-plugin] shutting down worker for "nx/core/package-json" after createNodes
+[isolated-plugin] shutting down worker for "@nx/webpack/plugin" after createNodes
+[isolated-plugin] shutting down worker for "@nx/playwright/plugin" after createNodes
+[isolated-plugin] shutting down worker for "@nx/jest/plugin" after createNodes
+[isolated-plugin] shutting down worker for "@nx/eslint/plugin" after createNodes
+[isolated-plugin] shutting down worker for "nx/js/dependencies-and-lockfile" after createDependencies
+
+[7m[1m[36m NX [39m[22m[27m  [36mRunning target [1mbuild[22m for project architecture-dashboard and [1m2[22m tasks it depends on:[39m
+
+[2m[36m[39m[22m
+
+[2m> [22m[2mnx run[22m architecture-dashboard:build:production
+
+[33m❯[39m Building...
+● [DEBUG] Unicode property escapes in regular expressions are not available in the configured target environment ("chrome111.0", "edge111.0", "firefox112.0", "ios16.4", "safari16.4" + 2 overrides) [unsupported-regexp]
+    node_modules/.pnpm/primeng@22.0.0-rc.1_5de1fd79f0a6662544d55659e1e12bdb/node_modules/primeng/fesm2022/primeng-utils.mjs:120:43:
+      120 │       str = str.normalize('NFKD').replace(/\p{Diacritic}/gu, '');
+          ╵                                            ~~~~~~~~~~~~~
+  This regular expression literal has been converted to a "new RegExp()" constructor to avoid generating code with a syntax error. However, you will need to include a polyfill for "RegExp" for your code to have the correct behavior at run-time.
+[32m✔[39m Building...
+[37m[1mInitial chunk files[22m[2m | [22m[1mNames[22m                      [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mmain-7LPJFY7T.js[37m   [2m | [22m[2mmain[22m                       [2m | [22m[36m583.44 kB[37m[2m | [22m              [36m135.02 kB[37m
+[32mstyles-KSJ5VQKW.css[37m[2m | [22m[2mstyles[22m                     [2m | [22m[36m363.18 kB[37m[2m | [22m               [36m20.71 kB[37m
+[1m [22m                  [2m | [22m[1mInitial total[22m              [2m | [22m[1m946.62 kB[22m[2m | [22m              [1m155.72 kB[22m
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                      [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-CtbuUtrl.js[37m  [2m | [22m[2m-[22m                          [2m | [22m[36m377.73 kB[37m[2m | [22m               [36m57.21 kB[37m
+[32mchunk-DqqTted-.js[37m  [2m | [22m[2m-[22m                          [2m | [22m[36m185.59 kB[37m[2m | [22m               [36m36.44 kB[37m
+[32mchunk-3zdUhxO8.js[37m  [2m | [22m[2mdashboard-page[22m             [2m | [22m[36m107.20 kB[37m[2m | [22m               [36m33.96 kB[37m
+[32mchunk-dLk40W1f.js[37m  [2m | [22m[2mphase-five-page[22m            [2m | [22m [36m83.03 kB[37m[2m | [22m               [36m21.10 kB[37m
+[32mchunk-B-kqnruj.js[37m  [2m | [22m[2m-[22m                          [2m | [22m [36m72.50 kB[37m[2m | [22m               [36m22.39 kB[37m
+[32mchunk-DlIPl0ZZ.js[37m  [2m | [22m[2m-[22m                          [2m | [22m [36m64.10 kB[37m[2m | [22m               [36m11.75 kB[37m
+[32mchunk-CnF7z0_U.js[37m  [2m | [22m[2msecurity-search-page[22m       [2m | [22m [36m54.07 kB[37m[2m | [22m               [36m12.50 kB[37m
+[32mchunk-CcGMVLtO.js[37m  [2m | [22m[2mopenapi-page[22m               [2m | [22m [36m20.49 kB[37m[2m | [22m                [36m5.02 kB[37m
+[32m[39m
+[37mchunk-DIF8WxbS.js[37m  [2m | [22m[2mlanding-page[22m               [2m | [22m [36m18.20 kB[37m[2m | [22m                [36m4.81 kB[37m
+[32mchunk-C2peT49M.js[37m  [2m | [22m[2minfrastructure-page[22m        [2m | [22m [36m17.29 kB[37m[2m | [22m                [36m4.72 kB[37m
+[32mchunk-BDt61vCY.js[37m  [2m | [22m[2m-[22m                          [2m | [22m [36m16.98 kB[37m[2m | [22m                [36m4.87 kB[37m
+[32mchunk-CBcmCh0Z.js[37m  [2m | [22m[2m-[22m                          [2m | [22m [36m10.76 kB[37m[2m | [22m                [36m3.12 kB[37m
+[32mchunk-fB_2C5Vk.js[37m  [2m | [22m[2marchitecture-flow-page[22m     [2m | [22m  [36m9.92 kB[37m[2m | [22m                [36m2.75 kB[37m
+[32mchunk-X55HUSUG.js[37m  [2m | [22m[2mmap-inspector-page[22m         [2m | [22m  [36m8.06 kB[37m[2m | [22m                [36m2.55 kB[37m
+[32mchunk-C8Nuq92I.js[37m  [2m | [22m[2madmin-page[22m                 [2m | [22m  [36m7.50 kB[37m[2m | [22m                [36m2.51 kB[37m
+[32mchunk-fgCmyIVL.js[37m  [2m | [22m[2mcapital-markets-page[22m       [2m | [22m  [36m6.68 kB[37m[2m | [22m                [36m2.22 kB[37m
+[32mchunk-D3fPkUwM.js[37m  [2m | [22m[2msignal-store-inspector-page[22m[2m | [22m  [36m5.72 kB[37m[2m | [22m                [36m1.82 kB[37m
+[32mchunk-rUb8U6BC.js[37m  [2m | [22m[2m-[22m                          [2m | [22m  [36m4.04 kB[37m[2m | [22m                [36m1.44 kB[37m
+[32mchunk-DQpOjaxB.js[37m  [2m | [22m[2mplaceholder-page[22m           [2m | [22m  [36m2.37 kB[37m[2m | [22m              [36m910 bytes[37m
+[32mchunk-5KP3GPtv.js[37m  [2m | [22m[2m-[22m                          [2m | [22m  [36m2.08 kB[37m[2m | [22m              [36m738 bytes[37m
+[32mchunk--ffDLGG3.js[37m  [2m | [22m[2m-[22m                          [2m | [22m  [36m1.69 kB[37m[2m | [22m              [36m745 bytes[37m
+[3[39m[37m2mchunk-PuDLwwlf.js[37m  [2m | [22m[2msecurity-threat-model-page[22m [2m | [22m  [36m1.21 kB[37m[2m | [22m              [36m645 bytes[37m
+[32mchunk-88uWxv0-.js[37m  [2m | [22m[2msecurity-risk-map-page[22m     [2m | [22m  [36m1.05 kB[37m[2m | [22m              [36m526 bytes[37m
+Application bundle generation complete. [7.094 seconds] - 2026-07-04T20:41:19.196Z
+[39m
+[37mOutput location: D:\repos\training-lab\dist\apps\architecture-dashboard
+[39m
+
+[2m[32m[39m[22m
+
+[7m[1m[32m NX [39m[22m[27m  [32mSuccessfully ran target [1mbuild[22m for project architecture-dashboard and [1m2[22m tasks it depends on[39m
+
+
+  Run duration:      8.5s
+  Cache:             0/3 hit (0%)
+  Critical path:     8.3s (2 tasks)
+  Recoverable time:  <1ms
+
+  Recommendations:
+    - Drastically reduce your run duration by sharing a cache across your team and CI → https://nx.dev/ci/features/remote-cache?utm=performance-report.
+    - Speed up or split the longest tasks on the critical path:
+        architecture-dashboard:build:production    8.2s
+        nest-api-client:build                      97ms

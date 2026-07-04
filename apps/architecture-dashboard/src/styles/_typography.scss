@@ -1,0 +1,21 @@
+/* Shared typography tokens */
+:root {
+  --font-family-base: Inter, Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-xxl: 2rem;
+  --line-height-base: 1.5;
+  --line-height-heading: 1.15;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+h1 {
+  font-size: var(--font-size-xxl);
+  line-height: var(--line-height-heading);
+}

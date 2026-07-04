@@ -35,6 +35,7 @@ type TagSeverity = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contr
 })
 export class CapitalMarketsPage implements OnInit {
   private readonly dashboardStore = inject(DashboardStore);
+  protected readonly explainMode = this.dashboardStore.explainMode;
   private readonly destroyRef = inject(DestroyRef);
 
   protected readonly globalFilter = signal('');

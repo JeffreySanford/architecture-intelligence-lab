@@ -34,6 +34,7 @@ export class DashboardStore {
 
   readonly selectedDataset = signal<DatasetSize>('small');
   readonly selectedBackendMode = signal<BackendMode>('spring-direct');
+  readonly explainMode = signal(false);
   readonly snapshot = signal<DashboardSnapshotDto | null>(null);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
