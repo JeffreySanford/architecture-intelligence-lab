@@ -180,7 +180,7 @@ Acceptance criteria:
 - [X] Phase 5 view displays current persona identity and runtime summary access cards.
 - [X] Phase 5 view shows which roles should have access to comparison, realtime emit, and contract inspection work.
 - [X] Contract Admin can open the OpenAPI Contract Lab placeholder from Phase 5 route permissions.
-- [X] Realtime Operator can open the Realtime Lab placeholder from Phase 5 route permissions.
+- [X] Realtime Operator can open the dedicated Realtime Lab from Phase 5 route permissions.
 - [X] Realtime route is permission guarded and redirects unauthorized personas to the dashboard.
 - [X] Spring direct, Nest direct, and Nest proxy can be compared in the same topology view with Phase 5 metrics.
 - [X] A comparison endpoint exposes measured metrics for Spring direct, Nest direct, and Nest proxy paths.
@@ -399,7 +399,7 @@ Current note:
 - [X] Dashboard page now renders loan cards and a PrimeNG loan table from the computed ViewModel.
 - [X] DashboardStore unit tests for `borrowersById`, `documentsByLoanId`, `statusByCode`, permission set membership, fallback loan card behavior, and dataset-driven computed state updates are now implemented and verified.
 - [X] Chart.js dashboard chart is now implemented and integrated into the dashboard page.
-- [X] Phase 8 delivery is complete; Phase 6.5 security hardening remains tracked as follow-up work. Phase 5 visualization and Phase 9A Capital Markets table are implemented; remaining Phase 9 work is animation wiring, reduced-motion coverage, and focused Playwright validation.
+- [X] Phase 9 delivery is complete; Phase 6.5 security hardening remains tracked as follow-up work. Phase 5 visualization and Phase 9A Capital Markets table are implemented; Phase 9 animation wiring, reduced-motion coverage, and focused Playwright validation are complete.
 - [X] Phase 5 comparison/realtime D3 visualization and Phase 9A Security Search PrimeNG table are implemented.
 - [X] Phase 9A Security Search filter/sort/pagination/query state behavior is unit-tested.
 - [X] Explain Mode overlay visuals, shared animation tokens, and angular native enter/exit motion wiring remain in progress.
@@ -412,13 +412,14 @@ Goal: Add D3, Explain Mode learning visuals, and Angular native enter/exit anima
 Current note:
 
 - [X] Phase 5 comparison/realtime D3 topology and metrics chart are implemented.
+- [X] Phase 5 realtime event history now serves as the event-driven dashboard proof point for Phase 10.
 - [X] App shell animation wiring now uses native `animate.enter` / `animate.leave` helpers for page headers and permission-aware navigation.
 - [X] Previous timer-based route transition state was removed from the app shell in favor of state-driven DOM insertion/removal animation classes.
 - [X] Shared style tokens are scaffolded and core lab views now use the shared design tokens.
-- [ ] Remaining Phase 9 scope is focused on finishing live realtime dashboard animation and layout polish.
+- [X] Remaining Phase 9 scope is focused on finishing live realtime dashboard animation and layout polish.
 - [X] Explain Mode overlays connect to real state across the primary visualization pages.
-- [X] Phase 9 layout polish is underway for Capital Markets and Security Search.
-- [X] Security Search and Capital Markets layout polish passes responsive review.
+- [X] Phase 9 layout polish is complete for Capital Markets and Security Search.
+- [X] Security Search and Capital Markets layout polish pass responsive review.
 - [X] Capital Markets and Security Search responsive and mobile-friendly layout polish have been implemented.
 - [X] Shared CSS tokens for primary highlights and warning surface states have been added to the shared style layer.
 - [X] Remaining Phase 9 pages continue migrating hard-coded visual values into the shared style token layer.
@@ -513,18 +514,67 @@ Acceptance criteria:
 
 Goal: Complete event-driven dashboard updates.
 
+Current note:
+
+- [X] The `/lab/realtime` route shell is wired and protected by `realtime:view` permission.
+- [X] The dedicated `/lab/realtime` page renders realtime summary cards, event controls, event history, chart bars, and derived cache telemetry.
+- [X] The page is implemented as a standalone Angular component using `NestApiFacade`.
+- [X] Realtime event history is loaded from `getRealtimeEventHistory()` and shown in a filterable PrimeNG table.
+- [X] Event emits update summary cards, table rows, event status chart bars, and cache telemetry state.
+- [X] Cache telemetry panels are derived from realtime event state to demonstrate hit/miss semantics in the current lab.
+- [X] Burst mode visualization and cache audit panels are implemented through repeated `emitLoanStatusEvent()` calls.
+- [X] Emitting is gated by `realtime:emit` permission, and the UI shows fallback state when permission is missing.
+- [X] `realtime-lab.page.spec.ts` covers history load, filter behavior, single event emit, burst emit, and error handling.
+- [X] Redis Insight quick link exists in the Infrastructure page.
+- [X] Backend Redis cache telemetry endpoint is implemented as `/gateway/realtime/redis-status`.
+
 Deliverables:
 
-- [ ] Socket client
-- [ ] Event controls
-- [ ] Event history
-- [ ] Cache hit/miss panels
-- [ ] Redis Insight links
+- [X] Socket client
+- [X] Event controls
+- [X] Event history
+- [X] Dedicated `/lab/realtime` route shell
+- [X] Realtime Lab dashboard content
+- [X] Cache hit/miss panels
+- [X] Burst mode visualization panels
+- [X] Redis Insight links
+- [X] Realtime Lab unit tests
+- [X] Backend Redis cache telemetry endpoint
+- [X] Explicit Redis adapter health cards
+- [X] Playwright coverage for `/lab/realtime` emit, burst, and cache telemetry
+- [X] Backend Redis cache telemetry integration tests
+- [X] Runtime assumptions documented for local dev vs Docker compose
 
 Acceptance criteria:
 
-- [ ] Emitted event updates card, table, and chart.
-- [ ] Burst mode remains observable.
+- [X] Emitted event updates card, table, and chart.
+- [X] Burst mode remains observable.
+- [X] Dedicated `/lab/realtime` dashboard surface is bound to realtime event state.
+- [X] Cache hit/miss panels render derived Redis cache telemetry and state.
+- [X] `/lab/realtime` route shows event-state panels and actionable Redis/cache telemetry.
+- [X] Backend Redis cache telemetry is represented by a real API endpoint rather than only frontend-derived state.
+- [X] Explicit Redis adapter health status cards are displayed on the realtime dashboard.
+- [X] Playwright covers `/lab/realtime` event emit, burst, and cache telemetry flows.
+- [X] Integration tests exercise backend Redis cache telemetry and Socket.IO emit behavior.
+- [X] Runtime assumptions for local dev versus Docker compose are documented in Phase 10 notes.
+
+Implementation note:
+
+- The Phase 10 proof point is now split intentionally: Phase 5 explains the topology, while `/lab/realtime` provides the operational dashboard for emits, history, burst behavior, chart updates, and derived cache telemetry.
+- Backend Redis hit/miss telemetry is still a future enhancement; the current cache panel is a deterministic frontend projection from event state and documented Redis key semantics.
+- The realtime lab component is implemented with Angular signal state, PrimeNG table filtering, and permission-gated emit controls.
+
+Progress summary:
+
+- [X] Permission-guarded `/lab/realtime` shell is implemented.
+- [X] Live Socket.IO emit and history flow are wired through Phase 5.
+- [X] Dedicated `/lab/realtime` dashboard panel implementation is complete.
+- [X] Derived Redis cache telemetry, hit/miss state, and burst mode visibility are implemented.
+- [X] Backend Redis cache telemetry endpoint is implemented.
+- [X] Explicit Redis adapter health status cards are implemented.
+- [X] Playwright coverage for `/lab/realtime` emit, burst, and cache telemetry is implemented.
+- [X] Backend Redis cache telemetry integration tests are implemented.
+- [X] Phase 10 runtime assumptions for local dev vs Docker compose are documented.
 
 ## Phase 11: OpenAPI And MCP Dashboards
 

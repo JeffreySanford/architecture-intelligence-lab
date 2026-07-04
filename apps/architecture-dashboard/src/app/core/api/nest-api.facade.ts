@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
   BackendComparisonMetricDto,
@@ -9,6 +10,13 @@ import {
   RealtimeEventDto,
   RealtimeEventHistoryDto,
 } from '@generated/nest-api-client';
+
+export type RedisAdapterStatus = {
+  mode: 'redis' | 'in-process' | 'unknown';
+  connected: boolean;
+  redisUrl: string | null;
+  message: string;
+};
 
 export type ComparisonPathId = BackendComparisonMetricDto.PathIdEnum;
 export type ComparisonStatus = BackendComparisonMetricDto.StatusEnum;
@@ -28,6 +36,7 @@ export type {
 export class NestApiFacade {
   private readonly comparisonApi = inject(ComparisonApiService);
   private readonly realtimeApi = inject(RealtimeApiService);
+  private readonly http = inject(HttpClient);
 
   private readonly jsonAcceptOptions = {
     httpHeaderAccept: 'application/json' as const,
@@ -43,6 +52,12 @@ export class NestApiFacade {
 
   emitLoanStatusEvent(request: LoanStatusEventRequestDto) {
     return this.realtimeApi.emitLoanStatusEvent(request, undefined, false, this.jsonAcceptOptions);
+  }
+
+  getRealtimeRedisAdapterStatus() {
+    return this.http.get<RedisAdapterStatus>('/gateway/realtime/redis-status', {
+      withCredentials: true,
+    });
   }
 
   getDirectLoanReads() {

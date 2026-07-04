@@ -52,6 +52,7 @@ Completed foundation work:
 - [X] Phase 5 mock comparison metrics bind into a PrimeNG metrics table and selected D3 request path state.
 - [X] Phase 5 mock realtime event history binds into a PrimeNG event history table.
 - [X] Phase 5 has a permission-gated HTTP emit control that prepends the returned realtime event into the event history table.
+- [X] `/lab/realtime` now provides the dedicated Phase 10 dashboard with summary cards, event controls, event history, burst visibility, status chart bars, and derived Redis cache telemetry.
 - [X] Phase 5 protected routes use route-level permission guards in addition to shell nav filtering.
 - [X] Phase 5 unit tests cover the view model, runtime checklist, comparison metrics, realtime history, HTTP-triggered emits, selected path state, and permission guard behavior.
 - [X] Phase 5 Playwright tests cover access, redirects, placeholder route permissions, identity display, graph rendering, checklist rendering, comparison metrics, and realtime history with mocked API data.
@@ -89,4 +90,5 @@ The current Phase 5 plan uses a visualization-first control surface:
 - [X] HTTP-triggered mock realtime emits update Phase 5 history state without a live browser socket subscription.
 - [X] Live comparison metrics replace mock values without changing the Phase 5 view model shape.
 - [X] Angular live Socket.IO subscription and Redis adapter wiring bind into the same Phase 5 methodology instead of becoming disconnected pages.
+- [X] Dedicated Realtime Lab dashboard reuses the generated Nest realtime facade contract instead of introducing a parallel API shape.
 - [X] Phase 5 Nest unit, build, lint, and e2e checks pass through Nx.

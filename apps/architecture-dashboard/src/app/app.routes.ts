@@ -146,8 +146,8 @@ export const appRoutes: Routes = [
       {
         path: 'realtime',
         loadComponent: () =>
-          import('./features/placeholder/placeholder.page').then(
-            (m) => m.PlaceholderPage,
+          import('./features/realtime-lab/realtime-lab.page').then(
+            (m) => m.RealtimeLabPage,
           ),
         canActivate: [permissionGuard],
         data: {

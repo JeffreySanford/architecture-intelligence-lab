@@ -41,6 +41,12 @@ PrimeNG should present Redis-related state as operational rows rather than decor
 - hit or miss
 - error state
 
+Current Phase 10 checkpoint:
+
+- `/lab/realtime` renders derived cache telemetry rows for `socket:events:last`, `dashboard:snapshot:small`, and `redis-adapter:socket-io`.
+- Those rows are derived from realtime event state so learners can see cache hit/miss semantics before a backend Redis metrics endpoint exists.
+- A future Nest diagnostics/cache endpoint should replace the derived telemetry with live Redis TTL, hit/miss, and adapter status data.
+
 The D3 graph should explain where Redis sits in the event path; PrimeNG tables should explain what happened.
 
 ## Redis Non-Responsibilities

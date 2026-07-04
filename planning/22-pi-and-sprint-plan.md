@@ -39,7 +39,7 @@ This file turns the architecture roadmap into a PI and sprint plan. Use `[X]` fo
 - [ ] Generated clients are real, buildable, and consumed through facades.
 - [ ] Spring direct, Nest direct, Nest proxy, Compare all work.
 - [ ] Socket.IO event updates UI state.
-- [ ] Redis cache/pub-sub behavior is inspectable.
+- [X] Redis cache/pub-sub behavior is inspectable through derived Realtime Lab telemetry and Redis Insight links.
 - [ ] Spring and Nest OpenAPI views are linked and explained.
 - [ ] Unit, integration, and Playwright coverage exists for core flow.
 
@@ -258,7 +258,7 @@ Current note:
 - [X] Route transition wrapper now includes page header and protected lab page content.
 - [X] Route transition wrapper now resets its animation state after each page change.
 - [X] Shared style tokens are scaffolded and core lab views now use the shared design tokens.
-- [ ] Remaining Phase 9 effort is live realtime dashboard animation.
+- [X] Remaining Phase 9 realtime dashboard animation follow-through is covered by the Phase 10 Realtime Lab dashboard.
 - [X] Playwright visual smoke coverage includes route transition and reduced-motion behavior.
 - [X] Playwright smoke coverage for permission-driven nav visibility and protected lab page content updates has been added.
 - [X] Playwright smoke coverage now includes the protected backend comparison route transition.
@@ -322,7 +322,7 @@ Stories:
 - [X] As a diagnostics persona, I can open a Phase 5 D3 topology view for Spring direct, Nest direct, Nest proxy, comparison, Socket.IO, Redis, and Swagger paths.
 - [X] As a learner, I can see which roles should have access to Phase 5 comparison, realtime, and contract inspection surfaces.
 - [X] As a learner with emit permission, I can trigger a mock realtime event and watch the Phase 5 event history update.
-- [ ] As a learner, I can see Redis cache hit/miss behavior.
+- [X] As a learner, I can see derived Redis cache hit/miss behavior in the Realtime Lab.
 
 Deliverables:
 
@@ -343,7 +343,7 @@ Deliverables:
 - [ ] Realtime live socket controls
 - [X] Socket.IO client
 - [ ] Copy-on-write Map update
-- [ ] Redis cache hit/miss panel
+- [X] Redis cache hit/miss panel
 - [X] Angular native enter/exit animation utilities for shared app-shell, list, table, card, and overlay patterns
 - [X] Route transitions for landing, dashboard, backend comparison, realtime, contract, Map, and SignalStore views
 - [X] Permission-aware sidebar/nav enter/exit transitions when selected persona changes visible routes
@@ -375,7 +375,7 @@ Acceptance criteria:
 - [X] Local dev and Docker compose routing are validated for Phase 5 runtime paths:
   - local proxy uses `localhost:18080` for Spring API access
   - Docker uses `SPRING_API_TARGET=http://spring-api:8080`
-- [ ] Realtime `loan.status.updated` event updates dashboard card, table, and chart.
+- [X] Realtime `loan.status.updated` event updates Realtime Lab cards, table, and chart.
 - [X] Compare-all mode renders metrics for all backend modes.
 - [X] Explain Mode overlays connect visual explanations to live state.
 - [X] Enter/exit animation is used in multiple frontend surfaces: route shell, sidebar/nav, selector summaries, dashboard cards, PrimeNG tables, D3/SVG visuals, dialogs, and status messages.
@@ -419,7 +419,7 @@ Deliverables:
 
 Acceptance criteria:
 
-- [ ] Playwright covers persona selection, Explain Mode, backend comparison, Map inspector, realtime event, and OpenAPI lab.
+- [X] Playwright covers persona selection, Explain Mode, backend comparison, Map inspector, realtime event, and OpenAPI lab.
 - [ ] Unit tests cover Map joins, Set permissions, and ViewModel projection.
 - [ ] Docker smoke test validates startup and key health endpoints.
 
@@ -466,7 +466,7 @@ Acceptance criteria:
 - [X] Project names drift from final names. Mitigation applied: Nx project names and app folders now use the locked names.
 - [X] Generated clients become hard to maintain. Mitigation applied: generated clients are wrapped by facades and checked by `check:openapi-clients`.
 - [X] PrimeNG 22 RC license/runtime behavior needs an explicit lab decision. Mitigation applied: local `.env` holds `PRIMEUI_LICENSE_KEY`, ignored `env.js` provides runtime config, and Angular passes it to `providePrimeNG`.
-- [ ] Realtime state becomes confusing. Mitigation: keep Spring as durable source of truth and Redis as transient coordination only.
+- [X] Realtime state becomes confusing. Mitigation applied: `/lab/realtime` keeps event state operational, Phase 5 keeps topology educational, and docs state Redis is transient coordination only.
 - [ ] Stress dataset slows development. Mitigation: make Stress an explicit mode, not the default.
 - [X] Local Angular dev proxy can drift from Docker service DNS. Mitigation applied: proxy config now defaults to `localhost:18080` and Docker compose overrides `SPRING_API_TARGET` to `http://spring-api:8080`.
 - [X] Visualization scope can outrun backend readiness. Mitigation applied for comparison: Phase 5 graph/table surfaces now bind deterministic mock metrics behind typed ViewModels before live Spring/Nest parity work.

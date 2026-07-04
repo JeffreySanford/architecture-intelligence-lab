@@ -8,7 +8,8 @@ This repo intentionally keeps the current modern study stack: Angular 22, Nx 23 
 
 - [X] Phase 9A Security Search implementation is complete and unit-tested.
 - [X] Phase 9 visual smoke coverage is green for route, nav, table, overlay, chart, SVG, mobile, and reduced-motion paths.
-- [ ] Remaining Phase 9 effort is live realtime dashboard animation.
+- [X] Phase 9 realtime dashboard animation follow-through is covered by the Phase 10 Realtime Lab dashboard.
+- [X] Phase 10 Realtime Lab now has a dedicated `/lab/realtime` dashboard for emits, burst mode, event history, chart state, and derived Redis cache telemetry.
 
 PrimeNG has been moved to the Angular 22-aligned release-candidate line (`22.0.0-rc.1`) with `@angular/cdk` installed as its peer dependency. Treat PrimeNG 22 APIs as allowed only after local build/test validation, because this is still an RC dependency.
 

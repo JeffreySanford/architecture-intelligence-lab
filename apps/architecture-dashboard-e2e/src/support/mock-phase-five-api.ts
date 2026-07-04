@@ -231,4 +231,17 @@ export async function mockPhaseFiveApi(page: Page, personaId: keyof typeof perso
       }),
     });
   });
+
+  await page.route('**/gateway/realtime/redis-status', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        mode: 'in-process',
+        connected: false,
+        redisUrl: 'redis://localhost:6379',
+        message: 'Socket.IO Redis adapter unavailable; using in-process gateway.',
+      }),
+    });
+  });
 }

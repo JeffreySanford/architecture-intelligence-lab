@@ -51,7 +51,7 @@ apps/architecture-dashboard/src/app/
 | `/lab/map-inspector` | Map and Set index inspector. |
 | `/lab/signal-store-inspector` | SignalStore state and computed graph. |
 | `/lab/backend-comparison` | Phase 5 Spring/Nest/proxy comparison and realtime topology visualization. |
-| `/lab/realtime` | Socket.IO and Redis realtime lab. |
+| `/lab/realtime` | Dedicated Socket.IO and Redis realtime lab with event controls, history, chart bars, burst visibility, and derived cache telemetry. |
 | `/lab/openapi` | OpenAPI contract lab. |
 | `/lab/mcp` | MCP guidance dashboard. |
 | `/lab/admin` | Persona and admin exercises. |

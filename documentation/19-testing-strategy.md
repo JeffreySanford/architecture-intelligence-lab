@@ -71,6 +71,7 @@ flowchart TB
 - Open Map Inspector
 - Trigger realtime event
 - Verify card/table/chart update
+- Verify Realtime Lab burst mode and derived cache telemetry update from mocked realtime events
 - Verify admin-only panels
 - Verify OpenAPI lab loads
 - Verify local proxy path `/api/personas` returns the same persona list as Spring direct in local smoke workflows

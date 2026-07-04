@@ -215,19 +215,55 @@ async function mockApiForPersona(page: Page, personaId: keyof typeof personas) {
     });
   });
 
-  await page.route('**/gateway/realtime/loan-status**', async (route) => {
+  await page.route('**/gateway/realtime/redis-status', async (route) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({
-        eventId: 'event-001',
+        mode: 'in-process',
+        connected: false,
+        redisUrl: 'redis://localhost:6379',
+        message: 'Socket.IO Redis adapter unavailable; using in-process gateway.',
+      }),
+    });
+  });
+
+  let realtimeSequence = 1;
+  await page.route('**/gateway/realtime/loan-status**', async (route) => {
+    const request = route.request().postDataJSON() as {
+      loanId?: string;
+      loanNumber?: string;
+      previousStatus?: string;
+      nextStatus?: string;
+    };
+    const eventId = `event-${String(realtimeSequence).padStart(3, '0')}`;
+    realtimeSequence += 1;
+
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        eventId,
         type: 'loan.status.updated',
-        loanId: 'loan-001',
-        loanNumber: 'TL-1001',
-        previousStatus: 'In Review',
-        nextStatus: 'Approved',
+        loanId: request.loanId ?? 'loan-001',
+        loanNumber: request.loanNumber ?? 'TL-1001',
+        previousStatus: request.previousStatus ?? 'In Review',
+        nextStatus: request.nextStatus ?? 'Approved',
         source: 'mock-http',
         observedAt: '2026-07-03T00:01:00.000Z',
+      }),
+    });
+  });
+
+  await page.route('**/gateway/realtime/redis-status', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        mode: 'in-process',
+        connected: false,
+        redisUrl: 'redis://localhost:6379',
+        message: 'Socket.IO Redis adapter unavailable; using in-process gateway.',
       }),
     });
   });
@@ -347,7 +383,7 @@ test('Backend comparison route allows Realtime Operator to emit Phase 5 events',
   await page.locator('.phase-five__header-action', { hasText: 'Emit event' }).click();
   await emitResponse;
 
-  await expect(page.locator('[data-testid="realtime-event-row"]', { hasText: 'Approved' })).toBeVisible();
+  await expect(page.locator('[data-testid="realtime-event-row"]')).toHaveCount(2);
 });
 
 test('Realtime Operator sees the future live Socket.IO event update placeholder', async ({ page }) => {
@@ -455,16 +491,25 @@ test('Diagnostics persona can select comparison metric rows and highlight the ac
   await expect(page.locator('svg[aria-label*="Phase 5 graph"]')).toBeVisible();
 });
 
-test('Realtime Operator can open Realtime Lab placeholder content', async ({ page }) => {
+test('Realtime Operator can use the dedicated Realtime Lab dashboard', async ({ page }) => {
   await mockApiForPersona(page, 'grace-realtime-operator');
 
   await page.goto('/lab/realtime');
 
   await expect(page).toHaveURL(/.*\/lab\/realtime$/, { timeout: 15000 });
-  await expect(page.locator('app-placeholder-page h1', { hasText: 'Realtime Lab' })).toBeVisible();
-  await expect(page.locator('.placeholder__card')).toBeVisible();
-  await expect(page.locator('p-chip', { hasText: 'Routed' })).toBeVisible();
-  await expect(page.locator('p-chip', { hasText: 'Data pending' })).toBeVisible();
+  await expect(page.locator('app-realtime-lab-page h1', { hasText: 'Realtime Redis Lab' })).toBeVisible();
+  await expect(page.locator('[data-testid="realtime-lab-event-row"]')).toHaveCount(1);
+  await expect(page.locator('.realtime-lab__chart', { hasText: 'In Review' })).toBeVisible();
+  await expect(page.locator('.realtime-lab__cache-list', { hasText: 'socket:events:last' })).toBeVisible();
+  await expect(page.locator('.realtime-lab__metric', { hasText: 'In-process adapter fallback' })).toBeVisible();
+
+  await page.locator('button:has-text("Emit one event")').click();
+  await expect(page.locator('[data-testid="realtime-lab-event-row"]')).toHaveCount(2);
+  await expect(page.locator('[data-testid="realtime-lab-event-row"]', { hasText: 'event-001' })).toBeVisible();
+
+  await page.locator('button:has-text("Emit burst")').click();
+  await expect(page.locator('[data-testid="realtime-lab-event-row"]')).toHaveCount(5);
+  await expect(page.locator('.realtime-lab__chart', { hasText: 'Clear To Close' })).toBeVisible();
 });
 
 test('Viewer persona is redirected from Realtime Lab without realtime:view permission', async ({ page }) => {

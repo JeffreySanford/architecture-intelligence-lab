@@ -16,7 +16,7 @@ sequenceDiagram
   participant UI
 
   User->>Angular: Click emit one event
-  Angular->>Nest: POST /gateway/realtime/emit-one
+  Angular->>Nest: POST /gateway/realtime/loan-status
   Nest->>Redis: Publish loan.status.updated
   Redis-->>Nest: Pub/sub delivery
   Nest-->>Angular: Socket.IO loan.status.updated
@@ -28,8 +28,8 @@ sequenceDiagram
 
 | Control | Purpose |
 | --- | --- |
-| Emit one event | Demonstrate one loan status update. |
-| Emit burst | Demonstrate multiple events and throughput. |
+| Emit one event | Demonstrate one loan status update through `POST /gateway/realtime/loan-status`. |
+| Emit burst | Demonstrate multiple events and throughput by issuing repeated `loan-status` emits until a backend burst endpoint exists. |
 | Pause | Stop applying events while still showing queue behavior. |
 | Resume | Apply queued events. |
 | Reset | Restore demo baseline. |
@@ -51,8 +51,11 @@ Runtime acceptance for the live realtime layer:
 
 - A Socket.IO gateway endpoint emits realtime event messages.
 - Emitted messages update the Phase 5 visualization.
+- The dedicated `/lab/realtime` dashboard updates summary cards, event history, status chart bars, and derived cache telemetry from the same event stream.
 - Socket.IO event history updates the realtime portion of the Phase 5 view.
 - Event history rows should use the same event id returned by the emit endpoint.
+- Backend Redis cache hit/miss telemetry is exposed through `/gateway/realtime/redis-status`; the current Realtime Lab cache panels also continue to surface derived frontend cache state.
+- Runtime assumptions: local dev uses `localhost:6379` and a Redis adapter fallback is allowed when the Redis adapter cannot connect; Docker compose should set `REDIS_URL=redis://redis:6379` or a similar container host URL.
 
 Keep the methodology consistent with backend comparison:
 

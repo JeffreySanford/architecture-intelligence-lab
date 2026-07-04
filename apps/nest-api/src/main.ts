@@ -57,8 +57,8 @@ async function bootstrap() {
   logger.log(`Nest Swagger UI is running on: http://localhost:${port}/swagger`);
 }
 
-export function extractAccessToken(req: any): string | undefined {
-  const cookieHeader = req.headers?.cookie as string | undefined;
+export function extractAccessToken(req: { headers?: { cookie?: string } }): string | undefined {
+  const cookieHeader = req.headers?.cookie;
   if (!cookieHeader) {
     return undefined;
   }

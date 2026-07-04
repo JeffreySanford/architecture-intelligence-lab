@@ -24,8 +24,8 @@ NestJS provides comparison, gateway, realtime, diagnostics, and its own OpenAPI 
 | `GET` | `/gateway/loans/direct` | Read loan data directly from PostgreSQL. |
 | `GET` | `/gateway/loans/proxy` | Proxy loan request to Spring Boot. |
 | `GET` | `/gateway/comparison/loans` | Compare all backend modes. |
-| `POST` | `/gateway/realtime/emit-one` | Emit one demo realtime event. |
-| `POST` | `/gateway/realtime/emit-burst` | Emit a burst of demo realtime events. |
+| `POST` | `/gateway/realtime/loan-status` | Emit one demo loan status realtime event. |
+| planned | `/gateway/realtime/emit-burst` | Future backend endpoint for server-side burst emission; the current Angular lab simulates burst mode with repeated `loan-status` calls. |
 
 ## Comparison Response Contract
 

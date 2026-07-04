@@ -1,0 +1,160 @@
+.realtime-lab {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.realtime-lab__header {
+  max-width: 76rem;
+}
+
+.realtime-lab__eyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.realtime-lab h1 {
+  margin: 0;
+}
+
+.realtime-lab__header p:not(.realtime-lab__eyebrow),
+.realtime-lab__card-subtitle,
+.realtime-lab__cache-item span {
+  color: var(--color-text-muted);
+}
+
+.realtime-lab__error {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  background: var(--color-danger-container);
+  color: var(--color-on-danger-container);
+}
+
+.realtime-lab__summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.realtime-lab__metric {
+  min-width: 0;
+}
+
+.realtime-lab__metric span,
+.realtime-lab__metric strong {
+  display: block;
+}
+
+.realtime-lab__metric span {
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.realtime-lab__metric strong {
+  margin-top: 0.35rem;
+  color: var(--color-text);
+  font-size: 2rem;
+}
+
+.realtime-lab__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.realtime-lab__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.realtime-lab__panel,
+.realtime-lab__table-card {
+  overflow: hidden;
+}
+
+.realtime-lab__card-title {
+  font-weight: 800;
+}
+
+.realtime-lab__chart,
+.realtime-lab__cache-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.realtime-lab__bar-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.8fr) minmax(8rem, 1.8fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.realtime-lab__bar-track {
+  height: 0.85rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-surface-alt);
+}
+
+.realtime-lab__bar {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+  transition: width var(--motion-duration-medium) var(--motion-ease);
+}
+
+.realtime-lab__cache-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.realtime-lab__cache-item div {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.realtime-lab__cache-item code {
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.realtime-lab__table-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.realtime-lab__new-row {
+  background: var(--color-primary-container);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .realtime-lab__bar {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .realtime-lab__summary,
+  .realtime-lab__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .realtime-lab__bar-row,
+  .realtime-lab__cache-item {
+    grid-template-columns: 1fr;
+  }
+}

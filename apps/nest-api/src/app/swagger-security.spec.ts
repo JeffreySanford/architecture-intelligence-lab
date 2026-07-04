@@ -1,4 +1,4 @@
-import { HttpServer, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import axios from 'axios';
 import { createNestSwaggerApp } from '../main';
 

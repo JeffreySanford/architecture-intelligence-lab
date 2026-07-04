@@ -297,7 +297,7 @@ Acceptance criteria:
 Current note:
 
 - [X] Phase 9A Security Search implementation is complete and has supporting Angular unit tests.
-- [ ] Remaining Phase 9 effort is focused on live realtime dashboard animation.
+- [X] Remaining Phase 9 realtime dashboard animation follow-through is covered by the Phase 10 Realtime Lab dashboard.
 
 ## Task 10: Add Visualizations
 
@@ -307,7 +307,7 @@ Current note:
 - [X] App shell animation wiring now uses native `animate.enter` / `animate.leave` helpers for page headers and permission-aware navigation.
 - [X] Timer-driven route transition state was removed from the app shell.
 - [X] Shared style tokens are scaffolded and core lab views now use the shared design tokens.
-- [ ] Remaining Phase 9 work is live realtime dashboard animation.
+- [X] Remaining Phase 9 realtime dashboard animation follow-through is covered by the Phase 10 Realtime Lab dashboard.
 - [X] Playwright visual smoke coverage includes route transition and reduced-motion assertions.
 - [X] Playwright smoke for permission-driven nav changes and protected lab page content updates has been added.
 - [X] Playwright smoke now covers the protected backend comparison route transition.
@@ -405,6 +405,53 @@ Phase 9 animation candidates:
 - Use lightweight CSS transitions for toast messages, inline errors, health banners, Explain Mode callouts, status chips, and card state changes.
 - Keep animation connected to typed ViewModels so persona, dataset, backend mode, realtime history, Map buckets, SignalStore recomputation, and OpenAPI drift state are testable before rendering.
 - Add reduced-motion styles before broad rollout so Playwright and manual checks can prove motion can be disabled without hiding state changes.
+
+## Task 10B: Add Realtime Redis Lab Dashboard
+
+Current note:
+
+- [X] `/lab/realtime` is no longer a generic placeholder.
+- [X] Realtime Lab loads event history through `NestApiFacade.getRealtimeEventHistory()`.
+- [X] Realtime Lab emits one event through the generated Nest realtime facade.
+- [X] Realtime Lab burst mode is implemented with repeated `loan-status` calls until a backend burst endpoint exists.
+- [X] Realtime Lab summary cards, event table, status chart bars, and derived cache telemetry update from the same event state.
+- [X] Angular unit tests cover history load, filter projection, emit-one, burst emit, chart/cache projections, and error state.
+- [X] Playwright covers the dedicated `/lab/realtime` dashboard for Realtime Operator and guard redirect for Viewer.
+- [ ] Backend Redis cache telemetry endpoint remains future work.
+
+Expected files:
+
+- [X] `/lab/realtime` dedicated page
+- [X] Realtime summary cards
+- [X] Realtime event controls
+- [X] Realtime event history table
+- [X] Realtime status chart bars
+- [X] Derived cache hit/miss telemetry panels
+- [X] Burst mode control
+- [X] Unit tests
+- [X] Playwright tests
+
+Do not touch:
+
+- [X] Do not make Redis the durable source of truth.
+- [X] Do not add a parallel realtime DTO shape outside the generated Nest facade boundary.
+
+Test command:
+
+- [X] `pnpm nx test architecture-dashboard --watch=false`
+- [X] `pnpm nx lint architecture-dashboard`
+- [X] `pnpm nx lint architecture-dashboard-e2e`
+- [X] `pnpm nx run architecture-dashboard-e2e:e2e-ci--src/comparison-and-realtime-api.spec.ts`
+
+Acceptance criteria:
+
+- [X] Realtime Operator can open `/lab/realtime`.
+- [X] Viewer is redirected away from `/lab/realtime`.
+- [X] Event history binds to generated Nest realtime DTOs.
+- [X] Emitting one event updates card, table, and chart state.
+- [X] Burst mode remains observable in the event table and chart.
+- [X] Cache hit/miss panels render deterministic Redis telemetry from event state.
+- [ ] Cache hit/miss panels render live backend Redis TTL and hit/miss metrics.
 
 ## Task 11: Add Tests
 

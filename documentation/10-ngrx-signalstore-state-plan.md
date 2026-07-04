@@ -11,7 +11,7 @@ NgRx SignalStore is the frontend state layer. It should hold raw DTO state, expo
 | `AuthStore` | Persona, current user, permission set. |
 | `DashboardStore` | Raw dashboard DTOs, selected backend, dataset size, computed dashboard ViewModels. |
 | `BackendComparisonStore` | Comparison mode, metrics, errors, response summaries. |
-| `RealtimeStore` | Socket connection, event history, event controls, last realtime event. |
+| `RealtimeStore` | Socket connection, event history, event controls, last realtime event, burst state, and cache telemetry projections. |
 | `PhaseFiveVisualizationStore` | Optional future store for graph path selection, visible deliverables, and live comparison/realtime binding. |
 | `OpenApiContractStore` | Contract summaries, generated client status, drift check state. |
 | `McpDashboardStore` | MCP guidance checklist and command references. |

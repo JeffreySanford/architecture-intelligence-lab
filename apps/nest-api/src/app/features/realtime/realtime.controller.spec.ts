@@ -37,4 +37,15 @@ describe('RealtimeController', () => {
     });
     expect(gateway.publishLoanStatusEvent).toHaveBeenCalledWith(event);
   });
+
+  it('returns the Redis adapter status', () => {
+    const status = controller.getRealtimeRedisAdapterStatus();
+
+    expect(status).toMatchObject({
+      mode: expect.any(String),
+      connected: expect.any(Boolean),
+      message: expect.any(String),
+    });
+    expect(status.redisUrl === null || typeof status.redisUrl === 'string').toBe(true);
+  });
 });

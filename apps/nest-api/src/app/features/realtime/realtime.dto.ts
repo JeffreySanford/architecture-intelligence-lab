@@ -62,3 +62,17 @@ export class RealtimeEventHistoryDto {
   @ApiProperty({ format: 'date-time' })
   observedAt!: string;
 }
+
+export class RealtimeAdapterStatusDto {
+  @ApiProperty({ enum: ['redis', 'in-process', 'unknown'] })
+  mode!: 'redis' | 'in-process' | 'unknown';
+
+  @ApiProperty()
+  connected!: boolean;
+
+  @ApiProperty({ nullable: true, required: false })
+  redisUrl!: string | null;
+
+  @ApiProperty()
+  message!: string;
+}
