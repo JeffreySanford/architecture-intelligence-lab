@@ -289,6 +289,45 @@ Acceptance criteria:
 - [X] OpenAPI Contract Lab explicitly validates OpenApiStore signal persistence.
 - [X] Playwright verifies generated contract drift warning details.
 
+### Phase 6 completion summary
+- Phase 6 is effectively complete: generated clients are built, Angular services are accessed through facades, the OpenAPI Contract Lab exists, and contract drift state is surfaced and tested.
+- The remaining work is explicitly Phase 11 follow-up dashboard enhancement scope, not a Phase 6 functional gap.
+- Phase 6.5 should now own security monitoring and risk mitigation for OpenAPI credential, contract, and boundary issues.
+
+## Phase 6.5: OpenAPI Security Mapping
+
+Goal: Identify and map security problems introduced by the OpenAPI generated clients, the contract lab surface, and the facade boundary between Angular, Nest, and Spring APIs.
+
+Deliverables:
+
+- [X] Threat model for OpenAPI contract drift, generated client DTO assumptions, and frontend-to-backend boundary risks
+- [X] Security risk map for auth, authorization, CORS, CSRF, contract drift, and metadata exposure
+- [X] Inventory of OpenAPI client surface risks including missing auth headers, unsafe response assumptions, and generated DTO validation gaps
+- [X] Admin security monitoring page created with issue/watch risk items and remediation owners
+- [X] Permission-gated OpenAPI Contract Lab page for `contracts:view`
+- [X] OpenAPI docs endpoint protection behind auth or role-based access
+- [X] Spring OpenAPI docs security tests cover `/v3/api-docs` and `/swagger-ui`
+- [X] Nest Swagger docs security tests cover `/swagger` and `/swagger-json`
+- [X] GitHub issue created to track Phase 6.5 security work
+- [X] Targeted Playwright e2e security checks exist for OpenAPI credential forwarding, guarded docs access, and protected realtime route behavior
+- [X] Formal Phase 6.5 remediation backlog documented with prioritized follow-up tasks, owners, and next-sprint actions
+
+Acceptance criteria:
+
+- [X] Security problem areas are documented in the Phase 6.5 plan.
+- [X] Contract drift boundary risk is explicit and mapped to the affected components.
+- [X] Dashboard UI does not expose generated client internals or raw OpenAPI metadata without explicit permission.
+- [X] Authentication and authorization gaps are mapped for Spring API, Nest gateway, and Angular lab flows.
+- [X] Security remediation tasks are actionable and prioritized for the next sprint.
+
+### Immediate Phase 6.5 findings
+
+- Angular Spring/Nest generated client configuration now passes `withCredentials: true`, and lab API calls for `/api/me` and `/api/dashboard/snapshot` are wired to send cookies/credentials.
+- The Nest gateway and realtime endpoints are currently exposed without auth guards, and the WebSocket gateway allows `origin: '*'`, which is an acceptable dev tradeoff only if documented and tightened before any broader exposure.
+- Spring dev auth uses a plain `access_token` persona id cookie with no signature or token integrity verification; this is a dev-only auth model and should be locked down if the lab is ever treated as more than a local training environment.
+- The OpenAPI docs endpoints (`/v3/api-docs`, `/swagger-json`) are linked from the contract lab, and Spring/Nest backend protections have been added so only authorized personas can access raw contract metadata.
+- The OpenAPI Contract Lab is permission-gated, and backend raw docs protection is now implemented; production-grade auth review remains follow-up hardening.
+
 ## Phase 7: Angular Standalone Shell
 
 Goal: Create the core lab UI and route structure.

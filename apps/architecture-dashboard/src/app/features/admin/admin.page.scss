@@ -1,0 +1,68 @@
+.admin-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.admin-page__eyebrow {
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.admin-page__summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.admin-page__summary-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.admin-page__artifact-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.admin-page__artifact-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.admin-page__artifact-card-links a {
+  color: var(--text-link);
+  text-decoration: none;
+}
+
+.admin-page__artifact-card-links a:hover {
+  text-decoration: underline;
+}
+
+.admin-page__artifact-separator {
+  color: var(--text-secondary);
+}
+
+.admin-page__summary-label {
+  color: var(--text-secondary);
+}
+
+.admin-page__card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.admin-page__card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.admin-page__card-subtitle {
+  color: var(--text-secondary);
+}

@@ -16,9 +16,36 @@
   font-size: clamp(1.8rem, 3vw, 2.6rem);
 }
 
-.openapi > p {
+.openapi > p,
+.openapi__artifact-links {
   max-width: 72rem;
   margin: 0;
+  color: var(--p-text-muted-color);
+}
+
+.openapi__artifact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.openapi__artifact-links strong {
+  color: var(--p-text-color);
+  font-weight: 600;
+}
+
+.openapi__artifact-links a {
+  color: var(--p-primary-color);
+  text-decoration: none;
+}
+
+.openapi__artifact-links a:hover {
+  text-decoration: underline;
+}
+
+.openapi__artifact-separator {
   color: var(--p-text-muted-color);
 }
 

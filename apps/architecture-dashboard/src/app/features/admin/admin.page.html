@@ -1,0 +1,87 @@
+<section class="admin-page">
+  <p class="admin-page__eyebrow">Phase 6.5</p>
+  <h1>Admin Security Monitoring</h1>
+  <p>
+    Track the OpenAPI security risks and boundary status items that should be monitored as part of the generated client contract workflow.
+  </p>
+  <p>
+    Review the current risk map in
+    <a [routerLink]="['/lab/security-risk-map']" target="_blank" rel="noopener">
+      Phase 6.5 security risk map
+    </a>
+    for detailed auth, CORS, CSRF, contract drift, and metadata exposure risks.
+  </p>
+
+  <div class="admin-page__summary-cards">
+    <p-card>
+      <div class="admin-page__summary-value">{{ securitySummary().total }}</div>
+      <div class="admin-page__summary-label">Monitored items</div>
+    </p-card>
+    <p-card>
+      <div class="admin-page__summary-value">{{ securitySummary().issues }}</div>
+      <div class="admin-page__summary-label">Issues</div>
+    </p-card>
+    <p-card>
+      <div class="admin-page__summary-value">{{ securitySummary().watches }}</div>
+      <div class="admin-page__summary-label">Watch items</div>
+    </p-card>
+    <p-card>
+      <div class="admin-page__summary-value">{{ securitySummary().ok }}</div>
+      <div class="admin-page__summary-label">OK items</div>
+    </p-card>
+    <p-card class="admin-page__artifact-card">
+      <div class="admin-page__artifact-card-title">Phase 6.5 artifacts</div>
+      <div class="admin-page__artifact-card-links">
+        <a [routerLink]="['/lab/security-risk-map']" target="_blank" rel="noopener">Security risk map</a>
+        <span class="admin-page__artifact-separator">|</span>
+        <a [routerLink]="['/lab/security-threat-model']" target="_blank" rel="noopener">Threat model</a>
+      </div>
+    </p-card>
+  </div>
+
+  <p-card>
+    <ng-template pHeader>
+      <div class="admin-page__card-header">
+        <div>
+          <div class="admin-page__card-title">OpenAPI security status</div>
+          <div class="admin-page__card-subtitle">Current monitoring checklist items</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <p-table
+      [value]="securityItems()"
+      [paginator]="true"
+      [rows]="5"
+      sortMode="multiple"
+      dataKey="id"
+      styleClass="p-datatable-sm"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="area">Area <p-sort-icon field="area"></p-sort-icon></th>
+          <th>Status</th>
+          <th>Owner</th>
+          <th>Summary</th>
+          <th>Recommendation</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-item>
+        <tr data-testid="security-item-row">
+          <td>{{ item.area }}</td>
+          <td>
+            <p-tag [severity]="statusSeverity(item.status)" [value]="item.status"></p-tag>
+          </td>
+          <td>{{ item.owner }}</td>
+          <td>{{ item.summary }}</td>
+          <td>{{ item.recommendation }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5">No security monitoring items available.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</section>

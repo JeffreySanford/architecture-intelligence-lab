@@ -4,6 +4,16 @@
   <p>
     Inspect generated Angular clients, facade ownership, backend DTO coverage, and the drift checks that keep the lab aligned.
   </p>
+  <div class="openapi__artifact-links">
+    <p><strong>Phase 6.5 artifacts:</strong></p>
+    <a [routerLink]="['/lab/security-risk-map']" target="_blank" rel="noopener">
+      Security risk map
+    </a>
+    <span class="openapi__artifact-separator">|</span>
+    <a [routerLink]="['/lab/security-threat-model']" target="_blank" rel="noopener">
+      Threat model
+    </a>
+  </div>
 
   <div class="openapi__summary" aria-label="OpenAPI contract summary">
     <p-card>
@@ -55,10 +65,18 @@
       </div>
     </ng-template>
 
+    <div class="openapi__link-note">
+      <p>
+        These raw OpenAPI links are intended for authorized Contract Admin review only.
+        Backend docs should be protected before the lab is exposed beyond local training.
+      </p>
+    </div>
+
     <div class="openapi__link-grid">
       @for (link of swaggerLinks; track link.href) {
         <a
           class="openapi__link"
+          data-testid="swagger-link-row"
           [href]="link.href"
           target="_blank"
           rel="noreferrer noopener"

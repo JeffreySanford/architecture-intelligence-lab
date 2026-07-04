@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ChipModule } from 'primeng/chip';
 import { InputTextModule } from 'primeng/inputtext';
@@ -10,37 +11,13 @@ import { OpenApiStore } from '../../core/openapi/openapi.store';
 
 type ContractStatus = 'generated' | 'planned' | 'wrapped' | 'watch';
 
-interface GeneratedClientStatus {
-  client: string;
-  source: string;
-  generatedPath: string;
-  facade: string;
-  status: ContractStatus;
-  notes: string;
-}
-
-interface ContractEndpoint {
-  backend: 'Spring' | 'Nest';
-  endpoint: string;
-  generatedService: string;
-  dtoCoverage: string;
-  phase: string;
-}
-
-interface DriftBoundary {
-  boundary: string;
-  protectedBy: string;
-  failureSignal: string;
-  owner: string;
-  status: ContractStatus;
-}
-
 @Component({
   standalone: true,
   selector: 'app-openapi-page',
   imports: [
     CommonModule,
     FormsModule,
+    RouterLink,
     CardModule,
     ChipModule,
     InputTextModule,
