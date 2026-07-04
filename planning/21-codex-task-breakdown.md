@@ -205,11 +205,11 @@ Acceptance criteria:
 
 Expected files:
 
-- [ ] Generated Spring Angular client
-- [ ] Generated Nest Angular client
-- [ ] Data-access facades
-- [ ] Contract drift check command
-- [ ] Facade tests proving components/stores do not inject generated services directly
+- [X] Generated Spring Angular client
+- [X] Generated Nest Angular client
+- [X] Data-access facades
+- [X] Contract drift check command
+- [X] Facade tests proving components/stores do not inject generated services directly
 
 Do not touch:
 
@@ -217,14 +217,20 @@ Do not touch:
 
 Test command:
 
-- [ ] Client generation and build command.
+- [X] `pnpm nx run spring-api-client:generate`
+- [X] `pnpm nx run nest-api-client:generate`
+- [X] Client generation and build command.
 
 Acceptance criteria:
 
-- [ ] Facades compile against generated clients.
-- [ ] Spring API access in Angular flows through facade-wrapped generated services.
-- [ ] Nest comparison and realtime DTOs are generated before Phase 5 removes local DTO interfaces.
-- [ ] Generated output is reproducible and not manually edited.
+- [X] Facades compile against generated clients.
+- [X] Spring API access in Angular flows through facade-wrapped generated services.
+- [X] Nest comparison and realtime DTOs are generated before Phase 5 removes local DTO interfaces.
+- [X] Generated output is reproducible and not manually edited.
+- [X] OpenAPI Contract Lab lists generated client metadata and facade ownership.
+- [ ] OpenAPI Contract Lab surfaces explicit generated contract drift watch status.
+- [ ] Frontend state tests cover OpenAPI drift metadata and filter state.
+- [ ] Playwright covers contract drift warning details in the OpenAPI lab.
 
 ## Task 9: Add SignalStore Mapping
 

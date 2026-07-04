@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { provideApi as provideNestApi } from '@generated/nest-api-client';
 import { firstValueFrom } from 'rxjs';
 import { NestApiFacade } from './nest-api.facade';
 
@@ -10,7 +11,7 @@ describe('NestApiFacade', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [NestApiFacade],
+      providers: [NestApiFacade, provideNestApi('')],
     }).compileComponents();
 
     facade = TestBed.inject(NestApiFacade);

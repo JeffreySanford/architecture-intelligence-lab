@@ -262,20 +262,32 @@ Goal: Generate Angular models and services from both APIs and force frontend acc
 
 Deliverables:
 
-- [ ] `libs/generated/spring-api-client`
-- [ ] `libs/generated/nest-api-client`
-- [ ] Generation scripts
-- [ ] Drift check command
-- [ ] Data-access facades
-- [ ] OpenAPI Contract Lab scaffold
+- [X] `libs/generated/spring-api-client`
+- [X] `libs/generated/nest-api-client`
+- [X] Generation scripts
+- [X] Drift check command
+- [X] Data-access facades
+- [X] OpenAPI Contract Lab scaffold
+- [X] OpenAPI Contract Lab shows generated client service/DTO coverage
+- [X] OpenAPI Contract Lab surfaces explicit contract drift watch status
+- [X] OpenAPI Contract Lab shows signal/store mapping for generated contract metadata
+- [X] OpenAPI store signal state is unit tested
+- [X] OpenAPI store persistence is verified across component recreation
+- [X] Playwright covers generated contract drift details beyond row visibility
+- [ ] Remaining Phase 11 OpenAPI dashboard enhancements are tracked as follow-up work
 
 Acceptance criteria:
 
-- [ ] Generated clients build.
-- [ ] Components do not inject generated services directly.
-- [ ] Spring generated services are wrapped by Angular facades before use in stores/components.
-- [ ] Nest generated DTOs include comparison metrics and realtime events before replacing local Phase 5 interfaces.
-- [ ] OpenAPI Contract Lab exists in the workspace.
+- [X] Generated clients build.
+- [X] Components do not inject generated services directly.
+- [X] Spring generated services are wrapped by Angular facades before use in stores/components.
+- [X] Nest generated DTOs include comparison metrics and realtime events before replacing local Phase 5 interfaces.
+- [X] OpenAPI Contract Lab exists in the workspace.
+- [X] OpenAPI Contract Lab displays actual generated client names and service coverage.
+- [X] OpenAPI Contract Lab shows explicit contract drift watch status and boundary coverage.
+- [X] OpenAPI Contract Lab includes signal/store state for drift metadata.
+- [X] OpenAPI Contract Lab explicitly validates OpenApiStore signal persistence.
+- [X] Playwright verifies generated contract drift warning details.
 
 ## Phase 7: Angular Standalone Shell
 
@@ -409,6 +421,8 @@ Deliverables:
 - [ ] MCP setup checklist
 - [ ] Command guide
 - [ ] OpenAPI contract drift dashboard
+- [ ] Performance note for OpenAPI dashboard render and filter latency
+- [ ] Filter performance benchmarking for large contract lists
 
 Acceptance criteria:
 
@@ -417,6 +431,7 @@ Acceptance criteria:
 - [ ] OpenAPI Contract Lab compares Spring API endpoints vs generated DTOs.
 - [ ] OpenAPI Contract Lab surfaces contract drift/warnings.
 - [ ] MCP dashboard does not execute arbitrary browser commands.
+- [ ] OpenAPI dashboard performance is considered for large contract lists.
 
 ## Phase 12: Full Test Suite
 

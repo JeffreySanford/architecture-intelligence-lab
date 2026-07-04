@@ -16,6 +16,8 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "paths": {
+      "@generated/nest-api-client": ["./libs/generated/nest-api-client/src/index.ts"],
+      "@generated/nest-api-client/*": ["./libs/generated/nest-api-client/src/*"],
       "@generated/spring-api-client": ["./libs/generated/spring-api-client/src/index.ts"],
       "@generated/spring-api-client/*": ["./libs/generated/spring-api-client/src/*"]
     }

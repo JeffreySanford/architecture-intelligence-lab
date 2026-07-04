@@ -161,8 +161,8 @@ export const appRoutes: Routes = [
       {
         path: 'openapi',
         loadComponent: () =>
-          import('./features/placeholder/placeholder.page').then(
-            (m) => m.PlaceholderPage,
+          import('./features/openapi/openapi.page').then(
+            (m) => m.OpenApiPage,
           ),
         canActivate: [permissionGuard],
         data: {

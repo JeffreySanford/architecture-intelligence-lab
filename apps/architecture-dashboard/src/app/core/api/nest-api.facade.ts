@@ -1,92 +1,55 @@
-import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import {
+  BackendComparisonMetricDto,
+  BackendComparisonResponseDto,
+  ComparisonApiService,
+  GatewayLoanReadDto,
+  LoanStatusEventRequestDto,
+  RealtimeApiService,
+  RealtimeEventDto,
+  RealtimeEventHistoryDto,
+} from '@generated/nest-api-client';
 
-export type ComparisonPathId = 'spring-direct' | 'nest-direct' | 'nest-proxy';
-export type ComparisonStatus = 'ok' | 'warning' | 'error';
-export type GatewayMode = 'mock' | 'live' | 'degraded';
+export type ComparisonPathId = BackendComparisonMetricDto.PathIdEnum;
+export type ComparisonStatus = BackendComparisonMetricDto.StatusEnum;
+export type GatewayMode = BackendComparisonResponseDto.ModeEnum;
+export type RealtimeEventType = RealtimeEventDto.TypeEnum;
 
-export interface BackendComparisonMetricDto {
-  pathId: ComparisonPathId;
-  label: string;
-  latencyMs: number;
-  payloadBytes: number;
-  recordCount: number;
-  status: ComparisonStatus;
-  errorMessage?: string;
-  observedAt: string;
-}
-
-export interface BackendComparisonResponseDto {
-  mode: GatewayMode;
-  subject: 'loans';
-  observedAt: string;
-  paths: BackendComparisonMetricDto[];
-}
-
-export type RealtimeEventType = 'loan.status.updated';
-
-export interface RealtimeEventDto {
-  eventId: string;
-  type: RealtimeEventType;
-  loanId: string;
-  loanNumber: string;
-  previousStatus: string;
-  nextStatus: string;
-  source: 'mock-http' | 'socket';
-  observedAt: string;
-}
-
-export interface RealtimeEventHistoryDto {
-  mode: GatewayMode;
-  namespace: '/gateway/realtime';
-  eventName: RealtimeEventType;
-  events: RealtimeEventDto[];
-  observedAt: string;
-}
-
-export interface GatewayLoanReadDto {
-  pathId: ComparisonPathId;
-  mode: GatewayMode;
-  recordCount: number;
-  records: Array<{
-    id: string;
-    loanNumber: string;
-    borrowerName: string;
-    amount: number;
-    status: string;
-  }>;
-  errorMessage?: string;
-  observedAt: string;
-}
-
-export interface LoanStatusEventRequestDto {
-  loanId?: string;
-  loanNumber?: string;
-  previousStatus?: string;
-  nextStatus?: string;
-}
+export type {
+  BackendComparisonMetricDto,
+  BackendComparisonResponseDto,
+  GatewayLoanReadDto,
+  LoanStatusEventRequestDto,
+  RealtimeEventDto,
+  RealtimeEventHistoryDto,
+};
 
 @Injectable({ providedIn: 'root' })
 export class NestApiFacade {
-  private readonly http = inject(HttpClient);
+  private readonly comparisonApi = inject(ComparisonApiService);
+  private readonly realtimeApi = inject(RealtimeApiService);
+
+  private readonly jsonAcceptOptions = {
+    httpHeaderAccept: 'application/json' as const,
+  };
 
   getLoanComparison() {
-    return this.http.get<BackendComparisonResponseDto>('/gateway/comparison/loans');
+    return this.comparisonApi.compareLoans(undefined, false, this.jsonAcceptOptions);
   }
 
   getRealtimeEventHistory() {
-    return this.http.get<RealtimeEventHistoryDto>('/gateway/realtime/events');
+    return this.realtimeApi.getRealtimeEventHistory(undefined, false, this.jsonAcceptOptions);
   }
 
   emitLoanStatusEvent(request: LoanStatusEventRequestDto) {
-    return this.http.post<RealtimeEventDto>('/gateway/realtime/loan-status', request);
+    return this.realtimeApi.emitLoanStatusEvent(request, undefined, false, this.jsonAcceptOptions);
   }
 
   getDirectLoanReads() {
-    return this.http.get<GatewayLoanReadDto>('/gateway/loans/direct');
+    return this.comparisonApi.getDirectLoans(undefined, false, this.jsonAcceptOptions);
   }
 
   getProxyLoanReads() {
-    return this.http.get<GatewayLoanReadDto>('/gateway/loans/proxy');
+    return this.comparisonApi.getProxyLoans(undefined, false, this.jsonAcceptOptions);
   }
 }

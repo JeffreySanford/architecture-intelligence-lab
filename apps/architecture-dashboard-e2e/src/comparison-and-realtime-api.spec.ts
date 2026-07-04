@@ -384,16 +384,37 @@ test('Backend Comparison route is protected for Contract Admin but accessible to
   await expect(page.locator('app-phase-five-page h1', { hasText: 'NestJS Comparison And Realtime API' })).toBeVisible();
 });
 
-test('Contract Admin can open OpenAPI Contract Lab and see placeholder content', async ({ page }) => {
+test('Contract Admin can open OpenAPI Contract Lab and see the contract status page', async ({ page }) => {
   await mockApiForPersona(page, 'fiona-contract-admin');
 
   await page.goto('/lab/openapi');
 
   await expect(page).toHaveURL(/.*\/lab\/openapi$/, { timeout: 15000 });
-  await expect(page.locator('app-placeholder-page h1', { hasText: 'OpenAPI Contract Lab' })).toBeVisible();
-  await expect(page.locator('.placeholder__card')).toBeVisible();
-  await expect(page.locator('p-chip', { hasText: 'Routed' })).toBeVisible();
-  await expect(page.locator('p-chip', { hasText: 'Data pending' })).toBeVisible();
+  await expect(page.locator('app-openapi-page h1', { hasText: 'OpenAPI Contract Lab' })).toBeVisible();
+  await expect(page.locator('[data-testid="generated-client-row"]')).toHaveCount(2);
+  await expect(page.locator('app-openapi-page')).toContainText('spring-api-client');
+  await expect(page.locator('app-openapi-page')).toContainText('nest-api-client');
+  await expect(page.locator('app-openapi-page')).toContainText('ComparisonApiService.compareLoans');
+  await expect(page.locator('app-openapi-page')).toContainText('RealtimeEventDto');
+  await expect(page.locator('[data-testid="openapi-drift-status"]')).toContainText('watch');
+  await expect(
+    page.locator('[data-testid="drift-boundary-row"]', {
+      hasText: 'Spring/Nest DTOs to Angular clients',
+    }),
+  ).toContainText('watch');
+  await expect(
+    page.locator('[data-testid="openapi-drift-status"] p', {
+      hasText: 'Generated client contract boundaries are under active watch',
+    }),
+  ).toBeVisible();
+
+  await page.locator('input[placeholder="Filter drift boundaries"]').fill('watch');
+  await expect(page.locator('[data-testid="drift-boundary-row"]')).toHaveCount(2);
+  await expect(
+    page.locator('[data-testid="drift-boundary-row"]', {
+      hasText: 'Spring/Nest DTOs to Angular clients',
+    }),
+  ).toBeVisible();
 });
 
 test('Contract Admin can switch personas and access OpenAPI Contract Lab', async ({ page }) => {
@@ -407,7 +428,8 @@ test('Contract Admin can switch personas and access OpenAPI Contract Lab', async
 
   await page.goto('/lab/openapi');
   await expect(page).toHaveURL(/.*\/lab\/openapi$/, { timeout: 15000 });
-  await expect(page.locator('app-placeholder-page h1', { hasText: 'OpenAPI Contract Lab' })).toBeVisible();
+  await expect(page.locator('app-openapi-page h1', { hasText: 'OpenAPI Contract Lab' })).toBeVisible();
+  await expect(page.locator('app-openapi-page')).toContainText('NestApiFacade');
 });
 
 test('Diagnostics persona can select comparison metric rows and highlight the active D3 path', async ({ page }) => {

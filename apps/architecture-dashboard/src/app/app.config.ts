@@ -2,7 +2,8 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { provideApi } from '@generated/spring-api-client';
+import { provideApi as provideNestApi } from '@generated/nest-api-client';
+import { provideApi as provideSpringApi } from '@generated/spring-api-client';
 import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
         preset: Aura,
       },
     }),
-    provideApi(''),
+    provideSpringApi(''),
+    provideNestApi(''),
   ],
 };

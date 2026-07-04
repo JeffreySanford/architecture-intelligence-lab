@@ -1,27 +1,64 @@
-export type RealtimeEventType = 'loan.status.updated';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export interface LoanStatusEventRequestDto {
+export const realtimeEventTypes = ['loan.status.updated'] as const;
+export type RealtimeEventType = (typeof realtimeEventTypes)[number];
+
+export const realtimeSources = ['mock-http', 'socket'] as const;
+export type RealtimeSource = (typeof realtimeSources)[number];
+
+export class LoanStatusEventRequestDto {
+  @ApiPropertyOptional()
   loanId?: string;
+
+  @ApiPropertyOptional()
   loanNumber?: string;
+
+  @ApiPropertyOptional()
   previousStatus?: string;
+
+  @ApiPropertyOptional()
   nextStatus?: string;
 }
 
-export interface RealtimeEventDto {
-  eventId: string;
-  type: RealtimeEventType;
-  loanId: string;
-  loanNumber: string;
-  previousStatus: string;
-  nextStatus: string;
-  source: 'mock-http' | 'socket';
-  observedAt: string;
+export class RealtimeEventDto {
+  @ApiProperty()
+  eventId!: string;
+
+  @ApiProperty({ enum: realtimeEventTypes })
+  type!: RealtimeEventType;
+
+  @ApiProperty()
+  loanId!: string;
+
+  @ApiProperty()
+  loanNumber!: string;
+
+  @ApiProperty()
+  previousStatus!: string;
+
+  @ApiProperty()
+  nextStatus!: string;
+
+  @ApiProperty({ enum: realtimeSources })
+  source!: RealtimeSource;
+
+  @ApiProperty({ format: 'date-time' })
+  observedAt!: string;
 }
 
-export interface RealtimeEventHistoryDto {
-  mode: 'mock';
-  namespace: '/gateway/realtime';
-  eventName: RealtimeEventType;
-  events: RealtimeEventDto[];
-  observedAt: string;
+export class RealtimeEventHistoryDto {
+  @ApiProperty({ enum: ['mock'] })
+  mode!: 'mock';
+
+  @ApiProperty({ enum: ['/gateway/realtime'] })
+  namespace!: '/gateway/realtime';
+
+  @ApiProperty({ enum: realtimeEventTypes })
+  eventName!: RealtimeEventType;
+
+  @ApiProperty({ type: () => [RealtimeEventDto] })
+  events!: RealtimeEventDto[];
+
+  @ApiProperty({ format: 'date-time' })
+  observedAt!: string;
 }

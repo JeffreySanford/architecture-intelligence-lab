@@ -2,10 +2,32 @@
   "name": "nest-api-client",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
+  "metadata": {
+    "description": "Generated Angular client library for the Nest API OpenAPI document."
+  },
   "sourceRoot": "libs/generated/nest-api-client/src",
   "targets": {
     "build": {
       "executor": "nx:noop"
+    },
+    "generate": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{workspaceRoot}/libs/generated/nest-api-client/openapi.json",
+        "{workspaceRoot}/libs/generated/nest-api-client/src/generated"
+      ],
+      "options": {
+        "cwd": ".",
+        "command": "node tools/export-nest-openapi.cjs libs/generated/nest-api-client/openapi.json && pnpm exec openapi-generator-cli generate -i libs/generated/nest-api-client/openapi.json -g typescript-angular -o libs/generated/nest-api-client/src/generated --skip-validate-spec --additional-properties=ngVersion=22.0.5,providedIn=root,serviceSuffix=ApiService,apiPackage=api,modelPackage=models,supportsES6=true,withSeparateModelsAndApi=true && node tools/clean-openapi-generated.cjs libs/generated/nest-api-client/src/generated"
+      }
+    },
+    "drift-check": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["generate"],
+      "options": {
+        "cwd": ".",
+        "command": "node tools/check-openapi-clients.cjs nest"
+      }
     },
     "lint": {
       "executor": "nx:noop"

@@ -75,7 +75,7 @@ Completed foundation work:
 - [X] Authenticated lab navigation filters every protected link by the selected user's permissions.
 - [X] `/lab/security-search` PrimeNG Capital Markets table exists with lazy loading, filters, row actions, details, loading, and empty states.
 - [ ] Map/Set/ViewModel tests cover borrower lookup, documents by loan/security, status lookup, permission membership, and fallback rows.
-- [ ] Generated OpenAPI clients are real, buildable, and consumed only through Angular facades.
+- [X] Generated OpenAPI clients are real, buildable, and consumed only through Angular facades.
 
 ## Phase 5 Visualization Planning Checkpoint
 

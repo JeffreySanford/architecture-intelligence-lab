@@ -1,0 +1,244 @@
+<section class="openapi">
+  <p class="openapi__eyebrow">Phase 6</p>
+  <h1>OpenAPI Contract Lab</h1>
+  <p>
+    Inspect generated Angular clients, facade ownership, backend DTO coverage, and the drift checks that keep the lab aligned.
+  </p>
+
+  <div class="openapi__summary" aria-label="OpenAPI contract summary">
+    <p-card>
+      <div class="openapi__metric">
+        <span>Generated clients</span>
+        <strong>{{ generatedClients().length }}</strong>
+      </div>
+    </p-card>
+    <p-card>
+      <div class="openapi__metric">
+        <span>Contract endpoints</span>
+        <strong>{{ contractEndpoints().length }}</strong>
+      </div>
+    </p-card>
+    <p-card>
+      <div class="openapi__metric">
+        <span>Facade boundary</span>
+        <strong>Required</strong>
+      </div>
+    </p-card>
+  </div>
+
+  <p-card data-testid="openapi-drift-status">
+    <ng-template pHeader>
+      <div class="openapi__card-header">
+        <div>
+          <div class="openapi__card-title">OpenAPI drift status</div>
+          <div class="openapi__card-subtitle">Contract drift watch and generation health</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="openapi__drift-summary">
+      <p-tag
+        [severity]="statusSeverity(openApiDriftStatus.status)"
+        [value]="openApiDriftStatus.status"
+      ></p-tag>
+      <p>{{ openApiDriftStatus.message }}</p>
+    </div>
+  </p-card>
+
+  <p-card>
+    <ng-template pHeader>
+      <div class="openapi__card-header">
+        <div>
+          <div class="openapi__card-title">Swagger and OpenAPI links</div>
+          <div class="openapi__card-subtitle">Contract sources used by generation</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="openapi__link-grid">
+      @for (link of swaggerLinks; track link.href) {
+        <a
+          class="openapi__link"
+          [href]="link.href"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          <strong>{{ link.label }}</strong>
+          <span>{{ link.description }}</span>
+          <code>{{ link.href }}</code>
+        </a>
+      }
+    </div>
+  </p-card>
+
+  <p-card>
+    <ng-template pHeader>
+      <div class="openapi__card-header">
+        <div>
+          <div class="openapi__card-title">Generated client status</div>
+          <div class="openapi__card-subtitle">Buildable clients wrapped by Angular facades</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter generated clients"
+        [ngModel]="clientFilter()"
+        (ngModelChange)="clientFilter.set($event)"
+      />
+    </div>
+
+    <p-table
+      [value]="filteredGeneratedClients()"
+      styleClass="p-datatable-sm"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      sortMode="multiple"
+      dataKey="client"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="client">Client <p-sort-icon field="client"></p-sort-icon></th>
+          <th pSortableColumn="source">Source <p-sort-icon field="source"></p-sort-icon></th>
+          <th pSortableColumn="facade">Facade <p-sort-icon field="facade"></p-sort-icon></th>
+          <th pSortableColumn="status">Status <p-sort-icon field="status"></p-sort-icon></th>
+          <th>Generated path</th>
+          <th>Notes</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-client>
+        <tr data-testid="generated-client-row">
+          <td>{{ client.client }}</td>
+          <td>{{ client.source }}</td>
+          <td><code>{{ client.facade }}</code></td>
+          <td>
+            <p-tag [severity]="statusSeverity(client.status)" [value]="client.status"></p-tag>
+          </td>
+          <td><code>{{ client.generatedPath }}</code></td>
+          <td>{{ client.notes }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="6">No generated clients match the current filter.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <p-card>
+    <ng-template pHeader>
+      <div class="openapi__card-header">
+        <div>
+          <div class="openapi__card-title">Endpoint to DTO coverage</div>
+          <div class="openapi__card-subtitle">Generated services consumed through facades</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter contract endpoints"
+        [ngModel]="endpointFilter()"
+        (ngModelChange)="endpointFilter.set($event)"
+      />
+    </div>
+
+    <p-table
+      [value]="filteredContractEndpoints()"
+      styleClass="p-datatable-sm"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      sortMode="multiple"
+      dataKey="endpoint"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="backend">Backend <p-sort-icon field="backend"></p-sort-icon></th>
+          <th pSortableColumn="endpoint">Endpoint <p-sort-icon field="endpoint"></p-sort-icon></th>
+          <th pSortableColumn="generatedService">Generated service <p-sort-icon field="generatedService"></p-sort-icon></th>
+          <th>DTO coverage</th>
+          <th pSortableColumn="phase">Phase <p-sort-icon field="phase"></p-sort-icon></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-endpoint>
+        <tr data-testid="contract-endpoint-row">
+          <td>{{ endpoint.backend }}</td>
+          <td><code>{{ endpoint.endpoint }}</code></td>
+          <td><code>{{ endpoint.generatedService }}</code></td>
+          <td>{{ endpoint.dtoCoverage }}</td>
+          <td>{{ endpoint.phase }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5">No contract endpoints match the current filter.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <p-card>
+    <ng-template pHeader>
+      <div class="openapi__card-header">
+        <div>
+          <div class="openapi__card-title">Drift boundaries</div>
+          <div class="openapi__card-subtitle">What each check protects</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter drift boundaries"
+        [ngModel]="driftFilter()"
+        (ngModelChange)="driftFilter.set($event)"
+      />
+    </div>
+
+    <p-table
+      [value]="filteredDriftBoundaries()"
+      styleClass="p-datatable-sm"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      sortMode="multiple"
+      dataKey="boundary"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="boundary">Boundary <p-sort-icon field="boundary"></p-sort-icon></th>
+          <th>Protected by</th>
+          <th>Failure signal</th>
+          <th pSortableColumn="owner">Owner <p-sort-icon field="owner"></p-sort-icon></th>
+          <th pSortableColumn="status">Drift status <p-sort-icon field="status"></p-sort-icon></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-boundary>
+        <tr data-testid="drift-boundary-row">
+          <td>{{ boundary.boundary }}</td>
+          <td>{{ boundary.protectedBy }}</td>
+          <td>{{ boundary.failureSignal }}</td>
+          <td>{{ boundary.owner }}</td>
+          <td>
+            <p-tag [severity]="statusSeverity(boundary.status)" [value]="boundary.status"></p-tag>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5">No drift boundaries match the current filter.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</section>

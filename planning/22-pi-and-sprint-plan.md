@@ -171,8 +171,8 @@ Deliverables:
 - [X] Live backend comparison endpoint
 - [X] Redis adapter wiring
 - [X] Nest Swagger UI
-- [ ] Spring and Nest generated clients
-- [ ] Data-access facade skeletons
+- [X] Spring and Nest generated clients
+- [X] Data-access facade skeletons
 - [ ] PrimeNG-compatible facade contracts for security, commitment, and disclosure objects
 
 Acceptance criteria:
@@ -196,7 +196,7 @@ Acceptance criteria:
 - [X] Angular unit tests cover auth facade persona switching and currentUser permission updates.
 - [X] Angular unit tests cover realtime history binding and failure state.
 - [X] Playwright covers Phase 5 mock comparison metrics and realtime history rendering.
-- [ ] Generated clients build and are not manually edited.
+- [X] Generated clients build and are not manually edited.
 - [ ] API contract shapes support security pools, commitments, disclosures, and workflow status needed by PrimeNG tables.
 
 ## Sprint 4: Angular Shell, Auth Flow, And Dashboard Mapping
@@ -358,15 +358,15 @@ Goal: Complete the educational surface and prove the core flow.
 
 Stories:
 
-- [ ] As a learner, I can understand how Flyway, OpenAPI, ViewModel tests, and Playwright prevent different drift types.
+- [X] As a learner, I can understand how Flyway, OpenAPI, ViewModel tests, and Playwright prevent different drift types.
 - [ ] As a developer, I can view MCP guidance without executing browser-side commands.
 - [ ] As a maintainer, I can run core quality gates.
 
 Deliverables:
 
-- [ ] OpenAPI contract lab
+- [X] OpenAPI contract lab
 - [ ] MCP dashboard
-- [ ] Angular unit tests
+- [X] Angular unit tests
 - [ ] Spring integration tests
 - [ ] Nest tests
 - [ ] Playwright E2E flow
@@ -383,7 +383,7 @@ Acceptance criteria:
 
 - [ ] Scope grows beyond training-lab v1. Mitigation: keep Redis, MCP, and visualizations scoped to explicit teaching goals.
 - [X] Project names drift from final names. Mitigation applied: Nx project names and app folders now use the locked names.
-- [ ] Generated clients become hard to maintain. Mitigation: use facades and never inject generated services directly into components.
+- [X] Generated clients become hard to maintain. Mitigation applied: generated clients are wrapped by facades and checked by `check:openapi-clients`.
 - [X] PrimeNG 22 RC license/runtime behavior needs an explicit lab decision. Mitigation applied: local `.env` holds `PRIMEUI_LICENSE_KEY`, ignored `env.js` provides runtime config, and Angular passes it to `providePrimeNG`.
 - [ ] Realtime state becomes confusing. Mitigation: keep Spring as durable source of truth and Redis as transient coordination only.
 - [ ] Stress dataset slows development. Mitigation: make Stress an explicit mode, not the default.

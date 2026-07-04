@@ -35,7 +35,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: `pnpm nx run architecture-dashboard:serve --port=${baseUrlPort}`,
+    command: `pnpm nx run architecture-dashboard:serve-static --port=${baseUrlPort}`,
     url: baseURL,
     env: {
       E2E_MOCKED_BACKENDS: '1',

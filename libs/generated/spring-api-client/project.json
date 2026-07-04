@@ -13,6 +13,13 @@
         "command": "pnpm exec openapi-generator-cli generate -i http://localhost:18080/v3/api-docs -g typescript-angular -o libs/generated/spring-api-client/src/generated --skip-validate-spec --additional-properties=ngVersion=22.0.5,providedIn=root,serviceSuffix=ApiService,apiPackage=api,modelPackage=models,supportsES6=true,withSeparateModelsAndApi=true"
       }
     },
+    "drift-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": ".",
+        "command": "node tools/check-openapi-clients.cjs spring"
+      }
+    },
     "lint": {
       "executor": "nx:noop"
     },

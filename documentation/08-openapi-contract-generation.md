@@ -52,9 +52,9 @@ libs/generated/
       generated/
 ```
 
-Current checkpoint: `spring-api-client` and `nest-api-client` exist as Nx-discoverable libraries. The Spring client is generated and wrapped by Angular facades for current persona/dashboard calls. The Nest client remains planned until the gateway OpenAPI document is implemented.
+Current checkpoint: `spring-api-client` and `nest-api-client` are Nx-discoverable generated libraries. The Spring client is generated from `/v3/api-docs` and wrapped by `SpringApiFacade` for persona, auth, and dashboard calls. The Nest client is generated from a local exported Swagger document and wrapped by `NestApiFacade` for comparison metrics, direct reads, proxy reads, realtime history, and realtime emit calls.
 
-Phase 5 implication: generated Nest models should include comparison metric rows and realtime event DTOs with stable ids (`pathId`, `eventId`) so the D3 graph and PrimeNG tables can bind to contract-backed data.
+Phase 6 checkpoint: generated Nest models include comparison metric rows and realtime event DTOs with stable ids (`pathId`, `eventId`) so the D3 graph and PrimeNG tables can bind to contract-backed data.
 
 Priority note: OpenAPI generation should move ahead of broad additional visualization work. The enterprise pattern to reinforce is:
 
@@ -63,6 +63,14 @@ Spring OpenAPI -> generated Angular client -> facade -> store -> PrimeNG view
 ```
 
 The Security Search screen currently uses a deterministic local facade with `SecuritySearchRowVm`. It should become an explicit consumer of facade-wrapped generated DTOs once the security/pool/commitment/disclosure API shape exists.
+
+Useful commands:
+
+```text
+pnpm nx run spring-api-client:generate
+pnpm nx run nest-api-client:generate
+pnpm run check:openapi-clients
+```
 
 ## What This Teaches
 

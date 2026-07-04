@@ -88,7 +88,7 @@ PrimeNG has been upgraded from the previous v17 dependency to `22.0.0-rc.1`, whi
 - Local Angular development uses an environment-aware proxy. `nx serve` defaults Spring traffic to `http://localhost:18080`; Docker compose sets `SPRING_API_TARGET=http://spring-api:8080`.
 - Angular animation planning uses `animate.enter` and `animate.leave`, not `@angular/animations`.
 - Angular MCP config exists at `.vscode/mcp.json`.
-- Generated client libraries exist at `libs/generated/spring-api-client` and `libs/generated/nest-api-client`; the Spring client is generated for current API calls, while the Nest client remains planned until the gateway contract is implemented.
+- Generated client libraries exist at `libs/generated/spring-api-client` and `libs/generated/nest-api-client`; both are generated and consumed through Angular facades for the current Spring dashboard/auth and Nest comparison/realtime calls.
 - Nginx route skeleton exists at `apps/architecture-dashboard/nginx/default.conf`.
 - Local environment defaults are documented in `.env.example`.
 - Current state-store implementation uses Angular signals directly. `@ngrx/signals` remains the target once an Angular 22-compatible package is available.

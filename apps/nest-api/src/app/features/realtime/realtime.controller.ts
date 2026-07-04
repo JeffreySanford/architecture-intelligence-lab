@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   LoanStatusEventRequestDto,
   RealtimeEventDto,
@@ -7,6 +8,7 @@ import {
 import { RealtimeGateway } from './realtime.gateway';
 import { RealtimeService } from './realtime.service';
 
+@ApiTags('realtime')
 @Controller('gateway/realtime')
 export class RealtimeController {
   constructor(
@@ -15,11 +17,16 @@ export class RealtimeController {
   ) {}
 
   @Get('events')
+  @ApiOperation({ operationId: 'getRealtimeEventHistory' })
+  @ApiOkResponse({ type: RealtimeEventHistoryDto })
   getEventHistory(): RealtimeEventHistoryDto {
     return this.realtimeService.getHistory();
   }
 
   @Post('loan-status')
+  @ApiOperation({ operationId: 'emitLoanStatusEvent' })
+  @ApiBody({ type: LoanStatusEventRequestDto })
+  @ApiOkResponse({ type: RealtimeEventDto })
   emitLoanStatusEvent(
     @Body() request: LoanStatusEventRequestDto,
   ): RealtimeEventDto {

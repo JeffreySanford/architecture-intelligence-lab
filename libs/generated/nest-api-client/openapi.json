@@ -1,0 +1,471 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api": {
+      "get": {
+        "operationId": "AppController_getData",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/gateway/health": {
+      "get": {
+        "operationId": "getGatewayHealth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayHealthDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "comparison"
+        ]
+      }
+    },
+    "/gateway/loans/direct": {
+      "get": {
+        "operationId": "getDirectLoans",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayLoanReadDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "comparison"
+        ]
+      }
+    },
+    "/gateway/loans/proxy": {
+      "get": {
+        "operationId": "getProxyLoans",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayLoanReadDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "comparison"
+        ]
+      }
+    },
+    "/gateway/comparison/loans": {
+      "get": {
+        "operationId": "compareLoans",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackendComparisonResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "comparison"
+        ]
+      }
+    },
+    "/gateway/realtime/events": {
+      "get": {
+        "operationId": "getRealtimeEventHistory",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RealtimeEventHistoryDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "realtime"
+        ]
+      }
+    },
+    "/gateway/realtime/loan-status": {
+      "post": {
+        "operationId": "emitLoanStatusEvent",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanStatusEventRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RealtimeEventDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "realtime"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Architecture Intelligence Nest Gateway",
+    "description": "Comparison, proxy, and realtime API for the training lab.",
+    "version": "0.1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "GatewayHealthDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "enum": [
+              "nest-api"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "live",
+              "degraded"
+            ]
+          },
+          "springApiTarget": {
+            "type": "string"
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "status",
+          "service",
+          "mode",
+          "springApiTarget",
+          "observedAt"
+        ]
+      },
+      "MockLoanDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "loanNumber": {
+            "type": "string"
+          },
+          "borrowerName": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "loanNumber",
+          "borrowerName",
+          "amount",
+          "status"
+        ]
+      },
+      "GatewayLoanReadDto": {
+        "type": "object",
+        "properties": {
+          "pathId": {
+            "type": "string",
+            "enum": [
+              "spring-direct",
+              "nest-direct",
+              "nest-proxy"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "live",
+              "degraded"
+            ]
+          },
+          "recordCount": {
+            "type": "number"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MockLoanDto"
+            }
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "pathId",
+          "mode",
+          "recordCount",
+          "records",
+          "observedAt"
+        ]
+      },
+      "BackendComparisonMetricDto": {
+        "type": "object",
+        "properties": {
+          "pathId": {
+            "type": "string",
+            "enum": [
+              "spring-direct",
+              "nest-direct",
+              "nest-proxy"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "latencyMs": {
+            "type": "number"
+          },
+          "payloadBytes": {
+            "type": "number"
+          },
+          "recordCount": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "warning",
+              "error"
+            ]
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "pathId",
+          "label",
+          "latencyMs",
+          "payloadBytes",
+          "recordCount",
+          "status",
+          "observedAt"
+        ]
+      },
+      "BackendComparisonResponseDto": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "live",
+              "degraded"
+            ]
+          },
+          "subject": {
+            "type": "string",
+            "enum": [
+              "loans"
+            ]
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BackendComparisonMetricDto"
+            }
+          }
+        },
+        "required": [
+          "mode",
+          "subject",
+          "observedAt",
+          "paths"
+        ]
+      },
+      "RealtimeEventDto": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "loan.status.updated"
+            ]
+          },
+          "loanId": {
+            "type": "string"
+          },
+          "loanNumber": {
+            "type": "string"
+          },
+          "previousStatus": {
+            "type": "string"
+          },
+          "nextStatus": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "mock-http",
+              "socket"
+            ]
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "eventId",
+          "type",
+          "loanId",
+          "loanNumber",
+          "previousStatus",
+          "nextStatus",
+          "source",
+          "observedAt"
+        ]
+      },
+      "RealtimeEventHistoryDto": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "mock"
+            ]
+          },
+          "namespace": {
+            "type": "string",
+            "enum": [
+              "/gateway/realtime"
+            ]
+          },
+          "eventName": {
+            "type": "string",
+            "enum": [
+              "loan.status.updated"
+            ]
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RealtimeEventDto"
+            }
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "mode",
+          "namespace",
+          "eventName",
+          "events",
+          "observedAt"
+        ]
+      },
+      "LoanStatusEventRequestDto": {
+        "type": "object",
+        "properties": {
+          "loanId": {
+            "type": "string"
+          },
+          "loanNumber": {
+            "type": "string"
+          },
+          "previousStatus": {
+            "type": "string"
+          },
+          "nextStatus": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

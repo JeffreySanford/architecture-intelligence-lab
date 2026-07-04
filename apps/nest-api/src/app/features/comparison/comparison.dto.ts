@@ -1,46 +1,104 @@
-export type ComparisonPathId = 'spring-direct' | 'nest-direct' | 'nest-proxy';
-export type ComparisonStatus = 'ok' | 'warning' | 'error';
-export type GatewayMode = 'mock' | 'live' | 'degraded';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export interface GatewayHealthDto {
-  status: 'ok';
-  service: 'nest-api';
-  mode: GatewayMode;
-  springApiTarget: string;
-  observedAt: string;
+export const comparisonPathIds = ['spring-direct', 'nest-direct', 'nest-proxy'] as const;
+export type ComparisonPathId = (typeof comparisonPathIds)[number];
+
+export const comparisonStatuses = ['ok', 'warning', 'error'] as const;
+export type ComparisonStatus = (typeof comparisonStatuses)[number];
+
+export const gatewayModes = ['mock', 'live', 'degraded'] as const;
+export type GatewayMode = (typeof gatewayModes)[number];
+
+export class GatewayHealthDto {
+  @ApiProperty({ enum: ['ok'] })
+  status!: 'ok';
+
+  @ApiProperty({ enum: ['nest-api'] })
+  service!: 'nest-api';
+
+  @ApiProperty({ enum: gatewayModes })
+  mode!: GatewayMode;
+
+  @ApiProperty()
+  springApiTarget!: string;
+
+  @ApiProperty({ format: 'date-time' })
+  observedAt!: string;
 }
 
-export interface MockLoanDto {
-  id: string;
-  loanNumber: string;
-  borrowerName: string;
-  amount: number;
-  status: string;
+export class MockLoanDto {
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty()
+  loanNumber!: string;
+
+  @ApiProperty()
+  borrowerName!: string;
+
+  @ApiProperty()
+  amount!: number;
+
+  @ApiProperty()
+  status!: string;
 }
 
-export interface GatewayLoanReadDto {
-  pathId: ComparisonPathId;
-  mode: GatewayMode;
-  recordCount: number;
-  records: MockLoanDto[];
+export class GatewayLoanReadDto {
+  @ApiProperty({ enum: comparisonPathIds })
+  pathId!: ComparisonPathId;
+
+  @ApiProperty({ enum: gatewayModes })
+  mode!: GatewayMode;
+
+  @ApiProperty()
+  recordCount!: number;
+
+  @ApiProperty({ type: () => [MockLoanDto] })
+  records!: MockLoanDto[];
+
+  @ApiPropertyOptional()
   errorMessage?: string;
-  observedAt: string;
+
+  @ApiProperty({ format: 'date-time' })
+  observedAt!: string;
 }
 
-export interface BackendComparisonMetricDto {
-  pathId: ComparisonPathId;
-  label: string;
-  latencyMs: number;
-  payloadBytes: number;
-  recordCount: number;
-  status: ComparisonStatus;
+export class BackendComparisonMetricDto {
+  @ApiProperty({ enum: comparisonPathIds })
+  pathId!: ComparisonPathId;
+
+  @ApiProperty()
+  label!: string;
+
+  @ApiProperty()
+  latencyMs!: number;
+
+  @ApiProperty()
+  payloadBytes!: number;
+
+  @ApiProperty()
+  recordCount!: number;
+
+  @ApiProperty({ enum: comparisonStatuses })
+  status!: ComparisonStatus;
+
+  @ApiPropertyOptional()
   errorMessage?: string;
-  observedAt: string;
+
+  @ApiProperty({ format: 'date-time' })
+  observedAt!: string;
 }
 
-export interface BackendComparisonResponseDto {
-  mode: GatewayMode;
-  subject: 'loans';
-  observedAt: string;
-  paths: BackendComparisonMetricDto[];
+export class BackendComparisonResponseDto {
+  @ApiProperty({ enum: gatewayModes })
+  mode!: GatewayMode;
+
+  @ApiProperty({ enum: ['loans'] })
+  subject!: 'loans';
+
+  @ApiProperty({ format: 'date-time' })
+  observedAt!: string;
+
+  @ApiProperty({ type: () => [BackendComparisonMetricDto] })
+  paths!: BackendComparisonMetricDto[];
 }
