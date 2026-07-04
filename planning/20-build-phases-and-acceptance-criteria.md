@@ -355,6 +355,7 @@ Acceptance criteria:
 Current note:
 
 - [X] `/lab` now calls `/api/me`; no-cookie requests use the demo Alice Viewer fallback until signed JWT auth is added.
+- [X] Added app.config provider coverage and persona guard edge-case tests to validate shell bootstrap and route permission handling.
 
 ## Phase 8: Signal Store Dashboard
 

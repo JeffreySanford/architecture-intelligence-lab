@@ -131,4 +131,21 @@ describe('permissionGuard', () => {
     }
     expect(router.createUrlTree).toHaveBeenCalledWith(['/']);
   });
+
+  it('redirects to dashboard when an array of permissions is present but none match', async () => {
+    const result = TestBed.runInInjectionContext(() =>
+      permissionGuard(routeWithPermission(['contracts:view', 'realtime:view']), {} as RouterStateSnapshot),
+    );
+
+    if (typeof result === 'boolean') {
+      expect(result).toBe(false);
+    } else {
+      await expect(guardResultToPromise(result)).resolves.toEqual({
+        commands: ['/lab/dashboard'],
+      });
+    }
+    expect(router.createUrlTree).toHaveBeenCalledWith(['/lab/dashboard']);
+    expect(authStore.hasPermission).toHaveBeenCalledWith('contracts:view');
+    expect(authStore.hasPermission).toHaveBeenCalledWith('realtime:view');
+  });
 });
