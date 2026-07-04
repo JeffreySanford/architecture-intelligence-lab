@@ -102,6 +102,47 @@
     <ng-template pHeader>
       <div class="openapi__card-header">
         <div>
+          <div class="openapi__card-title">Generated models vs local app shape</div>
+          <div class="openapi__card-subtitle">How generated DTOs are consumed by Angular state</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="openapi__text-block">
+      <p>
+        Generated clients expose typed models derived from Spring and Nest OpenAPI contracts. Angular facades map those generated DTOs into local application ViewModel shapes,
+        so the UI layer remains decoupled from raw contract shape changes.
+      </p>
+      <p>
+        This boundary protects the app from contract drift by keeping generated model changes localized to the facade and store layers before they reach the page views.
+      </p>
+    </div>
+  </p-card>
+
+  <p-card animate.enter="enter" animate.leave="exit">
+    <ng-template pHeader>
+      <div class="openapi__card-header">
+        <div>
+          <div class="openapi__card-title">Performance guidance</div>
+          <div class="openapi__card-subtitle">Filter and render latency for large contract lists</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="openapi__text-block">
+      <p>
+        The OpenAPI contract dashboard is designed to use pagination and client-side filtering. Large generated client or endpoint lists should avoid rendering the full contract set at once.
+      </p>
+      <p>
+        For very large contract inventories, consider virtual scrolling or server-side filtering to keep route transition and table render latency low.
+      </p>
+    </div>
+  </p-card>
+
+  <p-card animate.enter="enter" animate.leave="exit">
+    <ng-template pHeader>
+      <div class="openapi__card-header">
+        <div>
           <div class="openapi__card-title">Generated client status</div>
           <div class="openapi__card-subtitle">Buildable clients wrapped by Angular facades</div>
         </div>

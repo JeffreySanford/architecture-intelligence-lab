@@ -1,0 +1,101 @@
+<section class="mcp-dashboard">
+  <p class="mcp-dashboard__eyebrow">MCP Dashboard</p>
+  <h1>Angular CLI MCP Guidance</h1>
+  <p>
+    This page explains how the training lab uses Angular CLI MCP, generated OpenAPI clients, and workspace tooling.
+    It is intentionally read-only and does not execute arbitrary commands from the browser.
+  </p>
+
+  <p-card animate.enter="scale-enter">
+    <ng-template pHeader>
+      <div class="mcp-dashboard__card-header">
+        <div>
+          <div class="mcp-dashboard__card-title">MCP setup checklist</div>
+          <div class="mcp-dashboard__card-subtitle">Safe developer tooling guidance</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="mcp-dashboard__checklist">
+      @for (item of guideItems; track item.label) {
+        <div class="mcp-dashboard__checklist-item" animate.enter="row-enter">
+          <strong>{{ item.label }}</strong>
+          <p>{{ item.note }}</p>
+        </div>
+      }
+    </div>
+  </p-card>
+
+  <p-card animate.enter="scale-enter">
+    <ng-template pHeader>
+      <div class="mcp-dashboard__card-header">
+        <div>
+          <div class="mcp-dashboard__card-title">Recommended commands</div>
+          <div class="mcp-dashboard__card-subtitle">Local dev, test, and OpenAPI workflows</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="mcp-dashboard__command-grid">
+      @for (item of commands; track item.command) {
+        <div class="mcp-dashboard__command-item" animate.enter="row-enter">
+          <code>{{ item.command }}</code>
+          <p>{{ item.description }}</p>
+        </div>
+      }
+    </div>
+  </p-card>
+
+  <p-card animate.enter="scale-enter">
+    <ng-template pHeader>
+      <div class="mcp-dashboard__card-header">
+        <div>
+          <div class="mcp-dashboard__card-title">OpenAPI generation commands</div>
+          <div class="mcp-dashboard__card-subtitle">Regenerate generated clients safely</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="mcp-dashboard__command-grid">
+      @for (item of openApiCommands; track item.command) {
+        <div class="mcp-dashboard__command-item" animate.enter="row-enter">
+          <code>{{ item.command }}</code>
+          <p>{{ item.description }}</p>
+        </div>
+      }
+    </div>
+  </p-card>
+
+  <p-card animate.enter="scale-enter">
+    <ng-template pHeader>
+      <div class="mcp-dashboard__card-header">
+        <div>
+          <div class="mcp-dashboard__card-title">Quality checklist</div>
+          <div class="mcp-dashboard__card-subtitle">MCP and OpenAPI review points</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="mcp-dashboard__checklist">
+      @for (item of qualityChecklist; track item.label) {
+        <div class="mcp-dashboard__checklist-item" animate.enter="row-enter">
+          <strong>{{ item.label }}</strong>
+          <p>{{ item.note }}</p>
+        </div>
+      }
+    </div>
+  </p-card>
+
+  <p-card animate.enter="scale-enter">
+    <ng-template pHeader>
+      <div class="mcp-dashboard__card-header">
+        <div>
+          <div class="mcp-dashboard__card-title">MCP configuration example</div>
+          <div class="mcp-dashboard__card-subtitle">VS Code-compatible server settings</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <pre class="mcp-dashboard__config">{{ jsonStringify(mcpConfig(), null, 2) }}</pre>
+  </p-card>
+</section>

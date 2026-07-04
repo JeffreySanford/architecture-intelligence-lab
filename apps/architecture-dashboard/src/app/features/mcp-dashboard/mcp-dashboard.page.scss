@@ -1,0 +1,79 @@
+.mcp-dashboard {
+  display: grid;
+  gap: 1rem;
+}
+
+.mcp-dashboard__eyebrow {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.mcp-dashboard h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+.mcp-dashboard > p {
+  margin: 0;
+  color: var(--color-text-muted);
+  max-width: 72rem;
+}
+
+.mcp-dashboard__card-header {
+  padding: 1rem 1rem 0;
+}
+
+.mcp-dashboard__card-title {
+  font-weight: 700;
+}
+
+.mcp-dashboard__card-subtitle {
+  color: var(--color-text-muted);
+}
+
+.mcp-dashboard__checklist,
+.mcp-dashboard__command-grid {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.mcp-dashboard__checklist-item,
+.mcp-dashboard__command-item {
+  padding: 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.mcp-dashboard__checklist-item strong,
+.mcp-dashboard__command-item code {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.mcp-dashboard__command-item p,
+.mcp-dashboard__checklist-item p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.mcp-dashboard__config {
+  margin: 0;
+  padding: 1rem;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  .mcp-dashboard__summary,
+  .mcp-dashboard__command-grid,
+  .mcp-dashboard__checklist {
+    grid-template-columns: 1fr;
+  }
+}

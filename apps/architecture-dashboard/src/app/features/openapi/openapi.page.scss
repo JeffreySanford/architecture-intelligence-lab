@@ -95,6 +95,14 @@
   gap: 0.75rem;
 }
 
+.openapi__text-block {
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: 0.75rem;
+  color: var(--color-text-muted);
+}
+
 .openapi__link {
   display: grid;
   gap: 0.35rem;

@@ -206,8 +206,8 @@ export const appRoutes: Routes = [
       {
         path: 'mcp',
         loadComponent: () =>
-          import('./features/placeholder/placeholder.page').then(
-            (m) => m.PlaceholderPage,
+          import('./features/mcp-dashboard/mcp-dashboard.page').then(
+            (m) => m.McpDashboardPage,
           ),
         canActivate: [permissionGuard],
         data: {

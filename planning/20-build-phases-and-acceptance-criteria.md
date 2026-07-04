@@ -582,25 +582,33 @@ Goal: Complete contract and developer-tooling education views.
 
 Deliverables:
 
-- [ ] Contract lab
-- [ ] Swagger links
-- [ ] Generated client status
-- [ ] `/v3/api-docs` endpoint health check
-- [ ] Generated models vs local app shape summary
-- [ ] MCP setup checklist
-- [ ] Command guide
-- [ ] OpenAPI contract drift dashboard
-- [ ] Performance note for OpenAPI dashboard render and filter latency
+- [X] Contract lab
+- [X] Swagger links
+- [X] Generated client status
+- [X] `/v3/api-docs` endpoint health check
+- [X] Generated models vs local app shape summary
+- [X] MCP setup checklist
+- [X] Command guide
+- [X] OpenAPI contract drift dashboard
+- [X] Performance note for OpenAPI dashboard render and filter latency
 - [ ] Filter performance benchmarking for large contract lists
 
 Acceptance criteria:
 
-- [ ] Contract lab explains drift boundaries clearly.
-- [ ] OpenAPI Contract Lab shows generated client status.
-- [ ] OpenAPI Contract Lab compares Spring API endpoints vs generated DTOs.
-- [ ] OpenAPI Contract Lab surfaces contract drift/warnings.
-- [ ] MCP dashboard does not execute arbitrary browser commands.
-- [ ] OpenAPI dashboard performance is considered for large contract lists.
+- [X] Contract lab explains drift boundaries clearly.
+- [X] OpenAPI Contract Lab shows generated client status.
+- [X] OpenAPI Contract Lab compares Spring API endpoints vs generated DTOs.
+- [X] OpenAPI Contract Lab surfaces contract drift/warnings.
+- [X] MCP dashboard does not execute arbitrary browser commands.
+- [X] OpenAPI dashboard performance is considered for large contract lists.
+
+Progress summary:
+
+- [X] OpenAPI Contract Lab page exists and displays generated client metadata, Swagger/OpenAPI links, endpoint coverage, and drift boundaries.
+- [X] The OpenAPI page now documents generated models versus local Angular ViewModel shape boundaries.
+- [X] The OpenAPI page now includes performance guidance for large contract lists and filter/render latency.
+- [X] `/lab/mcp` dashboard route was implemented with MCP setup guidance, recommended commands, and a VS Code MCP config example.
+- [X] MCP dashboard is intentionally read-only and does not execute workspace commands from the browser.
 
 ## Phase 12: Full Test Suite
 
