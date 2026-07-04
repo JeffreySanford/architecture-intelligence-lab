@@ -106,9 +106,21 @@ export class LabShellComponent {
       permission: 'mcp:view',
     },
     {
-      label: 'Admin And Persona Lab',
+      label: 'Admin Security Monitoring',
       route: '/lab/admin',
-      description: 'Roles and permissions',
+      description: 'OpenAPI security and permission status',
+      permission: 'admin:view',
+    },
+    {
+      label: 'Phase 6.5 Threat Model',
+      route: '/lab/security-threat-model',
+      description: 'Open the Phase 6.5 OpenAPI threat model artifact',
+      permission: 'admin:view',
+    },
+    {
+      label: 'Phase 6.5 Security Risk Map',
+      route: '/lab/security-risk-map',
+      description: 'Open the Phase 6.5 security risk map artifact',
       permission: 'admin:view',
     },
   ];

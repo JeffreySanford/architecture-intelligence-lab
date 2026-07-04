@@ -174,6 +174,36 @@ export const appRoutes: Routes = [
         },
       },
       {
+        path: 'security-risk-map',
+        loadComponent: () =>
+          import('./features/security-risk-map/security-risk-map.page').then(
+            (m) => m.SecurityRiskMapPage,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          title: 'Phase 6.5 Security Risk Map',
+          eyebrow: 'Risk artifact',
+          description:
+            'Open the Phase 6.5 security risk map and planning issue placeholder.',
+          permission: 'admin:view',
+        },
+      },
+      {
+        path: 'security-threat-model',
+        loadComponent: () =>
+          import('./features/security-threat-model/security-threat-model.page').then(
+            (m) => m.SecurityThreatModelPage,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          title: 'Phase 6.5 Threat Model',
+          eyebrow: 'Threat artifact',
+          description:
+            'Open the Phase 6.5 OpenAPI security threat model and risk inventory artifacts.',
+          permission: 'admin:view',
+        },
+      },
+      {
         path: 'mcp',
         loadComponent: () =>
           import('./features/placeholder/placeholder.page').then(
@@ -191,15 +221,15 @@ export const appRoutes: Routes = [
       {
         path: 'admin',
         loadComponent: () =>
-          import('./features/placeholder/placeholder.page').then(
-            (m) => m.PlaceholderPage,
+          import('./features/admin/admin.page').then(
+            (m) => m.AdminPage,
           ),
         canActivate: [permissionGuard],
         data: {
-          title: 'Admin And Persona Lab',
+          title: 'Admin Security Monitoring',
           eyebrow: 'Roles and permissions',
           description:
-            'Demonstrate persona selection, role permissions, admin-only workflows, and guarded UI behavior.',
+            'Track OpenAPI security monitoring items, permissions, and risk status for generated client boundaries.',
           permission: 'admin:view',
         },
       },

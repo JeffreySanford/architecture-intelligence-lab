@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { OpenApiPage } from './openapi.page';
 import { OpenApiStore } from '../../core/openapi/openapi.store';
 
@@ -8,7 +9,7 @@ describe('OpenApiPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OpenApiPage],
+      imports: [RouterTestingModule, OpenApiPage],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OpenApiPage);

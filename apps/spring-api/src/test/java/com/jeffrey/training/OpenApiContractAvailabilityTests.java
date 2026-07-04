@@ -25,9 +25,10 @@ class OpenApiContractAvailabilityTests {
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @Test
-    void shouldExposeOpenApiJson() throws Exception {
+    void shouldExposeOpenApiJsonForContractAdminPersonaCookie() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
             .uri(new URI("http://localhost:" + port + "/v3/api-docs"))
+            .header("Cookie", "access_token=fiona-contract-admin")
             .GET()
             .build();
 

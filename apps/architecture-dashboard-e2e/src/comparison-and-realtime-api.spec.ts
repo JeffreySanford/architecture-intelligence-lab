@@ -417,6 +417,15 @@ test('Contract Admin can open OpenAPI Contract Lab and see the contract status p
   ).toBeVisible();
 });
 
+test('Viewer persona cannot open OpenAPI Contract Lab', async ({ page }) => {
+  await mockApiForPersona(page, 'alice-viewer');
+
+  await page.goto('/lab/openapi');
+
+  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
+  await expect(page.locator('app-dashboard-page h1', { hasText: 'Dashboard' })).toBeVisible();
+});
+
 test('Contract Admin can switch personas and access OpenAPI Contract Lab', async ({ page }) => {
   await mockApiForPersona(page, 'ethan-diagnostics-admin');
 

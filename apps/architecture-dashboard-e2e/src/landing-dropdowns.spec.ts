@@ -11,6 +11,7 @@ const personas: TestPersona[] = [
   { id: 'alice-viewer', name: 'Alice Viewer', role: 'Viewer', permissions: ['dashboard:view', 'loans:view'] },
   { id: 'ethan-diagnostics-admin', name: 'Ethan Diagnostics Admin', role: 'Diagnostics Admin', permissions: ['backend-comparison:view', 'dashboard:view', 'diagnostics:view'] },
   { id: 'grace-realtime-operator', name: 'Grace Realtime Operator', role: 'Realtime Operator', permissions: ['dashboard:view', 'realtime:view', 'realtime:emit'] },
+  { id: 'grace-admin', name: 'Grace Admin', role: 'Admin', permissions: ['admin:view', 'dashboard:view', 'contracts:view'] },
 ];
 
 async function mockLandingApi(page: Page) {

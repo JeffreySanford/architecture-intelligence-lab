@@ -15,6 +15,12 @@ const personas: TestPersona[] = [
     role: 'Diagnostics Admin',
     permissions: ['backend-comparison:view', 'dashboard:view', 'diagnostics:view'],
   },
+  {
+    id: 'grace-admin',
+    name: 'Grace Admin',
+    role: 'Admin',
+    permissions: ['admin:view', 'dashboard:view', 'contracts:view'],
+  },
 ];
 
 export async function mockLandingApi(page: Page): Promise<void> {
