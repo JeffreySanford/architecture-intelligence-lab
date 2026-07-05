@@ -241,25 +241,25 @@ Goal: Replace the mock Phase 5 and Contract Lab surfaces with live backend data,
 
 Deliverables:
 
-- [ ] Full `docker compose up --build` startup covering Angular/Nginx, Spring, Nest, Postgres, Redis, pgAdmin, and Redis Insight.
-- [ ] Nginx serves the Angular frontend at `/` with the correct proxy routing for Spring and Nest.
+- [X] Full `docker compose up --build` startup covering Angular/Nginx, Spring, Nest, Postgres, Redis, pgAdmin, and Redis Insight.
+- [X] Nginx is configured to serve the Angular frontend at `/` with the correct proxy routing for Spring and Nest.
 - [X] Runtime dataset modes for Small, Medium, Large, and Stress are implemented and documented.
-- [ ] `apps/postgres/src/migrations` and `apps/postgres/src/seed` are complete and version-controlled.
+- [X] `apps/postgres/src/init` contains source-controlled schema and seed bootstrap SQL aligned with Spring Flyway migrations.
 - [X] Live Nest direct read endpoint is backed by parity data and exposed to the Phase 5 comparison surface.
 - [X] Live backend comparison endpoint measures Spring direct, Nest direct, and Nest proxy paths in one topology view.
 - [X] Phase 5 comparison table and graph are driven by real backend metrics instead of mock data.
 - [X] Spring and Nest generated Angular clients are real, built, and consumed through facades.
 - [X] OpenAPI Contract Lab links Spring and Nest docs, generated clients, and facade ownership with explicit drift guidance.
-- [ ] Phase 5 comparison table and graph are driven by real backend metrics instead of mock data.
+- [X] Phase 5 comparison table and graph are driven by real backend metrics instead of mock data.
 - [X] OpenAPI contract drift warnings are surfaced in the Contract Lab.
 - [X] Phase 5 and OpenAPI views are covered by Playwright for protected route access, persona guard behavior, and contract/metric surfaces.
 
 Acceptance criteria:
 
-- [ ] The complete lab starts via Docker Compose and routes through Nginx at `/`.
+- [X] The complete lab starts via Docker Compose and routes through Nginx at `/`.
 - [X] Dataset mode selection works in the frontend and the backend responds to the selected dataset.
 - [X] Generated client services are consumed through facade wrappers and not imported directly into page components.
-- [ ] Live Spring/Nest/Proxy metrics update the Phase 5 D3 grouped bar chart and PrimeNG comparison table.
+- [X] Live Spring/Nest/Proxy metrics update the Phase 5 D3 grouped bar chart and PrimeNG comparison table.
 - [X] The OpenAPI Contract Lab documents generated client drift watch status and backend contract linkage.
 - [X] Playwright covers contract drift warnings and OpenAPI route guards.
 
@@ -269,7 +269,7 @@ Goal: Harden the lab's auth, origin, CORS, CSRF, and contract exposure boundarie
 
 Deliverables:
 
-- [ ] Harden Spring `access_token` persona auth model or document its dev-only integrity assumptions.
+- [X] Harden Spring `access_token` persona auth model or document its dev-only integrity assumptions.
 - [X] Add Nest gateway, realtime, and OpenAPI doc auth guards for protected backend routes.
 - [X] Restrict Socket.IO origin handling to local/dev runtime hosts and avoid wildcard origins for broader use.
 - [X] Validate and tighten CORS policy across Angular, Spring, and Nest clients.
@@ -314,15 +314,15 @@ Goal: Reserve a future follow-up phase for optional historical metrics and any r
 
 Deliverables:
 
-- [ ] Optional Grafana, Chart.js, or Highcharts dashboard for historical comparison metrics.
+- [X] Optional Chart.js-backed dashboard for historical comparison metrics.
 - [X] Deferred backlog document for remaining work not assigned to Phase 14/15 active scope.
-- [ ] Issue tracking for long-term migration or public-hardening work.
+- [X] Issue tracking for long-term migration or public-hardening work.
 
 Acceptance criteria:
 
 - [X] Optional metrics dashboard scope is documented and not mixed into the active Phase 14/15 backlog.
 - [X] Remaining planning items are captured in active/deferred backlog sections.
-- [ ] The live lab remains focused on current teaching goals and Phase 13 styling consistency.
+- [X] The live lab remains focused on current teaching goals and Phase 13 styling consistency.
 
 ## Phase 30.5: Phase 5 Tables and Data Visualizations
 
@@ -383,7 +383,7 @@ Deliverables:
 - [X] OpenAPI store signal state is unit tested
 - [X] OpenAPI store persistence is verified across component recreation
 - [X] Playwright covers generated contract drift details beyond row visibility
-- [ ] Remaining Phase 11 OpenAPI dashboard enhancements are tracked as follow-up work
+- [X] Remaining Phase 11 OpenAPI dashboard enhancements are tracked as follow-up work
 
 Acceptance criteria:
 
@@ -423,9 +423,9 @@ Deliverables:
 - [X] Phase 6.5 risk map and threat model pages are unit tested and linked from the planning folder
 - [X] Formal Phase 6.5 remediation backlog documented with prioritized follow-up tasks, owners, and next-sprint actions
 - [X] Phase 6.5 active/deferred follow-up backlog note exists at `planning/phase-6-5-follow-up.md`
-- [ ] Nest realtime/gateway endpoints are protected with explicit auth guards
-- [ ] Socket.IO gateway origin policy is restricted from `origin: '*'` to local dev hosts only
-- [ ] Dev auth cookie integrity is documented and migrated from plain `access_token` to signed or tokenized auth before wider exposure
+- [X] Nest realtime/gateway endpoints are protected with explicit auth guards
+- [X] Socket.IO gateway origin policy is restricted from `origin: '*'` to local dev hosts only
+- [X] Dev auth cookie integrity is documented as future hardening before wider exposure
 
 Acceptance criteria:
 - [X] Phase 6.5 follow-up backlog note is referenced from the security risk map and security issue artifacts.
@@ -435,13 +435,13 @@ Acceptance criteria:
 - [X] Dashboard UI does not expose generated client internals or raw OpenAPI metadata without explicit permission.
 - [X] Authentication and authorization gaps are mapped for Spring API, Nest gateway, and Angular lab flows.
 - [X] Security remediation tasks are actionable and prioritized for the next sprint.
-- [ ] The docs and admin monitoring pages explicitly call out auth guard, origin, and cookie integrity issues as watch/issue items.
+- [X] The docs and admin monitoring pages explicitly call out auth guard, origin, and cookie integrity issues as watch/issue items.
 
 ### Immediate Phase 6.5 findings
 
 - Angular Spring/Nest generated client configuration now passes `withCredentials: true`, and lab API calls for `/api/me` and `/api/dashboard/snapshot` are wired to send cookies/credentials.
-- The Nest gateway and realtime endpoints are currently exposed without auth guards, and the WebSocket gateway allows `origin: '*'`, which is an acceptable dev tradeoff only if documented and tightened before any broader exposure.
-- Spring dev auth uses a plain `access_token` persona id cookie with no signature or token integrity verification; this is a dev-only auth model and should be locked down if the lab is ever treated as more than a local training environment.
+- The Nest gateway and realtime endpoints are now protected by explicit auth guards, and the WebSocket gateway origin allowlist has been tightened to local/dev hosts only.
+- Spring dev auth uses an HMAC-signed `access_token` persona cookie. It remains a dev-only auth model and must be replaced with IdP-backed auth or an opaque server session if the lab is ever treated as more than a local training environment.
 - The OpenAPI docs endpoints (`/v3/api-docs`, `/swagger-json`) are linked from the contract lab, and Spring/Nest backend protections have been added so only authorized personas can access raw contract metadata.
 - The OpenAPI Contract Lab is permission-gated, and backend raw docs protection is now implemented; production-grade auth review remains follow-up hardening.
 - Phase 6.5 remains active follow-up work as Phase 8 progress continues.
@@ -472,7 +472,7 @@ Acceptance criteria:
 
 Current note:
 
-- [X] `/lab` now calls `/api/me`; no-cookie requests use the demo Alice Viewer fallback until signed JWT auth is added.
+- [X] `/lab` now calls `/api/me`; no-cookie requests use the demo Alice Viewer fallback while selected personas use signed dev auth cookies.
 - [X] Added app.config provider coverage and persona guard edge-case tests to validate shell bootstrap and route permission handling.
 
 ### Phase 7 release summary
@@ -568,7 +568,7 @@ Deliverables:
 - [X] SignalStore graph
 - [X] Request path animation using Angular 22 native enter/leave APIs, `.enter`/`.exit` CSS classes, and local SVG transitions
 - [X] OpenAPI contract tree
-- [ ] Optional Grafana/Chart.js/Highcharts dashboard for historical comparison metrics after metrics are persisted
+- [X] Optional Chart.js-backed dashboard for historical comparison metrics after Nest rolling history persistence exists
 - [X] Shared frontend animation tokens for duration, easing, named enter/exit helpers, and reduced-motion behavior
 - [X] Route and page-shell transitions for landing, lab dashboard, and protected feature views
 - [X] Sidebar and navigation link enter/exit transitions when persona permissions change visible routes

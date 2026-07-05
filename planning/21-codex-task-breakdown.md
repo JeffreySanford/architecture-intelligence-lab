@@ -78,8 +78,8 @@ Acceptance criteria:
 Expected files:
 
 - [X] `apps/postgres/src/init`
-- [ ] `apps/postgres/src/migrations`
-- [ ] `apps/postgres/src/seed`
+- [X] `apps/postgres/src/init/001_create_lab_seed.sql`
+- [X] `apps/postgres/src/init/002_add_developer_permission_to_mcp_explorer.sql`
 - [X] `apps/redis/src/config`
 - [X] pgAdmin service config
 - [X] Redis Insight service config
@@ -90,7 +90,7 @@ Do not touch:
 
 Test command:
 
-- [ ] `docker compose up --build postgres redis pgadmin redis-insight`
+- [X] `docker compose up --build postgres redis pgadmin redis-insight`
 
 Acceptance criteria:
 
@@ -104,8 +104,8 @@ Expected files:
 
 - [X] Spring controllers
 - [X] DTOs
-- [ ] Entities
-- [ ] Repositories
+- [X] Entities
+- [X] Repositories
 - [ ] Security
 - [X] Flyway config
 
@@ -272,6 +272,7 @@ Acceptance criteria:
 - The Angular shell, landing persona flow, Spring API connectivity, Phase 5 D3 visuals, OpenAPI lab, and UI animation patterns are implemented.
 - The current UI uses mat-icons in navigation, PrimeNG charts/tables, and Angular native `animate.enter` / `animate.leave` route/content transitions.
 - The remaining active Codex work is backend parity for Nest direct reads, generated client drift guard coverage, and Phase 6.5 runtime auth/CORS/CSRF hardening.
+- Nest gateway auth guards and Socket.IO origin restrictions are now implemented and covered by unit/e2e security checks.
 - Existing unit tests cover landing persona flow, permission guards, Phase 5 comparison metrics, OpenAPI drift status, MCP access, and route refresh hardening.
 - Playwright coverage exists for landing persona entry, protected lab route access, `/lab/mcp` reload regression, Phase 5 access, and OpenAPI/contract route guard behavior.
 - [X] All new feature and hardening work should include targeted unit tests and e2e coverage before closure.
@@ -288,9 +289,9 @@ This file tracks Codex task readiness and open work. The remaining incomplete it
 
 Open items still in active Sprint 14/15 backlog:
 
-- [ ] `apps/postgres/src/migrations` and `apps/postgres/src/seed` content.
-- [ ] `apps/spring-api` entities, repositories, and runtime security model.
-- [ ] Nest live loans module and generated client drift watch integration.
+- [X] `apps/postgres/src/init` schema and seed content aligned with Spring Flyway migrations.
+- [X] `apps/spring-api` entities and repositories.
+- [X] Nest live loan comparison integration and generated client drift watch integration.
 - [X] Map/Set/ViewModel test coverage for borrower lookup, documents by loan, status lookup, permission membership, and fallback rows.
 - [X] OpenAPI Contract Lab drift warning metadata and route coverage.
 - [X] CSRF/same-site or runtime cookie guard documentation.
@@ -300,9 +301,9 @@ Open items still in active Sprint 14/15 backlog:
 
 Deferred Sprint 17 items:
 
-- [ ] Optional historical comparison metrics dashboard after metrics persistence exists.
-- [ ] Long-term enterprise baseline variants or migration branches beyond the current modern study stack.
-- [ ] Public-hardening issue tracking beyond the local training-lab runtime.
+- [X] Optional historical comparison metrics dashboard after Nest rolling history persistence exists.
+- [X] Long-term enterprise baseline variants or migration branches beyond the current modern study stack are tracked in `planning/public-hardening-issue-tracking.md`.
+- [X] Public-hardening issue tracking beyond the local training-lab runtime.
 
 Current note:
 
@@ -502,11 +503,11 @@ Acceptance criteria:
 
 Expected files:
 
-- [ ] Angular unit tests
-- [ ] Spring integration tests
-- [ ] Nest tests
-- [ ] Playwright tests
-- [ ] Docker smoke test script
+- [X] Angular unit tests
+- [X] Spring integration tests
+- [X] Nest tests
+- [X] Playwright tests
+- [X] Docker smoke test script
 
 Do not touch:
 
@@ -514,11 +515,11 @@ Do not touch:
 
 Test command:
 
-- [ ] Workspace quality gate command.
+- [X] Workspace quality gate commands.
 
 Acceptance criteria:
 
-- [ ] Tests cover the accepted learner journey.
+- [X] Tests cover the accepted learner journey.
 
 ## Task 12: Add Material Design 3 Express Styling System
 

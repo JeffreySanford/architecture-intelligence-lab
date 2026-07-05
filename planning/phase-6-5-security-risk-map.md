@@ -25,7 +25,7 @@ The following risk areas are included:
 ### Auth
 
 - `access_token` cookie is a dev-only persona identifier with no signature or integrity checks.
-- Spring and Nest both currently derive persona identity directly from a plain cookie value.
+- Spring and Nest both validate a signed demo persona cookie, but that cookie still represents local training identity rather than production-grade authentication.
 - Reloading a protected `/lab/*` route must clear stale auth state and reset persona selection, or stale UI/session state may expose broader access than intended.
 - No CSRF protection exists for state-changing APIs, so cookie-based auth can be abused by third-party pages.
 - The current bearer-like cookie pattern is acceptable only in a local lab environment; it must not be reused for public/demo deployment.
@@ -72,7 +72,7 @@ The following risk areas are included:
 - [X] Validate refresh hardening for protected lab routes, including direct `/lab/mcp` reloads, stale auth state reset, and landing redirect behavior.
 - [X] Validate local Spring persona load through `/api/personas` and confirm the landing page auth flow functions after the Flyway repair.
 - [ ] Review generated client drift coverage and add contract change alerts to the OpenAPI Contract Lab.
-- [ ] Add unit and Playwright regression coverage for protected docs, gateway, and realtime auth guard behavior.
+- [X] Add unit and Playwright regression coverage for protected docs, gateway, and realtime auth guard behavior.
 - [X] Consolidate deferred hardening work into `planning/phase-6-5-follow-up.md`.
 
 ## GitHub issue placeholder

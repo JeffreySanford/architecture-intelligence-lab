@@ -3,7 +3,9 @@ import { isOriginAllowed, parseAllowedOrigins } from './token.utils';
 
 @Injectable()
 export class OriginGuard implements CanActivate {
-  private readonly allowedOrigins = parseAllowedOrigins(process.env['SOCKET_IO_ORIGINS']);
+  private readonly allowedOrigins = parseAllowedOrigins(
+    process.env['NEST_API_ORIGINS'] ?? process.env['SOCKET_IO_ORIGINS'],
+  );
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest() as {
