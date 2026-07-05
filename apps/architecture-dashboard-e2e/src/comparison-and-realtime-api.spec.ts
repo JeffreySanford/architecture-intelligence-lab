@@ -26,6 +26,12 @@ const personas: Record<string, TestPersona> = {
     role: 'Contract Admin',
     permissions: ['contracts:view', 'dashboard:view'],
   },
+  'maya-mcp-explorer': {
+    id: 'maya-mcp-explorer',
+    name: 'Maya MCP Explorer',
+    role: 'MCP Explorer',
+    permissions: ['mcp:view'],
+  },
   'grace-realtime-operator': {
     id: 'grace-realtime-operator',
     name: 'Grace Realtime Operator',
@@ -475,6 +481,27 @@ test('Contract Admin can switch personas and access OpenAPI Contract Lab', async
   await expect(page).toHaveURL(/.*\/lab\/openapi$/, { timeout: 15000 });
   await expect(page.locator('app-openapi-page h1', { hasText: 'OpenAPI Contract Lab' })).toBeVisible();
   await expect(page.locator('app-openapi-page')).toContainText('NestApiFacade');
+});
+
+test('MCP Explorer persona can open MCP Dashboard and see read-only guidance', async ({ page }) => {
+  await mockApiForPersona(page, 'maya-mcp-explorer');
+
+  await page.goto('/api/dev-auth/personas/maya-mcp-explorer/select');
+  await expect(page.locator('body')).toContainText('Maya MCP Explorer');
+
+  await page.goto('/lab/mcp');
+  await expect(page).toHaveURL(/.*\/lab\/mcp$/, { timeout: 15000 });
+  await expect(page.locator('h1', { hasText: 'Angular CLI MCP Guidance' })).toBeVisible();
+  await expect(page.locator('body')).toContainText('Use `.vscode/mcp.json` for Angular CLI MCP configuration');
+  await expect(page.locator('body')).toContainText('It is intentionally read-only and does not execute arbitrary commands from the browser.');
+});
+
+test('Viewer persona cannot open MCP Dashboard', async ({ page }) => {
+  await mockApiForPersona(page, 'alice-viewer');
+
+  await page.goto('/lab/mcp');
+  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
+  await expect(page.locator('app-dashboard-page h1', { hasText: 'Dashboard' })).toBeVisible();
 });
 
 test('Diagnostics persona can select comparison metric rows and highlight the active D3 path', async ({ page }) => {

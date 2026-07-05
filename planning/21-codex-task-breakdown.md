@@ -489,6 +489,7 @@ Expected files:
 - [X] `apps/architecture-dashboard/src/styles/_charts.scss`
 - [X] `apps/architecture-dashboard/src/styles/_accessibility.scss`
 - [ ] Updated route/page/component SCSS for landing, dashboard, security search, backend comparison, realtime, OpenAPI contract, Map inspector, SignalStore inspector, MCP, and admin/persona views.
+- [ ] Updated Angular templates where Phase 13 adds PrimeIcons to navigation, page headers, status tags, metric summaries, table actions, empty states, realtime/cache panels, OpenAPI/security surfaces, and D3/SVG legends.
 - [ ] Playwright visual smoke coverage for desktop, mobile, overlays, tables, charts, route shell, and reduced-motion paths.
 
 Do not touch:
@@ -510,6 +511,7 @@ Acceptance criteria:
 - [ ] Colors, spacing, elevation, radius, typography, density, focus rings, z-index, animation timing, and chart palettes are centralized in the `styles` folder.
 - [ ] Angular views do not introduce one-off palette colors, shadows, breakpoints, or animation timings when a shared token exists.
 - [ ] PrimeNG tables, filters, dialogs, menus, tooltips, toasts, cards, buttons, inputs, chips, and tags follow the MD3 Express token system.
+- [ ] PrimeIcons are used consistently for scannable actions and states: `pi pi-search`, `pi pi-filter`, `pi pi-download`, `pi pi-eye`, `pi pi-refresh`, `pi pi-check-circle`, `pi pi-exclamation-triangle`, `pi pi-times-circle`, `pi pi-info-circle`, `pi pi-database`, `pi pi-server`, `pi pi-wifi`, `pi pi-bolt`, and `pi pi-code`.
 - [ ] D3/SVG and Chart.js visuals use the shared chart/status tokens and remain readable on desktop and mobile.
 - [ ] Contrast is checked for default, hover, active, focus, disabled, error, warning, success, info, and selected states.
 - [ ] Phase 9 enter/exit animation classes and reduced-motion behavior still work after the style migration.

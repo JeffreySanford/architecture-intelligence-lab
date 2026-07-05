@@ -431,6 +431,7 @@ Stories:
 
 - [ ] As a learner, I can move across landing, dashboard, lab, contract, realtime, Map, SignalStore, and admin views and see one cohesive visual system.
 - [ ] As a maintainer, I can update colors, spacing, typography, elevation, radius, animation, and component overrides from shared SCSS partials instead of page-specific one-offs.
+- [ ] As a learner, I can scan dense data screens faster because PrimeIcons identify navigation destinations, statuses, table actions, realtime/cache state, API contracts, security controls, and architecture nodes.
 - [ ] As an accessibility-focused user, I can read text, identify focus, and use dialogs, menus, tables, charts, and status messages with sufficient contrast in default, hover, active, disabled, success, warning, and error states.
 
 Deliverables:
@@ -444,6 +445,7 @@ Deliverables:
 - [X] `apps/architecture-dashboard/src/styles/_animations.scss` centralizes MD3 Express motion tokens, Angular enter/exit classes, reduced-motion fallbacks, and D3/SVG animation variables.
 - [X] `apps/architecture-dashboard/src/styles/_charts.scss` defines D3, Chart.js, status sparkline, topology graph, and comparison metric color/shape conventions.
 - [X] `apps/architecture-dashboard/src/styles/_accessibility.scss` defines focus-visible, high-contrast, disabled, error, warning, success, and reduced-motion guardrails.
+- [ ] PrimeIcons are mapped to route navigation, metric cards, table toolbars/actions, status tags, realtime/cache panels, D3 legends, OpenAPI contract panels, and admin/security workflows.
 - [ ] All Angular views are audited and updated to remove hard-coded visual values that belong in shared tokens.
 - [ ] PrimeNG tables, filters, dialogs, menus, tooltips, toasts, cards, and status tags match the MD3 Express token system.
 - [ ] D3/SVG and Chart.js visuals use shared chart/status tokens rather than local color literals.
@@ -455,6 +457,7 @@ Acceptance criteria:
 - [ ] `styles.scss` loads the style partials with Sass `@use` in a predictable order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
 - [ ] No view-specific SCSS introduces new one-off palette colors, shadows, animation timings, or breakpoints without adding them to the shared style layer first.
 - [ ] PrimeNG overlays, dialogs, dropdowns, tooltips, menus, and toast/snackbar-style messages have verified contrast against their surfaces.
+- [ ] Icon-only controls have accessible names and tooltips, decorative PrimeIcons are hidden from assistive technology, and status meaning never relies on icon or color alone.
 - [ ] Status colors remain distinguishable for success, warning, error, info, disabled, selected, hover, active, and focus states.
 - [ ] Dashboard cards, tables, charts, and D3 visuals remain readable on desktop and mobile without text clipping or overlapping controls.
 - [ ] Reduced-motion behavior from Phase 9 remains intact after the MD3 Express styling pass.

@@ -590,8 +590,9 @@ Deliverables:
 - [X] MCP setup checklist
 - [X] Command guide
 - [X] OpenAPI contract drift dashboard
+- [X] MCP dashboard e2e route and permission coverage
 - [X] Performance note for OpenAPI dashboard render and filter latency
-- [ ] Filter performance benchmarking for large contract lists
+- [X] Create a unit test that loads >500 generated client rows and confirms filter/pagination remains responsive.
 
 Acceptance criteria:
 
@@ -608,6 +609,8 @@ Progress summary:
 - [X] The OpenAPI page now documents generated models versus local Angular ViewModel shape boundaries.
 - [X] The OpenAPI page now includes performance guidance for large contract lists and filter/render latency.
 - [X] `/lab/mcp` dashboard route was implemented with MCP setup guidance, recommended commands, and a VS Code MCP config example.
+- [X] Playwright coverage for `/lab/mcp` permission gating and route access was added.
+- [X] Filter performance benchmarking for large OpenAPI contract lists is implemented as a unit test that loads >500 generated client rows and confirms filtering remains responsive.
 - [X] MCP dashboard is intentionally read-only and does not execute workspace commands from the browser.
 
 ## Phase 12: Full Test Suite
@@ -642,6 +645,7 @@ Deliverables:
 - [X] `apps/architecture-dashboard/src/styles/_animations.scss` for MD3 Express motion tokens, Angular enter/exit classes, and reduced-motion fallbacks.
 - [X] `apps/architecture-dashboard/src/styles/_charts.scss` for D3, Chart.js, topology, comparison metric, and status visualization tokens.
 - [X] `apps/architecture-dashboard/src/styles/_accessibility.scss` for contrast, focus-visible, high-contrast, disabled, error, warning, success, and reduced-motion rules.
+- [ ] PrimeIcons usage map for navigation, metric cards, status states, table actions, realtime/cache panels, D3 legends, OpenAPI, security, and admin surfaces.
 - [ ] Landing, dashboard, security search, backend comparison, realtime, OpenAPI contract, Map inspector, SignalStore inspector, MCP, and admin/persona views use the shared style system.
 - [ ] Hard-coded visual values in view SCSS are migrated into the shared style layer where they are reusable.
 
@@ -650,6 +654,7 @@ Acceptance criteria:
 - [ ] The app has a vibrant but professional MD3 Express visual identity across every frontend route.
 - [ ] `styles.scss` loads the style partials with Sass `@use` in the agreed order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
 - [ ] PrimeNG components and overlays match the shared token system instead of using isolated overrides.
+- [ ] PrimeIcons are the default icon set for Phase 13 iconographic UI, with documented fallbacks only when PrimeIcons does not provide the needed symbol.
 - [ ] D3/SVG and Chart.js visuals use shared chart/status tokens.
 - [ ] Contrast is validated for default, hover, active, focus, disabled, error, warning, success, info, and selected states.
 - [ ] Responsive layouts remain stable with no clipped text, overlapping controls, or card-in-card regressions.

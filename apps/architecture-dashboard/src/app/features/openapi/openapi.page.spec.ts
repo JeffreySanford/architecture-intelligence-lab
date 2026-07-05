@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OpenApiPage } from './openapi.page';
-import { OpenApiStore } from '../../core/openapi/openapi.store';
+import { OpenApiStore, ContractStatus, GeneratedClientStatus } from '../../core/openapi/openapi.store';
 
 describe('OpenApiPage', () => {
   let fixture: ComponentFixture<OpenApiPage>;
@@ -118,5 +118,26 @@ describe('OpenApiPage', () => {
         expect.objectContaining({ boundary: 'Realtime socket events to dashboard state' }),
       ]),
     );
+  });
+
+  it('should handle large generated client lists and maintain filtering responsiveness', () => {
+    const store = TestBed.inject(OpenApiStore);
+    const largeClientRows: GeneratedClientStatus[] = Array.from({ length: 520 }, (_, index) => ({
+      client: `generated-client-${index}`,
+      source: 'Spring /v3/api-docs',
+      generatedPath: `libs/generated/generated-client-${index}/src/generated`,
+      facade: `Facade${index % 7}`,
+      status: (index % 3 === 0 ? 'watch' : index % 3 === 1 ? 'generated' : 'wrapped') as ContractStatus,
+      notes: `Synthetic generated client row ${index}`,
+    }));
+
+    store.generatedClients.set(largeClientRows);
+    fixture.detectChanges();
+
+    expect(store.filteredGeneratedClients().length).toBe(520);
+
+    store.clientFilter.set('generated-client-519');
+    expect(store.filteredGeneratedClients().length).toBe(1);
+    expect(store.filteredGeneratedClients()[0].client).toBe('generated-client-519');
   });
 });
