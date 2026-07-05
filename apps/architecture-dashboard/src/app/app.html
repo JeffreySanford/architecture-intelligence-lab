@@ -35,6 +35,7 @@
           routerLinkActive="app-frame__nav-item--active"
           [routerLinkActiveOptions]="{ exact: true }"
         >
+          <i class="app-frame__nav-icon pi pi-user" aria-hidden="true"></i>
           <span class="app-frame__nav-label">Persona Setup</span>
           <span class="app-frame__nav-description">Select role and context</span>
         </a>
@@ -47,6 +48,7 @@
             [routerLink]="item.route"
             routerLinkActive="app-frame__nav-item--active"
           >
+            <i class="app-frame__nav-icon" [ngClass]="item.icon" aria-hidden="true"></i>
             <span class="app-frame__nav-label">{{ item.label }}</span>
             <span class="app-frame__nav-description">{{ item.description }}</span>
           </a>

@@ -204,11 +204,12 @@
         <button
           pButton
           type="button"
-          class="phase-five__header-action"
+          class="phase-five__header-action icon-label"
           [loading]="realtimeEmitLoading()"
           [disabled]="realtimeEmitLoading()"
           (click)="emitRealtimeEvent()"
         >
+          <i class="pi pi-send" aria-hidden="true"></i>
           Emit event
         </button>
       }
@@ -221,11 +222,12 @@
       }
       @if (canViewContracts()) {
         <a
-          class="phase-five__link"
+          class="phase-five__link icon-label"
           target="_blank"
           rel="noopener noreferrer"
           [href]="swaggerUrl"
         >
+          <i class="pi pi-external-link" aria-hidden="true"></i>
           Open Nest Swagger UI
         </a>
       } @else {

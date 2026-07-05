@@ -40,7 +40,9 @@
 }
 
 .lab-shell__nav-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   width: 100%;
   padding: 14px 16px;
   margin-bottom: 8px;
@@ -53,6 +55,16 @@
 .lab-shell__nav-item:hover,
 .lab-shell__nav-item:focus-visible {
   background: var(--color-surface-alt);
+}
+
+.lab-shell__nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  min-width: 1.5rem;
+  font-size: 1rem;
+  color: var(--color-primary);
 }
 
 .lab-shell__nav-item-label {

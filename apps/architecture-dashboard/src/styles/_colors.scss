@@ -2,20 +2,24 @@
 :root {
   --color-bg: #f7f8fb;
   --color-surface: #ffffff;
+  --color-surface-2: #f6f8fd;
   --color-surface-muted: #f2f4f8;
   --color-surface-alt: #edf1f7;
   --color-text: #172033;
   --color-text-muted: #4f5868;
   --color-primary: #355f9f;
-  --color-primary-strong: #235ea8;
+  --color-primary-strong: #2563eb;
+  --color-primary-container: rgba(53, 95, 159, 0.12);
+  --color-primary-text: #17325f;
   --color-success: #2b7a4b;
   --color-warning: #b07c15;
   --color-danger: #a32222;
+  --color-danger-container: rgba(163, 34, 34, 0.12);
+  --color-on-danger-container: #5a1414;
   --color-info: #2067b5;
   --color-border: #d8dce6;
   --color-shadow: rgba(23, 32, 51, 0.08);
   --color-primary-soft: rgba(53, 95, 159, 0.12);
-  --color-primary-strong: #2563eb;
   --color-primary-shadow: rgba(37, 99, 235, 0.2);
   --color-event-highlight: rgba(59, 130, 246, 0.12);
   --color-event-highlight-strong: rgba(59, 130, 246, 0.24);

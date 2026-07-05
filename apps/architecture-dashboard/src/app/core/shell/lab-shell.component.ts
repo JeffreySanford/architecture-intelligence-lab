@@ -9,6 +9,7 @@ type LabNavItem = {
   route: string;
   description: string;
   permission: string | string[];
+  icon: string;
 };
 
 @Component({
@@ -44,84 +45,98 @@ export class LabShellComponent {
       route: '/lab/architecture-flow',
       description: 'System graph',
       permission: 'dashboard:view',
+      icon: 'pi pi-sitemap',
     },
     {
       label: 'Dashboard',
       route: '/lab/dashboard',
       description: 'Loan workspace',
       permission: 'dashboard:view',
+      icon: 'pi pi-chart-bar',
     },
     {
       label: 'Capital Markets',
       route: '/lab/capital-markets',
       description: 'Security commitments and disclosure sample',
       permission: 'loans:view',
+      icon: 'pi pi-briefcase',
     },
     {
       label: 'Security Search',
       route: '/lab/security-search',
       description: 'Lazy security and disclosure table',
       permission: 'loans:view',
+      icon: 'pi pi-search',
     },
     {
       label: 'Map Inspector',
       route: '/lab/map-inspector',
       description: 'Map and Set indexes',
       permission: 'dashboard:view',
+      icon: 'pi pi-map',
     },
     {
       label: 'SignalStore Inspector',
       route: '/lab/signal-store-inspector',
       description: 'Computed state',
       permission: 'diagnostics:view',
+      icon: 'pi pi-sliders-h',
     },
     {
       label: 'Backend Comparison',
       route: '/lab/backend-comparison',
       description: 'Spring, Nest, proxy',
       permission: ['backend-comparison:view', 'realtime:view'],
+      icon: 'pi pi-sync',
     },
     {
       label: 'Infrastructure Status',
       route: '/lab/infrastructure',
       description: 'Docker and tooling health',
       permission: ['diagnostics:view', 'admin:view'],
+      icon: 'pi pi-server',
     },
     {
       label: 'Realtime Lab',
       route: '/lab/realtime',
       description: 'Socket.IO and Redis',
       permission: 'realtime:view',
+      icon: 'pi pi-wifi',
     },
     {
       label: 'OpenAPI Contract Lab',
       route: '/lab/openapi',
       description: 'Contracts and clients',
       permission: 'contracts:view',
+      icon: 'pi pi-code',
     },
     {
       label: 'MCP Dashboard',
       route: '/lab/mcp',
       description: 'Angular CLI MCP',
       permission: 'mcp:view',
+      icon: 'pi pi-cog',
     },
     {
       label: 'Admin Security Monitoring',
       route: '/lab/admin',
       description: 'OpenAPI security and permission status',
       permission: 'admin:view',
+      icon: 'pi pi-shield',
     },
     {
       label: 'Phase 6.5 Threat Model',
       route: '/lab/security-threat-model',
       description: 'Open the Phase 6.5 OpenAPI threat model artifact',
       permission: 'admin:view',
+      icon: 'pi pi-exclamation-triangle',
     },
     {
       label: 'Phase 6.5 Security Risk Map',
       route: '/lab/security-risk-map',
       description: 'Open the Phase 6.5 security risk map artifact',
       permission: 'admin:view',
+      icon: 'pi pi-map',
     },
   ];
 

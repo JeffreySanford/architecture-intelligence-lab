@@ -10,6 +10,7 @@ type AppNavItem = {
   route: string;
   description: string;
   permission: string | string[];
+  icon: string;
 };
 
 type PageChrome = {
@@ -44,66 +45,77 @@ export class App implements OnInit {
       route: '/lab/dashboard',
       description: 'Loan workspace',
       permission: 'dashboard:view',
+      icon: 'pi pi-chart-bar',
     },
     {
       label: 'Security Search',
       route: '/lab/security-search',
       description: 'Security and disclosure table',
       permission: 'loans:view',
+      icon: 'pi pi-search',
     },
     {
       label: 'Capital Markets',
       route: '/lab/capital-markets',
       description: 'Commitment sample',
       permission: 'loans:view',
+      icon: 'pi pi-briefcase',
     },
     {
       label: 'Map Inspector',
       route: '/lab/map-inspector',
       description: 'Map and Set indexes',
       permission: 'dashboard:view',
+      icon: 'pi pi-map',
     },
     {
       label: 'SignalStore Inspector',
       route: '/lab/signal-store-inspector',
       description: 'Computed state',
       permission: 'diagnostics:view',
+      icon: 'pi pi-sliders-h',
     },
     {
       label: 'Architecture Flow',
       route: '/lab/architecture-flow',
       description: 'Backend request paths',
       permission: 'dashboard:view',
+      icon: 'pi pi-sitemap',
     },
     {
       label: 'Backend Comparison',
       route: '/lab/backend-comparison',
       description: 'Spring, Nest, proxy',
       permission: ['backend-comparison:view', 'realtime:view'],
+      icon: 'pi pi-sync',
     },
     {
       label: 'Infrastructure',
       route: '/lab/infrastructure',
       description: 'Docker and tooling health',
       permission: ['diagnostics:view', 'admin:view'],
+      icon: 'pi pi-server',
     },
     {
       label: 'Realtime Lab',
       route: '/lab/realtime',
       description: 'Socket.IO and Redis',
       permission: 'realtime:view',
+      icon: 'pi pi-wifi',
     },
     {
       label: 'OpenAPI',
       route: '/lab/openapi',
       description: 'Contracts and clients',
       permission: 'contracts:view',
+      icon: 'pi pi-code',
     },
     {
       label: 'Admin',
       route: '/lab/admin',
       description: 'Roles and personas',
       permission: 'admin:view',
+      icon: 'pi pi-shield',
     },
   ];
 

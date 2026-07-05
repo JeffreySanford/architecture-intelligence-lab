@@ -11,11 +11,13 @@
 
     <div class="landing__actions" animate.enter="scale-enter">
       @if (authStore.currentUser(); as currentUser) {
-        <button pButton type="button" class="p-button-outlined" (click)="openCurrentUserLab()">
+        <button pButton type="button" class="p-button-outlined icon-label" (click)="openCurrentUserLab()">
+          <i class="pi pi-external-link" aria-hidden="true"></i>
           Open Current User Lab
         </button>
       }
-      <button pButton type="button" class="p-button-filled" (click)="enterLab()">
+      <button pButton type="button" class="p-button-filled icon-label" (click)="enterLab()">
+        <i class="pi pi-sign-in" aria-hidden="true"></i>
         Enter As {{ selectedPersona().name }}
       </button>
     </div>

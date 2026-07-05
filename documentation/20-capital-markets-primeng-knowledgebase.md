@@ -110,6 +110,14 @@ Current build/test validation passes for the app's existing PrimeNG usage. Conti
 
 PrimeNG 22 RC also includes PrimeUI license verification code. The lab now uses a local ignored `.env` value named `PRIMEUI_LICENSE_KEY`, syncs it into ignored runtime config at `apps/architecture-dashboard/public/env.js`, and passes that value through `providePrimeNG({ license })`. Keep `.env` and generated `env.js` out of source control; update `.env.example` only with placeholder names.
 
+## PrimeIcons Note
+
+PrimeIcons is available in this repo through the `primeicons` package and the global `primeicons/primeicons.css` import in `apps/architecture-dashboard/src/styles.scss`. Use PrimeIcons as the default Phase 13 icon set for PrimeNG-heavy workflow screens because it aligns with PrimeNG components and keeps dense enterprise UI scannable without introducing another visual language.
+
+For the current app, use the class-based form such as `pi pi-search`, `pi pi-filter`, `pi pi-eye`, `pi pi-download`, `pi pi-check-circle`, `pi pi-exclamation-triangle`, `pi pi-database`, `pi pi-server`, `pi pi-wifi`, and `pi pi-code`. PrimeNG components may still use custom icon templates when a PrimeIcon does not represent the domain concept clearly.
+
+Use icons in Capital Markets and architecture-lab screens where they reduce scanning cost: route navigation, table filters, row actions, status tags, commitment/disclosure state, realtime/cache state, API contract panels, security controls, and architecture graph legends. Pair status icons with text, give icon-only controls accessible labels, and hide decorative icons from assistive technology.
+
 Migration notes from the Angular 22 alignment:
 
 - `primeng/dropdown` is replaced by `primeng/select` and `<p-select>`.

@@ -15,3 +15,13 @@
 .p-tag {
   font-size: 0.85rem;
 }
+
+.icon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon-label .pi {
+  font-size: 1rem;
+}

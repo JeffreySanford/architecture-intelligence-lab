@@ -55,6 +55,29 @@ Implementation rules:
 - Preserve keyboard focus visibility and overlay readability on all dark or saturated surfaces.
 - Keep Phase 9 enter/exit and reduced-motion behavior intact during the styling pass.
 
+## PrimeIcons And Iconographic UI
+
+PrimeIcons is the default icon set for Phase 13 because the app already installs `primeicons` and imports `primeicons/primeicons.css` from `apps/architecture-dashboard/src/styles.scss`. Use class-based icons such as `<i class="pi pi-search" aria-hidden="true"></i>` for the current implementation. If the app later adopts the newer PrimeNG 22 standalone icon component path, evaluate `@primeicons/angular` route by route instead of mixing both approaches in one surface.
+
+Prefer PrimeIcons before Material Icons, Font Awesome, custom SVG, or image icons. Fallback icons are acceptable when PrimeIcons lacks a domain-specific symbol, but the fallback should be documented near the component or in this plan.
+
+High-value icon placements:
+
+- App navigation and page headers: dashboard `pi pi-chart-bar`, security search `pi pi-search`, capital markets `pi pi-briefcase`, architecture flow `pi pi-sitemap`, Map inspector `pi pi-map`, SignalStore `pi pi-sliders-h`, backend comparison `pi pi-sync`, realtime lab `pi pi-wifi`, infrastructure `pi pi-server`, OpenAPI contract lab `pi pi-code`, admin/security `pi pi-shield`.
+- Metric cards and status summaries: dollar/balance `pi pi-dollar`, latency `pi pi-clock`, payload `pi pi-box`, records `pi pi-list`, success `pi pi-check-circle`, warning `pi pi-exclamation-triangle`, error `pi pi-times-circle`, informational state `pi pi-info-circle`.
+- Table toolbars and row actions: search `pi pi-search`, filter `pi pi-filter`, sort `pi pi-sort-alt`, export/download `pi pi-download`, details `pi pi-eye`, reset/refresh `pi pi-refresh`, clear `pi pi-times`, date filter `pi pi-calendar`.
+- Realtime and Redis/cache panels: emit `pi pi-send`, burst mode `pi pi-bolt`, socket connected `pi pi-wifi`, cache hit `pi pi-check-circle`, cache miss or degraded adapter `pi pi-exclamation-triangle`, Redis/cache node `pi pi-database`.
+- D3/SVG and architecture legends: browser/client `pi pi-desktop`, API service `pi pi-server`, database `pi pi-database`, Redis/cache `pi pi-bolt` or `pi pi-database`, generated contracts `pi pi-code`, documentation artifacts `pi pi-file`.
+- Explain Mode callouts: concept info `pi pi-info-circle`, permission or anti-drift guardrail `pi pi-shield`, DTO/ViewModel flow `pi pi-share-alt`, copy-on-write or immutable projection `pi pi-clone`.
+
+Accessibility rules:
+
+- Decorative icons use `aria-hidden="true"`.
+- Icon-only buttons require an accessible name through `aria-label` and should have a visible tooltip on hover/focus.
+- Status icons must be paired with text or an accessible label. Do not rely on icon shape or color alone.
+- Use `currentColor` where possible so icons inherit the same contrast rules as nearby text.
+- Keep icon sizes tied to shared sizing tokens so hover, loading, and active states do not shift layouts.
+
 ## Phase 5 Visualization Methodology
 
 Phase 5 starts with a visualization-first control surface at `/lab/backend-comparison`. The page should teach the architecture before every backend endpoint is complete, then accept live data without a redesign.

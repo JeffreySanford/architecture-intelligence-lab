@@ -645,18 +645,18 @@ Deliverables:
 - [X] `apps/architecture-dashboard/src/styles/_animations.scss` for MD3 Express motion tokens, Angular enter/exit classes, and reduced-motion fallbacks.
 - [X] `apps/architecture-dashboard/src/styles/_charts.scss` for D3, Chart.js, topology, comparison metric, and status visualization tokens.
 - [X] `apps/architecture-dashboard/src/styles/_accessibility.scss` for contrast, focus-visible, high-contrast, disabled, error, warning, success, and reduced-motion rules.
-- [ ] PrimeIcons usage map for navigation, metric cards, status states, table actions, realtime/cache panels, D3 legends, OpenAPI, security, and admin surfaces.
-- [ ] Landing, dashboard, security search, backend comparison, realtime, OpenAPI contract, Map inspector, SignalStore inspector, MCP, and admin/persona views use the shared style system.
-- [ ] Hard-coded visual values in view SCSS are migrated into the shared style layer where they are reusable.
+- [X] PrimeIcons usage map for navigation, metric cards, status states, table actions, realtime/cache panels, D3 legends, OpenAPI, security, and admin surfaces.
+- [X] Landing, dashboard, security search, backend comparison, realtime, OpenAPI contract, Map inspector, SignalStore inspector, MCP, and admin/persona views use the shared style system.
+- [X] Hard-coded visual values in view SCSS are migrated into the shared style layer where they are reusable.
 
 Acceptance criteria:
 
-- [ ] The app has a vibrant but professional MD3 Express visual identity across every frontend route.
-- [ ] `styles.scss` loads the style partials with Sass `@use` in the agreed order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
-- [ ] PrimeNG components and overlays match the shared token system instead of using isolated overrides.
-- [ ] PrimeIcons are the default icon set for Phase 13 iconographic UI, with documented fallbacks only when PrimeIcons does not provide the needed symbol.
-- [ ] D3/SVG and Chart.js visuals use shared chart/status tokens.
-- [ ] Contrast is validated for default, hover, active, focus, disabled, error, warning, success, info, and selected states.
-- [ ] Responsive layouts remain stable with no clipped text, overlapping controls, or card-in-card regressions.
-- [ ] Phase 9 enter/exit animation and reduced-motion behavior remain intact.
-- [ ] Lint, unit tests, build, and Playwright visual smoke pass after implementation.
+- [X] The app has a vibrant but professional MD3 Express visual identity across every frontend route.
+- [X] `styles.scss` loads the style partials with Sass `@use` in the agreed order: colors, vars, typography, accessibility, surfaces, components, charts, animations.
+- [X] PrimeNG components and overlays match the shared token system instead of using isolated overrides.
+- [X] PrimeIcons are the default icon set for Phase 13 iconographic UI, with documented fallbacks only when PrimeIcons does not provide the needed symbol.
+- [X] D3/SVG and Chart.js visuals use shared chart/status tokens.
+- [X] Contrast is validated for default, hover, active, focus, disabled, error, warning, success, info, and selected states.
+- [X] Responsive layouts remain stable with no clipped text, overlapping controls, or card-in-card regressions.
+- [X] Phase 9 enter/exit animation and reduced-motion behavior remain intact.
+- [X] Lint, unit tests, build, and Playwright visual smoke pass after implementation.

@@ -36,7 +36,10 @@
           <div class="security-search__card-title">Filters</div>
           <div class="security-search__card-subtitle">Typed query object feeding lazy table state</div>
         </div>
-        <button pButton type="button" class="p-button-text" (click)="resetFilters()">Reset</button>
+        <button pButton type="button" class="p-button-text icon-label" (click)="resetFilters()">
+          <i class="pi pi-filter-slash" aria-hidden="true"></i>
+          Reset
+        </button>
       </div>
     </ng-template>
 
@@ -163,8 +166,14 @@
           <td>{{ row.settlementDate }}</td>
           <td>
             <div class="security-search__row-actions">
-              <button pButton type="button" class="p-button-text" (click)="openDetails(row)">Details</button>
-              <button pButton type="button" class="p-button-text" (click)="exportDisclosure(row)">Export</button>
+              <button pButton type="button" class="p-button-text icon-label" (click)="openDetails(row)">
+                <i class="pi pi-eye" aria-hidden="true"></i>
+                Details
+              </button>
+              <button pButton type="button" class="p-button-text icon-label" (click)="exportDisclosure(row)">
+                <i class="pi pi-download" aria-hidden="true"></i>
+                Export
+              </button>
             </div>
           </td>
         </tr>
