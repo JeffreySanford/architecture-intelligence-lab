@@ -21,6 +21,12 @@ const personas: TestPersona[] = [
     role: 'Admin',
     permissions: ['admin:view', 'contracts:view', 'dashboard:view', 'diagnostics:view', 'loans:view'],
   },
+  {
+    id: 'henry-mcp-explorer',
+    name: 'Henry MCP Explorer',
+    role: 'MCP Explorer',
+    permissions: ['dashboard:view', 'developer:view', 'mcp:view'],
+  },
 ];
 
 export async function mockLandingApi(page: Page): Promise<void> {
@@ -48,6 +54,17 @@ export async function mockLandingApi(page: Page): Promise<void> {
       roles: [selected.role],
       permissions: selected.permissions,
     };
+
+    await page.context().addCookies([
+      {
+        name: 'access_token',
+        value: selected.id,
+        domain: 'localhost',
+        path: '/',
+        sameSite: 'Lax',
+        httpOnly: true,
+      },
+    ]);
 
     await route.fulfill({
       status: 200,

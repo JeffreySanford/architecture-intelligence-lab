@@ -14,8 +14,10 @@ services:
     volumes:
       - ./apps/architecture-dashboard/proxy.conf.cjs:/workspace/apps/architecture-dashboard/proxy.conf.cjs:ro
     depends_on:
-      - spring-api
-      - nest-api
+      spring-api:
+        condition: service_healthy
+      nest-api:
+        condition: service_healthy
 
   spring-api:
     build:
@@ -32,6 +34,12 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/api/health >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   nest-api:
     build:
@@ -47,6 +55,12 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sSf http://localhost:3000/api >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   postgres:
     image: postgres:16-alpine

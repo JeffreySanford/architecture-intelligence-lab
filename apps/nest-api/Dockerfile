@@ -3,6 +3,7 @@ FROM node:24-alpine
 WORKDIR /workspace
 
 RUN corepack enable
+RUN apk add --no-cache curl
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json ./
 COPY .prettierrc .prettierignore eslint.config.mjs jest.config.ts jest.preset.js ./

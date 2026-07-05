@@ -4,6 +4,7 @@ import { firstValueFrom, isObservable, of, throwError } from 'rxjs';
 import { vi } from 'vitest';
 import { permissionGuard } from './permission.guard';
 import { AuthStore } from './auth.store';
+import { type PermissionRequirement } from './permission.utils';
 
 class MockAuthStore {
   ensureCurrentUser = vi.fn(() => of(true));
@@ -28,7 +29,7 @@ describe('permissionGuard', () => {
     });
   });
 
-  function routeWithPermission(permission?: string | string[]): ActivatedRouteSnapshot {
+  function routeWithPermission(permission?: PermissionRequirement): ActivatedRouteSnapshot {
     return {
       data: permission ? { permission } : {},
     } as ActivatedRouteSnapshot;
@@ -147,5 +148,44 @@ describe('permissionGuard', () => {
     expect(router.createUrlTree).toHaveBeenCalledWith(['/lab/dashboard']);
     expect(authStore.hasPermission).toHaveBeenCalledWith('contracts:view');
     expect(authStore.hasPermission).toHaveBeenCalledWith('realtime:view');
+  });
+
+  it('allows routes requiring all developer and realtime permissions', async () => {
+    authStore.hasPermission.mockImplementation((permission: string) =>
+      permission === 'developer:view' || permission === 'realtime:view',
+    );
+
+    const result = TestBed.runInInjectionContext(() =>
+      permissionGuard(
+        routeWithPermission({ allOf: ['developer:view', 'realtime:view'] }),
+        {} as RouterStateSnapshot,
+      ),
+    );
+
+    if (typeof result === 'boolean') {
+      expect(result).toBe(true);
+    } else {
+      await expect(guardResultToPromise(result)).resolves.toBe(true);
+    }
+  });
+
+  it('redirects to dashboard when allOf permission requirement is missing one permission', async () => {
+    authStore.hasPermission.mockImplementation((permission: string) => permission === 'realtime:view');
+
+    const result = TestBed.runInInjectionContext(() =>
+      permissionGuard(
+        routeWithPermission({ allOf: ['developer:view', 'realtime:view'] }),
+        {} as RouterStateSnapshot,
+      ),
+    );
+
+    if (typeof result === 'boolean') {
+      expect(result).toBe(false);
+    } else {
+      await expect(guardResultToPromise(result)).resolves.toEqual({
+        commands: ['/lab/dashboard'],
+      });
+    }
+    expect(router.createUrlTree).toHaveBeenCalledWith(['/lab/dashboard']);
   });
 });

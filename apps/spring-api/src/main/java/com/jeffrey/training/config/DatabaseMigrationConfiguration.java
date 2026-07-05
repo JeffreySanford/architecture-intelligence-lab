@@ -12,10 +12,13 @@ import org.springframework.context.annotation.Profile;
 class DatabaseMigrationConfiguration {
   @Bean
   InitializingBean migrateDatabase(DataSource dataSource) {
-    return () -> Flyway.configure()
-        .dataSource(dataSource)
-        .locations("classpath:db/migration")
-        .load()
-        .migrate();
+    return () -> {
+      Flyway flyway = Flyway.configure()
+          .dataSource(dataSource)
+          .locations("classpath:db/migration")
+          .load();
+      flyway.repair();
+      flyway.migrate();
+    };
   }
 }
