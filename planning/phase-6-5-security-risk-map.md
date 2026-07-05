@@ -26,6 +26,7 @@ The following risk areas are included:
 
 - `access_token` cookie is a dev-only persona identifier with no signature or integrity checks.
 - Spring and Nest both currently derive persona identity directly from a plain cookie value.
+- Reloading a protected `/lab/*` route must clear stale auth state and reset persona selection, or stale UI/session state may expose broader access than intended.
 - No CSRF protection exists for state-changing APIs, so cookie-based auth can be abused by third-party pages.
 - The current bearer-like cookie pattern is acceptable only in a local lab environment; it must not be reused for public/demo deployment.
 
@@ -40,7 +41,8 @@ The following risk areas are included:
 
 - The dashboard and APIs are currently wired for local runtime flows, but the Nest gateway and Spring APIs should restrict CORS to known origins before broader exposure.
 - The Socket.IO gateway is configured with permissive origin handling for dev convenience; this should be tightened before any non-local use.
-- Generated client calls must continue using `withCredentials: true` to maintain cookie auth across same-origin or proxied runtime.
+- Socket.IO origin restrictions are already environment-configurable via `SOCKET_IO_ORIGINS`; the current defaults stay local dev hosts only.
+- Generated client calls already use `withCredentials: true` in the Angular runtime config, which is the correct design for the current proxied cookie-based auth model.
 
 ### CSRF
 
@@ -63,11 +65,15 @@ The following risk areas are included:
 
 ## Next steps
 
-- [ ] Create a GitHub issue to track the remaining Phase 6.5 security hardening tasks.
-- [ ] Tighten Nest and Spring API auth guards around gateway/realtime and open docs access.
-- [ ] Add CORS origin restrictions for local runtime and Docker compose environments.
-- [ ] Define a follow-up mitigation plan for CSRF and cookie integrity.
+- [X] Create a GitHub issue to track the remaining Phase 6.5 security hardening tasks.
+- [X] Tighten Nest and Spring API auth guards around gateway/realtime and open docs access.
+- [X] Add CORS origin restrictions for local runtime and Docker compose environments.
+- [X] Define a follow-up mitigation plan for CSRF and cookie integrity.
+- [X] Validate refresh hardening for protected lab routes, including direct `/lab/mcp` reloads, stale auth state reset, and landing redirect behavior.
+- [X] Validate local Spring persona load through `/api/personas` and confirm the landing page auth flow functions after the Flyway repair.
 - [ ] Review generated client drift coverage and add contract change alerts to the OpenAPI Contract Lab.
+- [ ] Add unit and Playwright regression coverage for protected docs, gateway, and realtime auth guard behavior.
+- [X] Consolidate deferred hardening work into `planning/phase-6-5-follow-up.md`.
 
 ## GitHub issue placeholder
 

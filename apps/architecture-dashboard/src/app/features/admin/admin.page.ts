@@ -63,11 +63,11 @@ export class AdminPage {
     {
       id: 'websocket-origin-policy',
       area: 'WebSocket origin allowlist',
-      status: 'issue',
+      status: 'watch',
       summary:
-        'The Socket.IO gateway allows `origin: *`, which is acceptable only in a tightly contained dev environment.',
+        'The Socket.IO gateway now uses an explicit local dev host allowlist, but the runtime origin policy remains environment-configurable.',
       recommendation:
-        'Limit origin access to local dev hosts and document the tradeoff as dev-only security behavior.',
+        'Keep origin allowlists restricted to known local/dev origins and avoid wildcard origin patterns for broader exposure.',
       owner: 'Nest realtime gateway',
     },
     {

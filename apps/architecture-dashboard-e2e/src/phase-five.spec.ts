@@ -21,4 +21,14 @@ test.describe('Phase 5 core route', () => {
       'Nest Swagger UI access is restricted for your persona.',
     );
   });
+
+  test('should filter live gateway loan reads by the loan reads filter input', async ({ page }) => {
+    await mockPhaseFiveApi(page, 'ethan-diagnostics-admin');
+
+    await page.goto(phaseFiveRoute);
+    await page.fill('[data-testid="loan-read-filter"]', 'nest-direct');
+
+    await expect(page.locator('[data-testid="loan-read-row"]')).toHaveCount(1);
+    await expect(page.locator('[data-testid="loan-read-row"]', { hasText: 'Nest direct' })).toBeVisible();
+  });
 });

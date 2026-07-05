@@ -19,12 +19,14 @@ The lab currently secures raw OpenAPI docs access and protects the Nest Swagger 
 ## Tasks
 
 - [ ] Review and harden Spring `access_token` persona auth model
-- [ ] Add Nest gateway and realtime route auth guards
-- [ ] Restrict Socket.IO origin handling for non-local development
-- [ ] Validate CORS policy across Angular, Spring, and Nest clients
-- [ ] Add CSRF protection or same-site cookie enforcement for state-changing endpoints
+- [X] Add backend-enforced Nest gateway and realtime auth guards
+- [X] Restrict Socket.IO origin handling for non-local development
+- [X] Validate CORS policy across Angular, Spring, and Nest clients
+- [X] Add CSRF protection or same-site cookie enforcement for state-changing endpoints
+- [X] Validate refresh hardening and landing redirect behavior for protected MCP and contract routes
 - [ ] Monitor contract docs access from the admin security monitoring page
-- [ ] Track generated client drift and raw contract metadata exposure as follow-up work
+- [X] Track generated client drift and raw contract metadata exposure as follow-up work
+- [X] Consolidate active Sprint 15 hardening work and deferred Sprint 17 follow-up into `planning/phase-6-5-follow-up.md`
 
 ## Links
 

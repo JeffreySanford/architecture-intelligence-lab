@@ -53,6 +53,15 @@ test.describe('Visual smoke - Phase 9', () => {
     await expect(page.locator('.route-transition')).toBeVisible();
   });
 
+  test('app brand shows a material icon and animation-ready header', async ({ page }) => {
+    await mockLandingApi(page);
+
+    await page.goto('/');
+    await expect(page.locator('.app-frame__brand-icon.material-icons')).toHaveText('insights');
+    await expect(page.locator('.app-frame__content-header')).toBeVisible();
+    await expect(page.locator('.route-transition')).toBeVisible();
+  });
+
   test('Architecture Flow smoke covers request path graph and route transition', async ({ page }) => {
     await mockLandingApi(page);
 
@@ -137,6 +146,23 @@ test.describe('Visual smoke - Phase 9', () => {
     expect(transitionValue).toMatch(reducedMotionTransitionPattern);
   });
 
+  test('Phase 6.5 security artifact pages are accessible to admin personas', async ({ page }) => {
+    await mockLandingApi(page);
+
+    await page.goto('/');
+    await page.locator('p-select[inputid="persona-select"]').click();
+    await page.locator('.p-select-option', { hasText: 'Grace Admin' }).click();
+    await page.click('button:has-text("Enter As")');
+
+    await page.goto('/lab/security-risk-map');
+    await expect(page.locator('app-security-risk-map-page h1')).toHaveText('Phase 6.5 Security Risk Map');
+    await expect(page.locator('a[href="/planning/phase-6-5-security-risk-map.md"]')).toBeVisible();
+
+    await page.goto('/lab/security-threat-model');
+    await expect(page.locator('app-security-threat-model-page h1')).toHaveText('Phase 6.5 Threat Model');
+    await expect(page.locator('app-security-threat-model-page a')).toContainText('Open Phase 6.5 security risk map');
+  });
+
   test('Map Inspector native card enter/leave animation smoke', async ({ page }) => {
     await mockLandingApi(page);
 
@@ -152,9 +178,8 @@ test.describe('Visual smoke - Phase 9', () => {
     await expect(page.locator('svg[aria-label="Map bucket diagram"]')).toBeVisible();
 
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.reload();
-    await expect(page.locator('.map-inspector__diagram-card')).toBeVisible();
-    const diagramTransition = await page.locator('.map-inspector__diagram-card').evaluate((element) =>
+    await expect(diagramCard).toBeVisible();
+    const diagramTransition = await diagramCard.evaluate((element) =>
       window.getComputedStyle(element).transition,
     );
     expect(diagramTransition).toMatch(reducedMotionTransitionPattern);
@@ -175,9 +200,8 @@ test.describe('Visual smoke - Phase 9', () => {
     await expect(page.locator('svg[aria-label="OpenAPI contract tree"]')).toBeVisible();
 
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.reload();
-    await expect(page.locator('.openapi__tree-card')).toBeVisible();
-    const treeTransition = await page.locator('.openapi__tree-card').evaluate((element) =>
+    await expect(treeCard).toBeVisible();
+    const treeTransition = await treeCard.evaluate((element) =>
       window.getComputedStyle(element).transition,
     );
     expect(treeTransition).toMatch(reducedMotionTransitionPattern);

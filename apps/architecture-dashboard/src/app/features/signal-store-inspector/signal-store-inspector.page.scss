@@ -55,6 +55,15 @@
     opacity var(--motion-duration-medium) var(--motion-ease);
 }
 
+.signal-store-graph__node {
+  cursor: pointer;
+}
+
+.signal-store-inspector__detail-card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
 .signal-store-graph__link--dimmed {
   opacity: 0.08;
 }

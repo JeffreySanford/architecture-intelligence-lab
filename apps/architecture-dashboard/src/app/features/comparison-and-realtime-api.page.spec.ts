@@ -216,10 +216,19 @@ type PhaseFivePageTestable = {
   nestDirectReads: WritableSignal<GatewayLoanReadDto | null>;
   nestProxyReads: WritableSignal<GatewayLoanReadDto | null>;
   canViewContracts: () => boolean;
+  loanReadFilter: WritableSignal<string>;
   liveLoanReadRows: () => Array<{
     pathId: ComparisonPathId;
     label: string;
     mode: string;
+    recordCount: number;
+    errorMessage: string;
+    observedAt: string;
+  }>;
+  filteredLoanReadRows: () => Array<{
+    pathId: ComparisonPathId;
+    label: string;
+    mode: string | null;
     recordCount: number;
     errorMessage: string;
     observedAt: string;
@@ -460,6 +469,68 @@ describe('ComparisonAndRealtimeApi', () => {
 
     expect(rows).toHaveLength(2);
     expect(rows.map((row) => row.pathId)).toEqual(['nest-direct', 'nest-proxy']);
+  });
+
+  it('should filter live loan reads rows by loan read filter', () => {
+    const subject = component as unknown as PhaseFivePageTestable;
+
+    subject.loadLiveLoanReads();
+    subject.loanReadFilter.set('nest-direct');
+
+    const rows = subject.filteredLoanReadRows();
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].pathId).toBe('nest-direct');
+  });
+  it('should show degraded fallback rows when live loan reads are unavailable', async () => {
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [PhaseFivePage],
+      providers: [
+        { provide: AuthStore, useClass: MockAuthStore },
+        { provide: DashboardStore, useClass: MockDashboardStore },
+        { provide: NestApiFacade, useClass: FailingNestApiFacade },
+        { provide: RealtimeSocketService, useClass: MockRealtimeSocketService },
+      ],
+    }).compileComponents();
+
+    const localFixture = TestBed.createComponent(PhaseFivePage);
+    localFixture.detectChanges();
+    const subject = localFixture.componentInstance as unknown as PhaseFivePageTestable;
+
+    const rows = subject.filteredLoanReadRows();
+
+    expect(rows).toHaveLength(2);
+    expect(rows.every((row) => row.mode === 'degraded')).toBe(true);
+    expect(rows.map((row) => row.errorMessage)).toEqual([
+      'Live direct reads are unavailable.',
+      'Live proxy reads are unavailable.',
+    ]);
+  });
+  it('should show degraded fallback rows when live loan reads are unavailable', async () => {
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [PhaseFivePage],
+      providers: [
+        { provide: AuthStore, useClass: MockAuthStore },
+        { provide: DashboardStore, useClass: MockDashboardStore },
+        { provide: NestApiFacade, useClass: FailingNestApiFacade },
+        { provide: RealtimeSocketService, useClass: MockRealtimeSocketService },
+      ],
+    }).compileComponents();
+
+    const localFixture = TestBed.createComponent(PhaseFivePage);
+    localFixture.detectChanges();
+    const subject = localFixture.componentInstance as unknown as PhaseFivePageTestable;
+
+    const rows = subject.filteredLoanReadRows();
+
+    expect(rows).toHaveLength(2);
+    expect(rows.every((row) => row.mode === 'degraded')).toBe(true);
+    expect(rows.map((row) => row.errorMessage)).toEqual([
+      'Live direct reads are unavailable.',
+      'Live proxy reads are unavailable.',
+    ]);
   });
 
   it('should show comparison metric errors without breaking the page', async () => {

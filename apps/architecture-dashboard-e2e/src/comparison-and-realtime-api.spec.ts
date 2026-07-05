@@ -26,11 +26,11 @@ const personas: Record<string, TestPersona> = {
     role: 'Contract Admin',
     permissions: ['contracts:view', 'dashboard:view'],
   },
-  'maya-mcp-explorer': {
-    id: 'maya-mcp-explorer',
-    name: 'Maya MCP Explorer',
+  'henry-mcp-explorer': {
+    id: 'henry-mcp-explorer',
+    name: 'Henry MCP Explorer',
     role: 'MCP Explorer',
-    permissions: ['mcp:view'],
+    permissions: ['dashboard:view', 'developer:view', 'mcp:view'],
   },
   'grace-realtime-operator': {
     id: 'grace-realtime-operator',
@@ -363,14 +363,31 @@ test('Backend comparison page shows Diagnostics Admin identity and runtime summa
   await expect(page.locator('svg[aria-label*="Phase 5 graph"]').first()).toBeVisible();
 });
 
-test('Backend comparison route redirects Viewer persona to dashboard', async ({ page }) => {
+test('Backend comparison route redirects Viewer persona to landing', async ({ page }) => {
   await mockApiForPersona(page, 'alice-viewer');
 
   await page.goto('/lab/backend-comparison');
 
-  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
-  await expect(page.locator('app-dashboard-page h1', { hasText: 'Dashboard' })).toBeVisible();
+  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
+  await expect(page.locator('app-landing-page h1', { hasText: 'Architecture Intelligence Lab' })).toBeVisible();
 });
+
+test.skip(
+  process.env['PLAYWRIGHT_REAL_BACKEND'] !== '1',
+  'Requires a real Nest backend running at http://127.0.0.1:3000',
+  async ({ page }) => {
+    await page.context().clearCookies();
+
+    const response = await page.request.get('http://127.0.0.1:3000/gateway/realtime/events', {
+      headers: { Accept: 'application/json' },
+    });
+
+    expect(response.status()).toBe(401);
+    const body = await response.json();
+    expect(body).toHaveProperty('message');
+    expect(body.message).toContain('access_token');
+  },
+);
 
 test('Backend comparison route allows Realtime Operator to emit Phase 5 events', async ({ page }) => {
   await mockApiForPersona(page, 'grace-realtime-operator');
@@ -406,19 +423,19 @@ test('Realtime Operator sees the future live Socket.IO event update placeholder'
   // When live socket events are added, this test should assert appended socket event rows appear automatically.
 });
 
-test('Backend comparison route redirects Contract Admin persona to dashboard', async ({ page }) => {
+test('Backend comparison route redirects Contract Admin persona to landing', async ({ page }) => {
   await mockApiForPersona(page, 'fiona-contract-admin');
 
   await page.goto('/lab/backend-comparison');
 
-  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
-  await expect(page.locator('app-dashboard-page h1', { hasText: 'Dashboard' })).toBeVisible();
+  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
+  await expect(page.locator('app-landing-page h1', { hasText: 'Architecture Intelligence Lab' })).toBeVisible();
 });
 
 test('Backend Comparison route is protected for Contract Admin but accessible to Realtime Operator', async ({ page }) => {
   await mockApiForPersona(page, 'fiona-contract-admin');
   await page.goto('/lab/backend-comparison');
-  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
+  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
 
   await mockApiForPersona(page, 'grace-realtime-operator');
   await page.goto('/lab/backend-comparison');
@@ -464,8 +481,8 @@ test('Viewer persona cannot open OpenAPI Contract Lab', async ({ page }) => {
 
   await page.goto('/lab/openapi');
 
-  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
-  await expect(page.locator('app-dashboard-page h1', { hasText: 'Dashboard' })).toBeVisible();
+  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
+  await expect(page.locator('app-landing-page h1', { hasText: 'Architecture Intelligence Lab' })).toBeVisible();
 });
 
 test('Contract Admin can switch personas and access OpenAPI Contract Lab', async ({ page }) => {
@@ -484,10 +501,10 @@ test('Contract Admin can switch personas and access OpenAPI Contract Lab', async
 });
 
 test('MCP Explorer persona can open MCP Dashboard and see read-only guidance', async ({ page }) => {
-  await mockApiForPersona(page, 'maya-mcp-explorer');
+  await mockApiForPersona(page, 'henry-mcp-explorer');
 
-  await page.goto('/api/dev-auth/personas/maya-mcp-explorer/select');
-  await expect(page.locator('body')).toContainText('Maya MCP Explorer');
+  await page.goto('/api/dev-auth/personas/henry-mcp-explorer/select');
+  await expect(page.locator('body')).toContainText('Henry MCP Explorer');
 
   await page.goto('/lab/mcp');
   await expect(page).toHaveURL(/.*\/lab\/mcp$/, { timeout: 15000 });
@@ -496,12 +513,90 @@ test('MCP Explorer persona can open MCP Dashboard and see read-only guidance', a
   await expect(page.locator('body')).toContainText('It is intentionally read-only and does not execute arbitrary commands from the browser.');
 });
 
+test('Developer persona can open Glossary and inspect term code sections', async ({ page }) => {
+  await mockApiForPersona(page, 'henry-mcp-explorer');
+
+  await page.goto('/api/dev-auth/personas/henry-mcp-explorer/select');
+  await expect(page.locator('body')).toContainText('Henry MCP Explorer');
+
+  await page.goto('/lab/dashboard');
+  await expect(page.locator('.app-frame__nav-item', { hasText: 'Glossary' })).toBeVisible();
+
+  await page.goto('/lab/glossary');
+  await expect(page).toHaveURL(/.*\/lab\/glossary$/, { timeout: 15000 });
+  await expect(page.locator('app-glossary-page h1', { hasText: 'Fintech And Angular Terms' })).toBeVisible();
+  await expect(page.locator('.glossary__term-button', { hasText: 'Security' })).toBeVisible();
+  await expect(page.locator('.glossary__code-item', { hasText: 'Security Search facade' })).toBeVisible();
+
+  await page.locator('.glossary__term-button', { hasText: 'Generated OpenAPI Client' }).click();
+  await expect(page.locator('app-glossary-page h2')).toHaveText('Generated OpenAPI Client');
+  await expect(page.locator('.glossary__code-item', { hasText: 'Nest API facade' })).toBeVisible();
+});
+
+test('Viewer persona cannot open developer Glossary', async ({ page }) => {
+  await mockApiForPersona(page, 'alice-viewer');
+
+  await page.goto('/lab/glossary');
+
+  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
+  await expect(page.locator('app-landing-page h1', { hasText: 'Architecture Intelligence Lab' })).toBeVisible();
+  await expect(page.locator('.app-frame__nav-item', { hasText: 'Glossary' })).toHaveCount(0);
+});
+
+test('Direct refresh of /lab/mcp clears stored auth and lands back on the landing page', async ({ page }) => {
+  await mockApiForPersona(page, 'henry-mcp-explorer');
+
+  await page.goto('/api/dev-auth/personas/henry-mcp-explorer/select');
+  await page.goto('/lab/mcp');
+  await expect(page).toHaveURL(/.*\/lab\/mcp$/, { timeout: 15000 });
+
+  await page.reload();
+
+  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
+  await expect(page.locator('app-landing-page h1', { hasText: 'Architecture Intelligence Lab' })).toBeVisible();
+  await expect(page.locator('body')).not.toContainText('Angular CLI MCP Guidance');
+});
+test('Direct navigation to /lab/mcp is allowed when developer auth is available', async ({ page }) => {
+  await mockApiForPersona(page, 'henry-mcp-explorer');
+
+  await page.goto('/lab/mcp');
+  await expect(page).toHaveURL(/.*\/lab\/mcp$/, { timeout: 15000 });
+  await expect(page.locator('h1', { hasText: 'Angular CLI MCP Guidance' })).toBeVisible();
+});
+
+test('MCP Explorer sees only read-only MCP access and cannot open Realtime Lab', async ({ page }) => {
+  await mockApiForPersona(page, 'henry-mcp-explorer');
+
+  await page.goto('/api/dev-auth/personas/henry-mcp-explorer/select');
+  await expect(page.locator('body')).toContainText('Henry MCP Explorer');
+
+  await page.goto('/lab/dashboard');
+  await expect(page.locator('.app-frame__nav-item', { hasText: 'MCP Dashboard' })).toBeVisible();
+  await expect(page.locator('.app-frame__nav-item', { hasText: 'Realtime Lab' })).toHaveCount(0);
+
+  await page.goto('/lab/realtime');
+  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
+  await expect(page.locator('app-landing-page h1', { hasText: 'Architecture Intelligence Lab' })).toBeVisible();
+
+  await page.goto('/lab/mcp');
+  await expect(page).toHaveURL(/.*\/lab\/mcp$/, { timeout: 15000 });
+  await expect(page.locator('h1', { hasText: 'Angular CLI MCP Guidance' })).toBeVisible();
+});
+
 test('Viewer persona cannot open MCP Dashboard', async ({ page }) => {
   await mockApiForPersona(page, 'alice-viewer');
 
   await page.goto('/lab/mcp');
-  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
-  await expect(page.locator('app-dashboard-page h1', { hasText: 'Dashboard' })).toBeVisible();
+  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
+  await expect(page.locator('app-landing-page h1', { hasText: 'Architecture Intelligence Lab' })).toBeVisible();
+});
+
+test('Unauthorized protected route access redirects to landing page', async ({ page }) => {
+  await mockApiForPersona(page, 'alice-viewer');
+
+  await page.goto('/lab/realtime');
+  await expect(page).toHaveURL(/.*\//, { timeout: 15000 });
+  await expect(page.locator('app-landing-page h1', { hasText: 'Architecture Intelligence Lab' })).toBeVisible();
 });
 
 test('Diagnostics persona can select comparison metric rows and highlight the active D3 path', async ({ page }) => {
@@ -539,11 +634,11 @@ test('Realtime Operator can use the dedicated Realtime Lab dashboard', async ({ 
   await expect(page.locator('.realtime-lab__chart', { hasText: 'Clear To Close' })).toBeVisible();
 });
 
-test('Viewer persona is redirected from Realtime Lab without realtime:view permission', async ({ page }) => {
+test('Viewer persona is redirected to landing from Realtime Lab without realtime:view permission', async ({ page }) => {
   await mockApiForPersona(page, 'alice-viewer');
 
   await page.goto('/lab/realtime');
 
-  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
-  await expect(page.locator('app-dashboard-page h1', { hasText: 'Dashboard' })).toBeVisible();
+  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
+  await expect(page.locator('app-landing-page h1', { hasText: 'Architecture Intelligence Lab' })).toBeVisible();
 });

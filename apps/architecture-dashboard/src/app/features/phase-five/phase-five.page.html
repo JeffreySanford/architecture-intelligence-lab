@@ -141,6 +141,7 @@
 
     <div class="table-toolbar">
       <input
+        data-testid="loan-read-filter"
         pInputText
         type="search"
         placeholder="Filter loan reads"
@@ -150,7 +151,7 @@
     </div>
 
     <p-table
-      [value]="liveLoanReadRows()"
+      [value]="filteredLoanReadRows()"
       [paginator]="true"
       [rows]="5"
       [rowsPerPageOptions]="rowsPerPageOptions"

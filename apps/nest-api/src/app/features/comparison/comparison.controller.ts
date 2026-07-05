@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   BackendComparisonResponseDto,
@@ -6,8 +6,11 @@ import {
   GatewayLoanReadDto,
 } from './comparison.dto';
 import { ComparisonService } from './comparison.service';
+import { AccessTokenGuard } from '../../auth/access-token.guard';
+import { OriginGuard } from '../../auth/origin.guard';
 
 @ApiTags('comparison')
+@UseGuards(AccessTokenGuard, OriginGuard)
 @Controller('gateway')
 export class ComparisonController {
   constructor(private readonly comparisonService: ComparisonService) {}

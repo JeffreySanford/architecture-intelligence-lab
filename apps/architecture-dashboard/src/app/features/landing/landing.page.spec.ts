@@ -30,6 +30,13 @@ class MockAuthStore {
       description: 'Realtime persona',
       permissions: ['realtime:view'],
     },
+    {
+      id: 'henry-mcp-explorer',
+      name: 'Henry MCP Explorer',
+      role: 'MCP Explorer',
+      description: 'Developer persona',
+      permissions: ['dashboard:view', 'developer:view', 'mcp:view'],
+    },
   ]);
   loading = signal(false);
   error = signal<string | null>(null);
@@ -40,6 +47,14 @@ class MockAuthStore {
   selectPersona = vi.fn((personaId: string) =>
     of({
       persona: { id: personaId, name: 'Alice Viewer', role: 'Viewer', description: 'Viewer persona', permissions: ['dashboard:view'] },
+      roles: ['viewer'],
+      permissions: ['dashboard:view'],
+    }),
+  );
+
+  loadCurrentUser = vi.fn(() =>
+    of({
+      persona: { id: 'alice-viewer', name: 'Alice Viewer', role: 'Viewer', description: 'Viewer persona', permissions: ['dashboard:view'] },
       roles: ['viewer'],
       permissions: ['dashboard:view'],
     }),
@@ -80,7 +95,7 @@ describe('LandingPage', () => {
 
   it('should load personas and render the persona count', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('Loaded 3 personas from Spring.');
+    expect(compiled.textContent).toContain('Loaded 4 personas from Spring.');
   });
 
   it('should expose all persona, dataset, and backend dropdown options', () => {
@@ -106,6 +121,7 @@ describe('LandingPage', () => {
       'alice-viewer',
       'ethan-diagnostics-admin',
       'grace-realtime-operator',
+      'henry-mcp-explorer',
     ]);
   });
 
@@ -134,6 +150,7 @@ describe('LandingPage', () => {
     component.enterLab();
 
     expect(authStore.selectPersona).toHaveBeenCalledWith('grace-realtime-operator');
+    expect(authStore.loadCurrentUser).toHaveBeenCalled();
     expect(dashboardStore.selectedDataset()).toBe('large');
     expect(dashboardStore.selectedBackendMode()).toBe('nest-proxy');
     expect(dashboardStore.explainMode()).toBe(true);
@@ -153,4 +170,5 @@ describe('LandingPage', () => {
     fixture.componentInstance.enterLab();
     expect(navigateSpy).toHaveBeenCalledWith(['/lab/dashboard'], expect.any(Object));
   });
+
 });

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -30,6 +30,43 @@ export class SignalStoreInspectorPage implements AfterViewInit {
   protected readonly dashboardStore = inject(DashboardStore);
   protected readonly explainMode = this.dashboardStore.explainMode;
   protected readonly highlightedNode = signal<string | null>(null);
+  protected readonly selectedNodeDetail = computed(() => {
+    const nodeId = this.highlightedNode();
+    return nodeId ? this.nodeDetails[nodeId] : null;
+  });
+
+  private readonly nodeDetails: Record<string, { title: string; summary: string }> = {
+    'raw-state': {
+      title: 'Raw state',
+      summary:
+        'Raw state is the source-of-truth for the lab. It holds incoming backend snapshot data, persona context, and auth state before computed indexes transform it.',
+    },
+    'computed-indexes': {
+      title: 'Computed indexes',
+      summary:
+        'Computed indexes derive Map and Set state from raw snapshot data. They power faster lookups for dashboard cards, table rows, and permission evaluation.',
+    },
+    'view-models': {
+      title: 'ViewModels',
+      summary:
+        'ViewModels turn computed index data into UI-friendly state for cards, tables, filters, and permission-aware rendering.',
+    },
+    methods: {
+      title: 'Methods',
+      summary:
+        'Methods coordinate state recomputation and expose actions for selection, filtering, and event handling across the SignalStore layer.',
+    },
+    'ui-cards': {
+      title: 'UI cards',
+      summary:
+        'UI cards display aggregated loan and workflow summaries. They consume computed ViewModels and show the high-level state derived from raw and indexed data.',
+    },
+    tables: {
+      title: 'Tables',
+      summary:
+        'Tables render row-level data with stable sort, filters, and action state based on the same computed data that drives the cards.',
+    },
+  };
 
   private readonly nodes: StoreNode[] = [
     { id: 'raw-state', label: 'Raw state', category: 'state' },
@@ -94,6 +131,7 @@ export class SignalStoreInspectorPage implements AfterViewInit {
           .text((node) => node.label);
         return group;
       })
+      .style('cursor', 'pointer')
       .on('click', (event, node) => this.selectNode(node.id));
 
     const simulation = d3

@@ -18,6 +18,22 @@
     <svg #signalStoreGraph class="signal-store-inspector__graph"></svg>
   </div>
 
+  @if (selectedNodeDetail(); as detail) {
+    <p-card class="signal-store-inspector__detail-card" animate.enter="enter" animate.leave="exit">
+      <ng-template pHeader>
+        <span>{{ detail.title }}</span>
+      </ng-template>
+      <p>{{ detail.summary }}</p>
+    </p-card>
+  } @else {
+    <p-card class="signal-store-inspector__detail-card" animate.enter="enter" animate.leave="exit">
+      <ng-template pHeader>
+        <span>Node details</span>
+      </ng-template>
+      <p>Select a node to reveal how raw state, computed indexes, and ViewModels connect to UI output.</p>
+    </p-card>
+  }
+
   <div class="signal-store-inspector__hint" animate.enter="enter" animate.leave="exit">
     <p>Click a node to highlight its relationship. This rendering honors reduced motion preferences.</p>
   </div>

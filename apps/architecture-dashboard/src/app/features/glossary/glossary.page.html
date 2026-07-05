@@ -1,0 +1,75 @@
+<section class="glossary">
+  <div class="glossary__intro">
+    <p class="glossary__eyebrow">Developer Glossary</p>
+    <h1>Fintech, Capital Markets, And Angular Terms</h1>
+    <p>
+      Study-oriented capital-markets vocabulary, fintech risk language, Angular architecture terms,
+      and contract-boundary language used across this lab.
+    </p>
+  </div>
+
+  <div class="glossary__category-bar" aria-label="Glossary categories">
+    @for (category of categories; track category) {
+      <button
+        pButton
+        type="button"
+        class="glossary__category-button"
+        [class.glossary__category-button--active]="selectedCategory() === category"
+        (click)="selectCategory(category)"
+      >
+        {{ category }}
+      </button>
+    }
+  </div>
+
+  <div class="glossary__layout">
+    <aside class="glossary__terms" aria-label="Glossary terms">
+      @for (item of filteredTerms(); track item.id) {
+        <button
+          type="button"
+          class="glossary__term-button"
+          [class.glossary__term-button--active]="selectedTerm().id === item.id"
+          (click)="selectTerm(item.id)"
+        >
+          <span>{{ item.term }}</span>
+          <small>{{ item.category }}</small>
+        </button>
+      }
+    </aside>
+
+    <article class="glossary__detail" aria-live="polite">
+      <div class="glossary__detail-header">
+        <div>
+          <p class="glossary__eyebrow">{{ selectedTerm().category }}</p>
+          <h2>{{ selectedTerm().term }}</h2>
+        </div>
+        <p-tag [value]="selectedTerm().category" severity="info"></p-tag>
+      </div>
+
+      <p class="glossary__summary">{{ selectedTerm().summary }}</p>
+      <p>{{ selectedTerm().detail }}</p>
+
+      <section class="glossary__section" aria-label="Related code sections">
+        <h3>Code Sections</h3>
+        <div class="glossary__code-list">
+          @for (reference of selectedTerm().codeReferences; track reference.path) {
+            <div class="glossary__code-item">
+              <strong>{{ reference.label }}</strong>
+              <code>{{ reference.path }}</code>
+              <p>{{ reference.note }}</p>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="glossary__section" aria-label="Related glossary terms">
+        <h3>Related Terms</h3>
+        <div class="glossary__related">
+          @for (term of selectedTerm().relatedTerms; track term) {
+            <span>{{ term }}</span>
+          }
+        </div>
+      </section>
+    </article>
+  </div>
+</section>

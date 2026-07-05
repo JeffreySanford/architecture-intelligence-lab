@@ -14,7 +14,8 @@ describe('App route configuration', () => {
     ['infrastructure', ['diagnostics:view', 'admin:view']],
     ['realtime', 'realtime:view'],
     ['openapi', 'contracts:view'],
-    ['mcp', 'mcp:view'],
+    ['mcp', { allOf: ['developer:view', 'mcp:view'] }],
+    ['glossary', 'developer:view'],
     ['admin', 'admin:view'],
   ])('protects /lab/%s with permissionGuard and %s permission', (path, permission) => {
     const labRoute = appRoutes.find((route) => route.path === 'lab');

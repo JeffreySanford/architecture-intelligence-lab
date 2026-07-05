@@ -46,6 +46,24 @@
   min-width: 240px;
 }
 
+.app-frame__brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  background: var(--color-primary);
+  color: var(--color-surface);
+  font-size: 1.25rem;
+}
+
+.material-icons {
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+}
+
 .app-frame__brand-mark {
   display: inline-grid;
   place-items: center;

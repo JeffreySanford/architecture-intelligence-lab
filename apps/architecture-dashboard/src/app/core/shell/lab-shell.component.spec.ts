@@ -62,6 +62,23 @@ describe('LabShellComponent', () => {
     expect(navText).not.toContain('SignalStore Inspector');
     expect(navText).not.toContain('Backend Comparison');
     expect(navText).not.toContain('OpenAPI Contract Lab');
+    expect(navText).not.toContain('Glossary');
     expect(navText).not.toContain('Admin And Persona Lab');
+  });
+
+  it('renders glossary navigation for developer personas only', () => {
+    authStore.currentUser.set({
+      persona: { name: 'Henry MCP Explorer', role: 'MCP Explorer' },
+      permissions: ['dashboard:view', 'developer:view', 'mcp:view'],
+    });
+    authStore.permissions.set(['dashboard:view', 'developer:view', 'mcp:view']);
+    fixture.detectChanges();
+
+    const navText =
+      (fixture.nativeElement as HTMLElement).querySelector('nav[aria-label="Lab views"]')
+        ?.textContent ?? '';
+    expect(navText).toContain('MCP Dashboard');
+    expect(navText).toContain('Glossary');
+    expect(navText).not.toContain('Realtime Lab');
   });
 });

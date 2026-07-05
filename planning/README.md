@@ -8,15 +8,42 @@ Architecture explanations belong in [documentation](../documentation/README.md).
 
 The current branch remains the modern study stack: Angular 22, Nx 23 beta, TypeScript 6, Spring Boot 4.x, Java 17, NestJS 11, PostgreSQL, Redis, Docker, OpenAPI, D3, and PrimeNG 22 RC. PrimeNG has been upgraded to the Angular 22-aligned release-candidate line, so follow-on work must validate the actual components used by the app before leaning on new PrimeNG APIs broadly.
 
+## Remaining Sprint Structure
+
+The branch has completed Phases 0-13 foundation and styling work. The remaining plan is now grouped into four focused future sprints:
+
+- Sprint 14: Backend parity, generated OpenAPI clients, and live audit coverage.
+- Sprint 15: Phase 6.5 security hardening, contract drift risk management, and safe runtime guards.
+- Sprint 16: Documentation closure, planning alignment, and backlog cleanup.
+- Sprint 17: Deferred follow-up work for optional metrics dashboards and long-term enterprise enhancements.
+
+This keeps the current work scoped to actual unfinished backlog items instead of extending the original sprint numbering from the early plan.
+
+## Current Release State
+
+The current branch is a documentation-aligned lab checkpoint. Angular shell, persona flow, guarded lab routes, PrimeNG dense data screens, D3/Chart.js visualization surfaces, generated client facades, developer-only glossary, Phase 6.5 security artifact pages, and frontend-focused unit/e2e coverage are implemented.
+
+The release is not yet a final runtime release because the full Docker/Nginx startup path, live Nest parity data, and backend-enforced security hardening remain active Sprint 14/15 work.
+
+## Active Sprint 14/15 Blockers
+
+1. Validate `docker compose up --build` for the complete Angular/Nginx, Spring, Nest, Postgres, Redis, pgAdmin, and Redis Insight stack.
+2. Verify Nginx serves the Angular frontend at `/` and proxies Spring/Nest/OpenAPI paths correctly.
+3. Replace remaining mock/parity gaps with live Nest direct reads and live backend comparison metrics in the Phase 5 table and D3 chart.
+4. Add backend-enforced guards for protected Nest gateway, realtime, and OpenAPI routes.
+5. Tighten CORS, Socket.IO origin policy, and CSRF/same-site cookie handling or explicitly document the selected mitigation.
+
+## Deferred Sprint 17 Scope
+
+- Optional historical comparison metrics dashboard using Grafana, Chart.js, or Highcharts after metrics persistence exists.
+- Long-term enterprise baseline variants or migration branches beyond the current Angular 22/Nx 23 beta study stack.
+- Public-hardening work that goes beyond the local training-lab runtime and should be tracked as future issue work.
+
+## Next Implementation Handoff
+
+Start with Sprint 14 Docker/Nginx validation: run the complete Compose stack, verify the browser entrypoint at `/`, verify Spring and Nest proxy routes, and record any startup or routing failures as the next implementation task.
+
 For enterprise job-prep discussion, keep the conservative baseline visible: Angular 18/19/20, PrimeNG 18/19/20/21, Java 17/21, Spring Boot 3.x, PostgreSQL, Docker, and OpenAPI.
-
-Planning priority after the current Security Search slice:
-
-1. Map/Set/ViewModel tests for dashboard projection and visible nav filtering.
-2. Real OpenAPI generation and facade-wrapped generated clients.
-3. Live backend comparison paths.
-4. Realtime event patching into dashboard state.
-5. Replace Security Search mock facade data with generated-client-backed API data.
 
 ## Reading Order
 
@@ -51,6 +78,7 @@ Completed foundation work:
 - [X] Phase 5 uses D3 for comparison/realtime topology and PrimeNG for deliverables, acceptance criteria, and role access.
 - [X] Phase 5 mock comparison metrics bind into a PrimeNG metrics table and selected D3 request path state.
 - [X] Phase 5 mock realtime event history binds into a PrimeNG event history table.
+- [X] Unauthorized protected route access now redirects to the landing page and is regression-tested.
 - [X] Phase 5 has a permission-gated HTTP emit control that prepends the returned realtime event into the event history table.
 - [X] `/lab/realtime` now provides the dedicated Phase 10 dashboard with summary cards, event controls, event history, burst visibility, status chart bars, and derived Redis cache telemetry.
 - [X] Phase 5 protected routes use route-level permission guards in addition to shell nav filtering.
@@ -75,8 +103,10 @@ Completed foundation work:
 - [X] Public landing view is limited to persona setup and does not advertise protected lab pages.
 - [X] Authenticated lab navigation filters every protected link by the selected user's permissions.
 - [X] `/lab/security-search` PrimeNG Capital Markets table exists with lazy loading, filters, row actions, details, loading, and empty states.
-- [ ] Map/Set/ViewModel tests cover borrower lookup, documents by loan/security, status lookup, permission membership, and fallback rows.
+- [X] Map/Set/ViewModel tests cover borrower lookup, documents by loan/security, status lookup, permission membership, and fallback rows.
 - [X] Generated OpenAPI clients are real, buildable, and consumed only through Angular facades.
+- [X] Developer-only Glossary route exists for fintech, Angular, and contract terminology with code-section references.
+- [X] App shell animations and Material icon branding are implemented and covered by unit/e2e tests.
 
 ## Phase 5 Visualization Planning Checkpoint
 

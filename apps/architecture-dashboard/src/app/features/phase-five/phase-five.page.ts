@@ -261,9 +261,9 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
     },
     {
       role: 'MCP Explorer',
-      persona: 'Maya MCP Explorer',
-      permissions: ['mcp:view'],
-      access: 'MCP Dashboard access only; no Phase 5 diagnostics permission',
+      persona: 'Henry MCP Explorer',
+      permissions: ['developer:view', 'mcp:view'],
+      access: 'Developer Glossary and MCP Dashboard access only; no Phase 5 diagnostics permission',
     },
   ];
 
@@ -391,28 +391,11 @@ export class PhaseFivePage implements OnInit, AfterViewInit, OnDestroy {
 
   protected readonly filteredLoanReadRows = computed(() => {
     const filterText = this.loanReadFilter().trim().toLowerCase();
-    const rows = [
-      {
-        pathId: 'nest-direct' as const,
-        label: 'Nest direct',
-        mode: this.nestDirectReads()?.mode ?? null,
-        recordCount: this.nestDirectReads()?.recordCount ?? 0,
-        errorMessage: this.nestDirectReads()?.errorMessage ?? '',
-        observedAt: this.nestDirectReads()?.observedAt ?? '',
-      },
-      {
-        pathId: 'nest-proxy' as const,
-        label: 'Nest proxy',
-        mode: this.nestProxyReads()?.mode ?? null,
-        recordCount: this.nestProxyReads()?.recordCount ?? 0,
-        errorMessage: this.nestProxyReads()?.errorMessage ?? '',
-        observedAt: this.nestProxyReads()?.observedAt ?? '',
-      },
-    ] as const;
+    const rows = this.liveLoanReadRows();
 
     return rows.filter((row) =>
       !filterText ||
-      [row.label, row.pathId, row.mode ?? '', row.recordCount.toString(), row.errorMessage, row.observedAt]
+      [row.label, row.pathId, row.mode, row.recordCount.toString(), row.errorMessage, row.observedAt]
         .some((value) => value.toLowerCase().includes(filterText)),
     );
   });

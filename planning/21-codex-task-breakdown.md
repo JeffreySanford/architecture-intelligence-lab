@@ -9,7 +9,8 @@ This file breaks the project into safe future Codex tasks. Use `[X]` for complet
 - [X] Create documentation first.
 - [X] Keep docs implementation-ready.
 - [X] Summarize created files after each task.
-- [ ] Ask before starting each major new implementation phase.
+- [X] Use data visualization, iconography, and Angular animation patterns to improve UI/UX.
+- [X] Ask before starting each major new implementation phase.
 
 ## Task 1: Create Documentation Only
 
@@ -108,6 +109,11 @@ Expected files:
 - [ ] Security
 - [X] Flyway config
 
+Current status:
+
+- Core Spring APIs and Flyway migrations are implemented; `/api/personas`, `/api/me`, and `/api/dashboard/snapshot` are validated.
+- Remaining backend work includes entity/repository completion and security guard hardening for live production risk scenarios.
+
 Do not touch:
 
 - [X] Nest comparison behavior except shared contract notes.
@@ -152,7 +158,7 @@ Acceptance criteria:
 - [X] Mock direct endpoint works for Phase 5 loan comparison.
 - [X] Mock proxy endpoint works for Phase 5 loan comparison.
 - [X] Mock comparison endpoint works and returns stable path metrics.
-- [ ] Live direct endpoint works against parity data.
+- [X] Live direct endpoint works against parity data.
 - [X] Live proxy endpoint works against Spring API and falls back cleanly when Spring is unavailable.
 - [X] Live comparison endpoint works against Spring direct, Nest direct, and Nest proxy paths.
 - [X] Socket.IO gateway route exists for `/gateway/realtime` and broadcasts `loan.status.updated`.
@@ -167,7 +173,7 @@ Acceptance criteria:
 - [X] Phase 5 OpenAPI route contract admin access is covered by Playwright.
 - [X] Phase 5 realtime route placeholder access is covered by Playwright.
 - [X] Nest e2e covers gateway health, comparison metrics, and realtime event creation.
-- [X] Phase 5 realtime route guard redirects unauthorized personas to the dashboard.
+- [X] Phase 5 realtime route guard redirects unauthorized personas to the landing page.
 - [X] Phase 5 page unit tests exist for deliverables, access rules, runtime flow, comparison metrics, realtime history, HTTP-triggered emits, error handling, and selected path state.
 - [X] Placeholder tests exist for future live Socket.IO browser subscription append behavior.
 
@@ -180,6 +186,7 @@ Expected files:
 - [X] Landing page
 - [X] Public landing persona setup
 - [X] Guards
+- [X] Developer-only glossary route with term detail subview and code-section references
 - [X] Infrastructure status UI (`/lab/infrastructure`)
 - [X] PrimeUI runtime license registration through local `.env` and ignored `env.js`
 - [ ] Interceptors
@@ -200,6 +207,7 @@ Acceptance criteria:
 - [X] Infrastructure health, route map, and port mapping use Prime cards, tags, spinner, and tables.
 - [X] Landing view exposes only public persona setup controls before lab entry.
 - [X] Protected lab routes and sidebar links require selected-user permissions.
+- [X] Glossary route is available to developer personas through `developer:view` and hidden from viewer personas.
 
 ## Task 8: Add Generated Clients
 
@@ -228,9 +236,9 @@ Acceptance criteria:
 - [X] Nest comparison and realtime DTOs are generated before Phase 5 removes local DTO interfaces.
 - [X] Generated output is reproducible and not manually edited.
 - [X] OpenAPI Contract Lab lists generated client metadata and facade ownership.
-- [ ] OpenAPI Contract Lab surfaces explicit generated contract drift watch status.
-- [ ] Frontend state tests cover OpenAPI drift metadata and filter state.
-- [ ] Playwright covers contract drift warning details in the OpenAPI lab.
+- [X] OpenAPI Contract Lab surfaces explicit generated contract drift watch status.
+- [X] Frontend state tests cover OpenAPI drift metadata and filter state.
+- [X] Playwright covers contract drift warning details in the OpenAPI lab.
 
 ## Task 9: Add SignalStore Mapping
 
@@ -239,7 +247,7 @@ Expected files:
 - [X] SignalStores
 - [X] Computed Map indexes
 - [X] ViewModels
-- [ ] Unit tests
+- [X] Unit tests
 
 Do not touch:
 
@@ -252,19 +260,54 @@ Test command:
 Acceptance criteria:
 
 - [X] Map joins pass.
-- [ ] `borrowersById` tests pass.
-- [ ] `documentsByLoanId` tests pass.
-- [ ] `statusByCode` tests pass.
-- [ ] Permission Set tests pass.
-- [ ] Visible nav filtering tests pass.
-- [ ] Loan/security row fallback tests pass for missing borrower/status data.
+- [X] `borrowersById` tests pass.
+- [X] `documentsByLoanId` tests pass.
+- [X] `statusByCode` tests pass.
+- [X] Permission Set tests pass.
+- [X] Visible nav filtering tests pass.
+- [X] Loan/security row fallback tests pass for missing borrower/status data.
 
-## Task 9A: Add Security Search PrimeNG Table
+## Current Codex task status
+
+- The Angular shell, landing persona flow, Spring API connectivity, Phase 5 D3 visuals, OpenAPI lab, and UI animation patterns are implemented.
+- The current UI uses mat-icons in navigation, PrimeNG charts/tables, and Angular native `animate.enter` / `animate.leave` route/content transitions.
+- The remaining active Codex work is backend parity for Nest direct reads, generated client drift guard coverage, and Phase 6.5 runtime auth/CORS/CSRF hardening.
+- Existing unit tests cover landing persona flow, permission guards, Phase 5 comparison metrics, OpenAPI drift status, MCP access, and route refresh hardening.
+- Playwright coverage exists for landing persona entry, protected lab route access, `/lab/mcp` reload regression, Phase 5 access, and OpenAPI/contract route guard behavior.
+- [X] All new feature and hardening work should include targeted unit tests and e2e coverage before closure.
+- Remaining planning updates should keep Phase 6.5 artifacts current while tracking live backend parity and security hardening in active Sprint 14/15.
+
+## Current Backlog Mapping
+
+This file tracks Codex task readiness and open work. The remaining incomplete items are mapped to the active/deferred sprint structure in `planning/20-build-phases-and-acceptance-criteria.md`:
+
+- Active Sprint 14: backend parity, generated OpenAPI clients, live comparison metrics, Docker/Nginx startup, and data seed parity.
+- Active Sprint 15: backend guards, CORS/CSRF/runtime origin improvements, and contract drift risk management.
+- Completed Sprint 16: documentation closure, planning alignment, and backlog cleanup.
+- Deferred Sprint 17: optional metrics/dashboard follow-up and long-term enterprise study work.
+
+Open items still in active Sprint 14/15 backlog:
+
+- [ ] `apps/postgres/src/migrations` and `apps/postgres/src/seed` content.
+- [ ] `apps/spring-api` entities, repositories, and runtime security model.
+- [ ] Nest live loans module and generated client drift watch integration.
+- [X] Map/Set/ViewModel test coverage for borrower lookup, documents by loan, status lookup, permission membership, and fallback rows.
+- [X] OpenAPI Contract Lab drift warning metadata and route coverage.
+- [X] CSRF/same-site or runtime cookie guard documentation.
+- [X] Formalize Phase 6.5 UI/UX security callouts in admin and contract lab pages after the current route/animation enhancements.
+- [X] Phase 6.5 risk map and threat model artifact pages exist, with an active/deferred follow-up backlog note in `planning/phase-6-5-follow-up.md`.
+- [X] Phase 6.5 unit and e2e coverage is now added for the new security artifact pages.
+
+Deferred Sprint 17 items:
+
+- [ ] Optional historical comparison metrics dashboard after metrics persistence exists.
+- [ ] Long-term enterprise baseline variants or migration branches beyond the current modern study stack.
+- [ ] Public-hardening issue tracking beyond the local training-lab runtime.
 
 Current note:
 
 - [X] Implementation and unit tests are complete.
-- [X] Focused Playwright coverage covers filters, empty state, detail dialog, export feedback, and reduced-motion table/overlay behavior.
+- [X] Focused Playwright coverage covers filters, empty state, detail dialog, export feedback, reduced-motion table/overlay behavior, and unauthorized protected route redirect regression.
 
 Expected files:
 
@@ -305,6 +348,8 @@ Current note:
 
 - [X] Phase 5 D3 comparison/realtime topology graph is implemented.
 - [X] App shell animation wiring now uses native `animate.enter` / `animate.leave` helpers for page headers and permission-aware navigation.
+- [X] UI/UX uses mat-icons and chart/graph visualizations across protected and landing route surfaces.
+- [X] Added unit tests for auth refresh reset hardening and Playwright e2e coverage for `/lab/mcp` reload behavior.
 - [X] Timer-driven route transition state was removed from the app shell.
 - [X] Shared style tokens are scaffolded and core lab views now use the shared design tokens.
 - [X] Remaining Phase 9 realtime dashboard animation follow-through is covered by the Phase 10 Realtime Lab dashboard.

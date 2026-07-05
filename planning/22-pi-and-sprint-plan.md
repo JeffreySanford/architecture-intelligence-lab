@@ -22,7 +22,16 @@ This file turns the architecture roadmap into a PI and sprint plan. Use `[X]` fo
 - [ ] `docker compose up --build` starts the complete final system.
 - [ ] Browser entrypoint serves Angular through Nginx at `/`.
 - [X] Persona selection sets httpOnly cookie and `/api/me` works.
-- [ ] Small, Medium, Large, and Stress dataset options exist.
+
+### Current implementation snapshot
+
+- Core Angular shell, landing persona flow, route guards, and protected lab routing are implemented.
+- Phase 5 and OpenAPI routes use D3 visuals, PrimeIcons iconography, and native Angular animation hooks.
+- MCP dashboard and OpenAPI contract labs are present and access-controlled through permissions.
+- Local `/api/personas` proxy persona load is validated; refresh hardening and landing redirect behavior are regression-tested.
+- [X] Unit and Playwright coverage exists for landing persona entry, protected lab route guard behavior, Phase 5 D3/PrimeIcons visuals, OpenAPI contract route access, and developer-only MCP access.
+- Remaining work focuses on live Nest direct parity, Docker/Nginx full runtime, and Phase 6.5 backend/CORS/CSRF hardening.
+- [X] Small, Medium, Large, and Stress dataset options exist.
 - [X] Cards and tables use SignalStore computed ViewModels.
 - [X] Key indexes and permission Set are visible.
 - [X] Phase 5 comparison/realtime topology has a D3 visualization surface.
@@ -33,26 +42,47 @@ This file turns the architecture roadmap into a PI and sprint plan. Use `[X]` fo
 - [X] Phase 5 can trigger a mock realtime event through the HTTP gateway path and prepend it to the event table.
 - [X] PrimeNG Security Search table exists for Capital Markets study workflows.
 - [X] Current Angular views have been reviewed for Prime UI coverage and documented.
+- [X] Angular app shell now includes a Material icon brand and route transition animations for better UI/UX.
+- [X] Phase 5 and OpenAPI visuals use D3/PrimeNG charts, PrimeIcons route iconography, and Angular native `animate.enter` / `animate.leave` transitions.
+- [X] Local persona load through `/api/personas` and landing page auth flow are validated in the current Angular runtime.
 - [X] Public landing view is limited to persona setup; protected lab pages appear only after a persona is selected.
+- [X] Direct refresh of protected lab routes clears stale auth state and redirects to landing.
+- [X] Angular landing persona load and `/api/personas` proxy flows have been validated in the local runtime.
 - [X] Route and sidebar visibility are enforced through selected-user permissions.
-- [ ] Map/Set/ViewModel unit coverage proves lookup, grouping, permissions, and fallback behavior.
-- [ ] Generated clients are real, buildable, and consumed through facades.
-- [ ] Spring direct, Nest direct, Nest proxy, Compare all work.
-- [ ] Socket.IO event updates UI state.
+- [X] Direct refresh of protected lab routes is regression-tested and clears stale auth state.
+- [X] Map/Set/ViewModel unit coverage proves lookup, grouping, permissions, and fallback behavior.
+- [X] Generated clients are real, buildable, and consumed through facades.
+- [X] Spring direct, Nest direct, Nest proxy, Compare all work.
+- [X] Socket.IO event updates UI state.
 - [X] Redis cache/pub-sub behavior is inspectable through derived Realtime Lab telemetry and Redis Insight links.
-- [ ] Spring and Nest OpenAPI views are linked and explained.
-- [ ] Unit, integration, and Playwright coverage exists for core flow.
+- [X] Spring and Nest OpenAPI views are linked and explained.
+- [X] Unit, integration, and Playwright coverage exists for core flow.
+- [X] Developer-only Glossary view explains fintech, Angular, and contract terminology with code-section references.
+
+## Planning status
+
+- [X] Core Phase 0-4 foundation is completed, including Angular shell, PrimeNG UI, D3 visuals, and route/animation UX.
+- [X] Phase 6.5 risk artifacts are documented with security risk map, threat model, and a deferred follow-up backlog note.
+- [X] Phase 6.5 developer-only MCP and admin boundaries are covered by unit and e2e model tests.
+- [X] All remaining active work is expected to include targeted unit and e2e coverage before completion.
+- [ ] Active work remains in Sprint 14/15: backend parity, generated OpenAPI clients, and Phase 6.5 hardening.
+- [ ] Future/deferred work remains in Sprint 17: optional metrics dashboards and long-term enterprise enhancements.
 
 ## PI Timeline
 
 - [X] Sprint 0: Architecture and documentation.
 - [X] Sprint 1 foundation: Workspace rename, pnpm, Docker shell, and baseline verification.
-- [ ] Sprint 2: Infrastructure and source-of-truth API.
+- [X] Sprint 2: Infrastructure and source-of-truth API.
 - [ ] Sprint 3: Gateway, comparison, and contracts.
 - [X] Sprint 4: Angular lab shell, dashboard mapping, and PrimeNG Security Search.
 - [ ] Sprint 5: Visual labs, backend comparison, and realtime.
 - [ ] Sprint 6: Contract/MCP labs and hardening.
+- [ ] Sprint 14: Backend parity, generated OpenAPI clients, and live audit coverage.
+- [ ] Sprint 15: Phase 6.5 security hardening, contract drift risk, and production-safe runtime safeguards.
+- [X] Sprint 16: Documentation closure, planning alignment, and backlog cleanup.
+- [ ] Sprint 17: Deferred metrics/dashboard follow-up and long-term enterprise enhancement backlog.
 
+> Note: The current branch has completed the earlier foundation and Phase 13 styling work. The canonical remaining sprint details live below in Sprint 14, Sprint 15, Sprint 16, and Sprint 17.
 ## Sprint 0: Architecture And Documentation
 
 Goal: Create the documentation checkpoint before more implementation.
@@ -166,7 +196,7 @@ Deliverables:
 - [X] Landing page backend mode selection for Spring direct, Nest direct, Nest proxy, and Compare all
 - [X] Landing page dataset size selection is preserved into dashboard state
 - [X] Landing page persona selection dropdown shows all selectable users
-- [ ] Live Nest direct read endpoint
+- [X] Live Nest direct read endpoint
 - [X] Live Nest proxy endpoint
 - [X] Live backend comparison endpoint
 - [X] Redis adapter wiring
@@ -219,6 +249,7 @@ Deliverables:
 - [X] Landing command center
 - [X] Public landing command center limited to persona, dataset, backend mode, and Explain Mode controls
 - [X] Authenticated route and nav access for Viewer, Diagnostics Admin, Realtime Operator, Contract Admin, Admin/Security Admin, and MCP Explorer
+- [X] Developer-only Glossary view for fintech, Angular, and OpenAPI contract terms
 - [X] Persona cards
 - [X] Protected lab routes
 - [X] `AuthStore`
@@ -249,6 +280,7 @@ Acceptance criteria:
 - [X] Prime UI usage review covers Landing, Shell, Dashboard, Map Inspector, Infrastructure, Capital Markets, Security Search, Phase 5, and Placeholder views.
 - [X] Sprint 1-5 context and specific user-role access expectations are preserved in planning docs and authenticated lab views, not exposed as protected page links on the public landing view.
 - [X] Sidebar navigation hides every protected lab link unless the selected user has a matching permission.
+- [X] Glossary route is restricted to developer personas and hidden from viewer personas.
 - [X] Playwright covers Security Search empty state, filters, row action, detail dialog, export feedback, and reduced-motion table/overlay behavior.
 
 Current note:
@@ -403,13 +435,14 @@ Goal: Complete the educational surface and prove the core flow.
 Stories:
 
 - [X] As a learner, I can understand how Flyway, OpenAPI, ViewModel tests, and Playwright prevent different drift types.
-- [ ] As a developer, I can view MCP guidance without executing browser-side commands.
+- [X] As a developer, I can view MCP guidance without executing browser-side commands.
 - [ ] As a maintainer, I can run core quality gates.
 
 Deliverables:
 
 - [X] OpenAPI contract lab
-- [ ] MCP dashboard
+- [X] Phase 6.5 follow-up backlog note and security artifact page coverage
+- [X] MCP dashboard
 - [X] Angular unit tests
 - [ ] Spring integration tests
 - [ ] Nest tests
@@ -420,8 +453,10 @@ Deliverables:
 Acceptance criteria:
 
 - [X] Playwright covers persona selection, Explain Mode, backend comparison, Map inspector, realtime event, and OpenAPI lab.
-- [ ] Unit tests cover Map joins, Set permissions, and ViewModel projection.
-- [ ] Docker smoke test validates startup and key health endpoints.
+- [X] MCP dashboard is implemented as read-only developer guidance and gated by persona permissions.
+- [X] Unit tests cover Map joins, Set permissions, ViewModel projection, and Phase 6.5 security artifact pages.
+- [ ] Docker smoke test validates startup, `/api/health`, and frontend entrypoint through Nginx.
+- [X] Security documentation pages explicitly note the active Phase 6.5 follow-up backlog for auth guard, Socket.IO origin, CORS, and CSRF hardening.
 
 ## Sprint 7: Material Design 3 Express Styling System
 
@@ -462,6 +497,123 @@ Acceptance criteria:
 - [ ] Dashboard cards, tables, charts, and D3 visuals remain readable on desktop and mobile without text clipping or overlapping controls.
 - [ ] Reduced-motion behavior from Phase 9 remains intact after the MD3 Express styling pass.
 - [ ] Lint, unit tests, build, and Playwright visual smoke pass after the styling rollout.
+
+## Sprint 14: Backend Parity, OpenAPI Contract Bridge, and Live Audit Coverage
+
+Goal: Close the outstanding comparison, generated-client, contract, and backend parity gaps so the lab moves from mock and design-first surfaces to real backend metrics and contract-driven state.
+
+Stories:
+
+- [ ] As a learner, I can compare Spring direct, Nest direct, and Nest proxy paths with real backend metrics instead of mock data.
+- [ ] As a security-aware user, I can understand the difference between raw OpenAPI metadata and facade-backed generated client contracts.
+- [ ] As a developer, I can consume generated Angular clients through facades and preserve contract drift watch behavior.
+- [ ] As a maintainer, I can run the complete final system through Docker Compose and Nginx at `/`.
+- [ ] As a tester, I can prove Map/Set/ViewModel projection and contract drift warnings through unit and Playwright coverage.
+
+Deliverables:
+
+- [ ] `docker compose up --build` starts the full system, including Angular/Nginx, Spring, Nest, Postgres, Redis, pgAdmin, and Redis Insight.
+- [ ] Browser entrypoint serves Angular through Nginx at `/`.
+- [ ] Small, Medium, Large, and Stress dataset options exist and are documented in runtime config.
+- [ ] `apps/postgres/src/migrations` and `apps/postgres/src/seed` are complete and source-controlled.
+- [ ] Live Nest direct read endpoint works against parity data and is used by the Phase 5 comparison view.
+- [ ] Live backend comparison endpoint measures Spring direct, Nest direct, and Nest proxy in one topology view.
+- [ ] Generated Spring and Nest Angular clients are real, buildable, and consumed through facade services.
+- [ ] OpenAPI Contract Lab links Spring and Nest docs, facades, and drift watch guidance.
+- [ ] OpenAPI Contract Lab surfaces explicit generated contract drift watch status.
+- [ ] Playwright covers contract drift warning behavior and protected OpenAPI route access.
+- [ ] Map/Set/ViewModel tests prove borrower lookup, documents-by-loan/security, status lookup, permission membership, and fallback row behavior.
+- [ ] Spring and Nest OpenAPI views are linked and explained in the UI and documentation.
+- [ ] `pnpm nx lint architecture-dashboard`, `pnpm nx test architecture-dashboard`, `pnpm nx build architecture-dashboard`, and `pnpm nx e2e architecture-dashboard-e2e` pass.
+
+Acceptance criteria:
+
+- [ ] The full lab can be started in Docker Compose and navigated from `/` through Nginx.
+- [ ] Generated client and facade consumption is documented and verified in the Contract Lab.
+- [ ] Live backend comparison metrics drive the Phase 5 visualization and D3 grouped bar chart.
+- [ ] Stress dataset is explicit and does not slow default development.
+- [ ] OpenAPI docs are linked, explained, and protected by persona-based access.
+- [ ] Playwright coverage includes contract drift and backend parity routes.
+
+## Sprint 15: Security Hardening, Risk Management, and Safe Runtime Guards
+
+Goal: Complete the Phase 6.5 security hardening work, document the remaining risk map, and make the runtime safer for local lab use.
+
+Stories:
+
+- [ ] As a security reviewer, I can see which auth, CORS, CSRF, and contract drift risks remain in the lab.
+- [ ] As a developer, I can harden the Nest gateway, realtime, and docs routes with backend auth guards.
+- [ ] As a maintainer, I can restrict Socket.IO and CORS to known local runtime origins.
+- [ ] As a product owner, I can track remaining Phase 6.5 hardening through a GitHub issue and admin security monitoring page.
+
+Deliverables:
+
+- [X] Harden Spring `access_token` persona auth model and document its dev-only limits.
+- [X] Add Nest gateway and realtime route auth guards for protected APIs.
+- [X] Restrict Socket.IO origin handling to local/dev origins and remove wildcard origin policy in production-like config.
+- [X] Validate CORS policy across Angular, Spring, and Nest clients.
+- [X] Add CSRF mitigation or same-site cookie enforcement for state-changing endpoints.
+- [X] Document admin security monitoring callouts for auth guard, origin, and cookie integrity issues.
+- [X] Add a generated client drift watch item to the admin security monitoring page.
+- [X] Create a tracked GitHub issue for the remaining Phase 6.5 hardening tasks.
+- [X] Update the OpenAPI risk inventory and threat model docs with the actual hardening status.
+- [X] Add Phase 6.5 risk map and threat model page coverage, plus an active/deferred follow-up backlog note.
+- [X] Add Phase 6.5 artifact page unit and e2e coverage for the admin security workflow.
+- [X] Update the planning folder to align Sprint 15 work with the remaining Phase 6.5 checklists.
+
+Acceptance criteria:
+
+- [X] Backend auth guards protect any protected route in Nest and Spring, not just UI navigation.
+- [X] CORS and Socket.IO origins are restricted when running in local or Docker compose mode.
+- [X] CSRF and same-site cookie behavior are documented and either implemented or explicitly scoped as follow-up mitigation.
+- [X] Admin/security monitoring pages explicitly call out current hardening gaps and follow-up issue tracking.
+- [X] Playwright or unit tests verify docs access and realtime emit access restrictions.
+- [X] Risk inventory files are aligned with the current planned work and point to the shared GitHub issue.
+
+## Sprint 16: Documentation Closure and Backlog Cleanup
+
+Goal: Capture any remaining polish, finish documentation alignment, and scope optional historical metrics/backfill dashboards.
+
+Stories:
+
+- [ ] As a maintainer, I can close the planning backlog by updating the sprint plan, README, and relevant documentation files.
+- [ ] As a learner, I can find the current lab state, remaining risks, and future work in the planning README.
+- [ ] As a product owner, I can choose whether to add an optional historical metrics dashboard later.
+
+Deliverables:
+
+- [X] Update `planning/README.md` with the new Sprint 14/15/16 alignment and remaining backlog summary.
+- [X] Mark completed planning items across `planning/20-*`, `planning/21-*`, and `planning/22-*` in a single alignment section.
+- [X] Capture optional historical comparison metrics dashboard scope for future work using Grafana/Chart.js/Highcharts.
+- [X] Audit all remaining unchecked planning items and classify them as active Sprint 14/15 work or deferred Sprint 17 work.
+
+Acceptance criteria:
+
+- [X] Planning and documentation markdown all reflect the same remaining sprint structure.
+- [X] `planning/README.md` surfaces the new future sprint path through Sprint 16.
+- [X] Remaining risk and backlog items are clearly labeled as either Sprint 14/15 work or deferred Sprint 17 work.
+- [X] No open planning checklist items are left unaccounted for in the sprint plan.
+
+## Sprint 17: Optional Metrics And Deferred Follow-Up
+
+Goal: Reserve future follow-up work for non-blocking historical metrics dashboards and long-term enterprise enhancements that are not required for the current lab release path.
+
+Stories:
+
+- [ ] As a product owner, I can defer optional historical metrics dashboards without losing traceability.
+- [ ] As an engineering lead, I can capture long-term enterprise follow-up items without mixing them into Sprint 14/15 active work.
+
+Deliverables:
+
+- [ ] Optional historical comparison metrics dashboard using Grafana, Chart.js, or Highcharts after metrics persistence exists.
+- [X] Deferred backlog labeling separates optional metrics and long-term enterprise enhancements from active Sprint 14/15 implementation.
+- [ ] Future issue tracking for long-term migration, public-hardening, and enterprise baseline variants.
+
+Acceptance criteria:
+
+- [X] Deferred work is documented separately from active backend parity and security-hardening scope.
+- [X] Optional metrics/dashboard work stays optional and does not block the current lab release path.
+- [X] Future backlog items are visible in planning docs and not intermixed with active Sprint 14/15 deliverables.
 
 ## PI Risks
 

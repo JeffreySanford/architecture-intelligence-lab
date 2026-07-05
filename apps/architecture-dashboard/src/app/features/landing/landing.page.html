@@ -94,13 +94,11 @@
         [ngClass]="{ 'landing__persona--selected': persona.id === selectedPersonaId() }"
         (click)="selectPersona(persona.id)"
       >
-        <ng-template pTemplate="title">
-          {{ persona.name }}
-        </ng-template>
-        <ng-template pTemplate="subtitle">
-          {{ persona.role }}
-        </ng-template>
-        <p>{{ persona.description }}</p>
+        <div class="landing__persona-content">
+          <strong>{{ persona.name }}</strong>
+          <span>{{ persona.role }}</span>
+          <p>{{ persona.description }}</p>
+        </div>
         <div class="persona-chips">
           @for (permission of safePersonaPermissions(persona.permissions); track permission) {
             <p-chip [label]="permission"></p-chip>

@@ -27,6 +27,7 @@ describe('Realtime API integration', () => {
   it('returns realtime event history from the Nest realtime endpoint', async () => {
     const response = await axios.get(`${baseUrl}/gateway/realtime/events`, {
       validateStatus: () => true,
+      headers: { Cookie: 'access_token=alice-viewer' },
     });
 
     expect(response.status).toBe(200);
@@ -38,9 +39,18 @@ describe('Realtime API integration', () => {
     expect(Array.isArray(response.data.events)).toBe(true);
   });
 
+  it('rejects realtime endpoint requests without an access_token cookie', async () => {
+    const response = await axios.get(`${baseUrl}/gateway/realtime/events`, {
+      validateStatus: () => true,
+    });
+
+    expect(response.status).toBe(401);
+  });
+
   it('returns Redis adapter status from the realtime status endpoint', async () => {
     const response = await axios.get(`${baseUrl}/gateway/realtime/redis-status`, {
       validateStatus: () => true,
+      headers: { Cookie: 'access_token=alice-viewer' },
     });
 
     expect(response.status).toBe(200);
@@ -61,6 +71,7 @@ describe('Realtime API integration', () => {
       },
       {
         validateStatus: () => true,
+        headers: { Cookie: 'access_token=alice-viewer' },
       },
     );
 

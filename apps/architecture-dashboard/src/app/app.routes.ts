@@ -215,8 +215,28 @@ export const appRoutes: Routes = [
           eyebrow: 'AI tooling',
           description:
             'Explain Angular CLI MCP setup, command references, prompts, and safe developer workflow boundaries.',
-          permission: 'mcp:view',
+          permission: { allOf: ['developer:view', 'mcp:view'] },
         },
+      },
+      {
+        path: 'glossary',
+        loadComponent: () =>
+          import('./features/glossary/glossary.page').then(
+            (m) => m.GlossaryPage,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          title: 'Developer Glossary',
+          eyebrow: 'Fintech and Angular vocabulary',
+          description:
+            'Review capital-markets, Angular, and OpenAPI terms with code-section references.',
+          permission: 'developer:view',
+        },
+      },
+      {
+        path: 'gloarry',
+        redirectTo: 'glossary',
+        pathMatch: 'full',
       },
       {
         path: 'admin',

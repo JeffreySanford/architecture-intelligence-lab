@@ -4,8 +4,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -108,6 +110,13 @@ class LabController {
         ))
         .collect(Collectors.toList());
 
+    loans = filterLoansByDataset(loans, dataset);
+
+    Set<String> loanBorrowerIds = loans.stream().map(LoanDto::borrowerId).collect(Collectors.toSet());
+    List<BorrowerDto> filteredBorrowers = borrowers.stream()
+        .filter(borrower -> loanBorrowerIds.contains(borrower.id()))
+        .collect(Collectors.toList());
+
     List<LoanDocumentDto> documents = loanDocumentRepository.findAll(Sort.by("id")).stream()
         .map(document -> new LoanDocumentDto(
             document.getId(),
@@ -117,7 +126,12 @@ class LabController {
         ))
         .collect(Collectors.toList());
 
-    return new DashboardSnapshotDto(dataset, loans, borrowers, documents, statusCodes);
+    Set<String> loanIds = loans.stream().map(LoanDto::id).collect(Collectors.toSet());
+    List<LoanDocumentDto> filteredDocuments = documents.stream()
+        .filter(document -> loanIds.contains(document.loanId()))
+        .collect(Collectors.toList());
+
+    return new DashboardSnapshotDto(dataset, loans, filteredBorrowers, filteredDocuments, statusCodes);
   }
 
   private CurrentUserDto currentUserFor(String personaId) {
@@ -164,6 +178,25 @@ class LabController {
       List<LoanStatusCodeDto> statusCodes
   ) {}
 
+  private List<LoanDto> filterLoansByDataset(List<LoanDto> loans, String dataset) {
+    int limit;
+    switch (dataset.toLowerCase()) {
+      case "small" -> limit = 5;
+      case "medium" -> limit = 10;
+      case "large" -> limit = 20;
+      case "stress" -> limit = 30;
+      default -> limit = loans.size();
+    }
+    return loans.stream().limit(Math.min(limit, loans.size())).collect(Collectors.toList());
+  }
+
+  record BorrowerDto(
+      String id,
+      String name,
+      int creditScore,
+      String riskBand
+  ) {}
+
   record LoanDto(
       String id,
       String borrowerId,
@@ -171,13 +204,6 @@ class LabController {
       BigDecimal amount,
       String statusCode,
       Instant updatedAt
-  ) {}
-
-  record BorrowerDto(
-      String id,
-      String name,
-      int creditScore,
-      String riskBand
   ) {}
 
   record LoanDocumentDto(

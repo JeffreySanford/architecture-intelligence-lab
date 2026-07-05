@@ -30,7 +30,7 @@ export const personas: Record<string, TestPersona> = {
     id: 'grace-realtime-operator',
     name: 'Grace Realtime Operator',
     role: 'Realtime Operator',
-    permissions: ['dashboard:view', 'realtime:emit', 'realtime:view'],
+    permissions: ['dashboard:view', 'developer:view', 'realtime:emit', 'realtime:view'],
   },
 };
 

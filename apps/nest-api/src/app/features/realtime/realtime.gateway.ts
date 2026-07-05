@@ -4,13 +4,17 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { extractAccessToken, isKnownPersonaId, parseAllowedOrigins } from '../../auth/token.utils';
 import { RealtimeEventDto } from './realtime.dto';
 import { RealtimeService } from './realtime.service';
+
+const socketIoOrigins = parseAllowedOrigins(process.env['SOCKET_IO_ORIGINS']);
 
 @WebSocketGateway({
   namespace: '/gateway/realtime',
   cors: {
-    origin: '*',
+    origin: socketIoOrigins,
+    credentials: true,
   },
 })
 export class RealtimeGateway implements OnGatewayConnection {
@@ -20,6 +24,12 @@ export class RealtimeGateway implements OnGatewayConnection {
   constructor(private readonly realtimeService: RealtimeService) {}
 
   handleConnection(client: Socket): void {
+    const personaId = extractAccessToken(client.handshake.headers);
+    if (!isKnownPersonaId(personaId)) {
+      client.disconnect(true);
+      return;
+    }
+
     client.emit('realtime.history', this.realtimeService.getHistory());
   }
 

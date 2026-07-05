@@ -8,6 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import { configureRedisIoAdapter } from './app/features/realtime/redis-io.adapter';
+import { parseAllowedOrigins } from './app/auth/token.utils';
 
 type SwaggerRequest = {
   headers?: {
@@ -26,6 +27,15 @@ type SwaggerNext = () => void;
 export async function createNestSwaggerApp(): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule);
   await configureRedisIoAdapter(app, new Logger('NestBootstrap'));
+
+  const allowedOrigins = parseAllowedOrigins(
+    process.env['NEST_API_ORIGINS'] ?? process.env['SOCKET_IO_ORIGINS'],
+  );
+
+  app.enableCors({
+    origin: allowedOrigins,
+    credentials: true,
+  });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Architecture Intelligence Nest Gateway')

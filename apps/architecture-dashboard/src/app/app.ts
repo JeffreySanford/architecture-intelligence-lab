@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
+import { AuthResetService } from './core/auth/auth-reset.service';
 import { AuthStore } from './core/auth/auth.store';
+import { permissionRequirementMatches, type PermissionRequirement } from './core/auth/permission.utils';
 
 type AppNavItem = {
   label: string;
   route: string;
   description: string;
-  permission: string | string[];
+  permission: PermissionRequirement;
   icon: string;
 };
 
@@ -26,6 +28,7 @@ type PageChrome = {
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
+  private readonly authResetService = inject(AuthResetService);
   private readonly authStore = inject(AuthStore);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -111,6 +114,20 @@ export class App implements OnInit {
       icon: 'pi pi-code',
     },
     {
+      label: 'MCP Dashboard',
+      route: '/lab/mcp',
+      description: 'Angular CLI MCP',
+      permission: { allOf: ['developer:view', 'mcp:view'] },
+      icon: 'pi pi-cog',
+    },
+    {
+      label: 'Glossary',
+      route: '/lab/glossary',
+      description: 'Fintech and Angular terms',
+      permission: 'developer:view',
+      icon: 'pi pi-book',
+    },
+    {
       label: 'Admin',
       route: '/lab/admin',
       description: 'Roles and personas',
@@ -122,8 +139,9 @@ export class App implements OnInit {
   readonly visibleNavItems = computed(() =>
     this.currentUser() && !this.isLandingRoute()
       ? this.navItems.filter((item) =>
-          this.asPermissions(item.permission).some((permission) =>
-            this.authStore.hasPermission(permission),
+          permissionRequirementMatches(
+            this.authStore.hasPermission.bind(this.authStore),
+            item.permission,
           ),
         )
       : [],
@@ -132,6 +150,14 @@ export class App implements OnInit {
   readonly isLandingRoute = computed(() => this.currentUrl() === '/');
 
   ngOnInit(): void {
+    this.markBrowserUnloadForReloadDetection();
+
+    const currentPath = window.location.pathname;
+    if (this.isReloadNavigation() && currentPath !== '/') {
+      this.authResetService.resetAuth();
+      return;
+    }
+
     this.updateChrome();
 
     this.router.events
@@ -161,7 +187,54 @@ export class App implements OnInit {
     });
   }
 
-  private asPermissions(permission: string | string[]): string[] {
-    return Array.isArray(permission) ? permission : [permission];
+  private isReloadNavigation(): boolean {
+    if (this.consumeReloadMarker()) {
+      return true;
+    }
+
+    if (typeof performance === 'undefined') {
+      return false;
+    }
+
+    const navigationEntries = performance.getEntriesByType('navigation');
+    if (navigationEntries.length > 0) {
+      const entry = navigationEntries[0] as PerformanceNavigationTiming;
+      return entry.type === 'reload';
+    }
+
+    const nav = (performance as unknown as { navigation?: { type: number } }).navigation;
+    return nav?.type === 1;
   }
+
+  private markBrowserUnloadForReloadDetection(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const markUnloadPath = () => {
+      try {
+        window.sessionStorage.setItem('lab:browser-unload-path', window.location.pathname);
+      } catch {
+        // ignore storage access failures in constrained environments
+      }
+    };
+
+    window.addEventListener('beforeunload', markUnloadPath, { once: true });
+    window.addEventListener('pagehide', markUnloadPath, { once: true });
+  }
+
+  private consumeReloadMarker(): boolean {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    try {
+      const marker = window.sessionStorage.getItem('lab:browser-unload-path');
+      window.sessionStorage.removeItem('lab:browser-unload-path');
+      return marker === window.location.pathname;
+    } catch {
+      return false;
+    }
+  }
+
 }

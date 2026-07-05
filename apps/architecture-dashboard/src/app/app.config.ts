@@ -1,7 +1,7 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideApi as provideNestApi } from '@generated/nest-api-client';
 import { provideApi as provideSpringApi } from '@generated/spring-api-client';
 import Aura from '@primeuix/themes/aura';
@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(appRoutes),
-    provideNoopAnimations(),
+    provideAnimations(),
     providePrimeNG({
       license: runtimeConfig.primeuiLicense,
       theme: {

@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AuthStore } from '../auth/auth.store';
+import { permissionRequirementMatches, type PermissionRequirement } from '../auth/permission.utils';
 
 type LabNavItem = {
   label: string;
   route: string;
   description: string;
-  permission: string | string[];
+  permission: PermissionRequirement;
   icon: string;
 };
 
@@ -32,8 +33,9 @@ export class LabShellComponent {
   protected readonly visibleNavItems = computed(() =>
     this.currentUser()
       ? this.navItems.filter((item) =>
-          this.asPermissions(item.permission).some((permission) =>
-            this.authStore.hasPermission(permission),
+          permissionRequirementMatches(
+            this.authStore.hasPermission.bind(this.authStore),
+            item.permission,
           ),
         )
       : [],
@@ -114,8 +116,15 @@ export class LabShellComponent {
       label: 'MCP Dashboard',
       route: '/lab/mcp',
       description: 'Angular CLI MCP',
-      permission: 'mcp:view',
+      permission: { allOf: ['developer:view', 'mcp:view'] },
       icon: 'pi pi-cog',
+    },
+    {
+      label: 'Glossary',
+      route: '/lab/glossary',
+      description: 'Fintech and Angular terms',
+      permission: 'developer:view',
+      icon: 'pi pi-book',
     },
     {
       label: 'Admin Security Monitoring',
@@ -140,7 +149,4 @@ export class LabShellComponent {
     },
   ];
 
-  private asPermissions(permission: string | string[]): string[] {
-    return Array.isArray(permission) ? permission : [permission];
-  }
 }

@@ -31,6 +31,7 @@ This inventory is intended to support Phase 6.5 security hardening and to drive 
 - Links to `/v3/api-docs`, `/swagger-json`, and Swagger UI should be accessible only to authorized personas.
 - The risk inventory should track whether these endpoints are referenced directly in the UI or only exposed behind guards.
 - Avoid showing raw schema URLs in user-facing cards unless the persona has `contracts:view` or `admin:view`.
+- The refresh behavior on protected OpenAPI or MCP surfaces should also avoid resurrecting stale auth/persona state by clearing stale UI and redirecting to the landing page.
 
 ### Drift monitoring and change alerts
 
@@ -42,7 +43,8 @@ This inventory is intended to support Phase 6.5 security hardening and to drive 
 
 ## Next steps
 
-- [ ] Cross-reference this inventory with `planning/phase-6-5-security-risk-map.md`
-- [ ] Add a `generated client drift watch` item to the admin security monitoring page
+- [X] Cross-reference this inventory with `planning/phase-6-5-security-risk-map.md`
+- [X] Add a `generated client drift watch` item to the admin security monitoring page
 - [ ] Create a follow-up task for facade validation on critical DTO fields
+- [X] Add regression coverage for refresh/reset behavior on protected OpenAPI and MCP surfaces
 - [ ] Document any generated client contract gaps in `documentation/08-openapi-contract-generation.md`

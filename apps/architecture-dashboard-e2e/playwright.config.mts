@@ -4,10 +4,9 @@ import { workspaceRoot } from '@nx/devkit';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// For CI, you may want to set BASE_URL to the deployed application.
-const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
+// Playwright tests run against an existing local frontend on localhost:4200.
+const baseURL = 'http://localhost:4200';
 const configDir = dirname(fileURLToPath(import.meta.url));
-const baseUrlPort = new URL(baseURL).port || '4200';
 
 /**
  * Read environment variables from file.
@@ -33,17 +32,6 @@ export default defineConfig({
     baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-  },
-  webServer: {
-    command: `pnpm nx run architecture-dashboard:serve-static --port=${baseUrlPort}`,
-    url: baseURL,
-    env: {
-      E2E_MOCKED_BACKENDS: '1',
-    },
-    // Use a fresh server by default so e2e assertions verify the current source.
-    // Set PLAYWRIGHT_REUSE_SERVER=1 when intentionally testing an existing dev server.
-    reuseExistingServer: process.env['PLAYWRIGHT_REUSE_SERVER'] === '1',
-    cwd: workspaceRoot,
   },
   projects: [
     {

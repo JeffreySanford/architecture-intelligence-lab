@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   LoanStatusEventRequestDto,
@@ -9,8 +9,11 @@ import {
 import { RealtimeGateway } from './realtime.gateway';
 import { RealtimeService } from './realtime.service';
 import { getRedisAdapterStatus } from './redis-io.adapter';
+import { AccessTokenGuard } from '../../auth/access-token.guard';
+import { OriginGuard } from '../../auth/origin.guard';
 
 @ApiTags('realtime')
+@UseGuards(AccessTokenGuard, OriginGuard)
 @Controller('gateway/realtime')
 export class RealtimeController {
   constructor(

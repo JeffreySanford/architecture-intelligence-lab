@@ -88,6 +88,38 @@ describe('App', () => {
     expect(navText).toContain('Map Inspector');
     expect(navText).not.toContain('Backend Comparison');
     expect(navText).not.toContain('OpenAPI');
+    expect(navText).not.toContain('Glossary');
     expect(navText).not.toContain('Admin');
+  });
+
+  it('renders glossary navigation for a developer persona', async () => {
+    const fixture = TestBed.createComponent(App);
+    const component = fixture.componentInstance;
+    const authStore = TestBed.inject(AuthStore) as unknown as MockAuthStore;
+
+    authStore.currentUser.set({
+      persona: { name: 'Henry MCP Explorer', role: 'MCP Explorer' },
+      permissions: ['dashboard:view', 'developer:view', 'mcp:view'],
+    });
+    authStore.permissions.set(['dashboard:view', 'developer:view', 'mcp:view']);
+    component.currentUrl.set('/lab/dashboard');
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const navText = compiled.querySelector('aside[aria-label="Primary navigation"]')?.textContent ?? '';
+    expect(navText).toContain('MCP Dashboard');
+    expect(navText).toContain('Glossary');
+    expect(navText).not.toContain('Realtime Lab');
+  });
+
+  it('renders a Material icon in the app brand', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.app-frame__brand-icon.material-icons')).toBeTruthy();
+    expect(compiled.querySelector('.app-frame__brand-icon')?.textContent?.trim()).toBe('insights');
   });
 });

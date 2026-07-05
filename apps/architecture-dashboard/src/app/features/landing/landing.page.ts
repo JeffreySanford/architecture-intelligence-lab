@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { switchMap } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ChipModule } from 'primeng/chip';
@@ -134,7 +135,10 @@ export class LandingPage implements OnInit {
 
     this.authStore
       .selectPersona(this.selectedPersonaId())
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        switchMap(() => this.authStore.loadCurrentUser()),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe(() => {
         void this.router.navigate(['/lab/dashboard'], {
           queryParams: {
