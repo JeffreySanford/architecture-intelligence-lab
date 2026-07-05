@@ -67,7 +67,7 @@ Set-Cookie: access_token=...; HttpOnly; SameSite=Lax
 
 Angular calls `/api/me` to learn who the current user is. Angular never reads the JWT directly.
 
-Current implementation shortcut: the cookie value is the selected persona id. Signed JWTs and Spring Security enforcement are still planned. Documentation and UI text should call this a demo cookie unless the signed JWT work has been implemented.
+Current implementation: Spring issues an HMAC-signed demo `access_token` for the selected persona. This is still demo auth, not production identity; replace the selector with real IdP-backed auth before public exposure.
 
 ## Current Schema Checkpoint
 

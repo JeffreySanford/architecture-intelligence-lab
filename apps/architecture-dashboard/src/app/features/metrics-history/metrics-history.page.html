@@ -1,0 +1,160 @@
+<section class="metrics-history">
+  <div class="metrics-history__header">
+    <p class="metrics-history__eyebrow">Historical comparison metrics</p>
+    <h1>Backend Metrics History</h1>
+    <p>
+      Review recent Spring direct, Nest direct, and Nest proxy comparison samples captured by the Nest gateway.
+    </p>
+  </div>
+
+  @if (error(); as message) {
+    <p class="metrics-history__error" animate.enter="enter" animate.leave="exit">{{ message }}</p>
+  }
+
+  <div class="metrics-history__actions">
+    <button
+      pButton
+      type="button"
+      class="p-button-outlined"
+      [loading]="loading()"
+      [disabled]="loading() || capturing()"
+      (click)="loadHistory()"
+    >
+      Refresh
+    </button>
+    <button
+      pButton
+      type="button"
+      [loading]="capturing()"
+      [disabled]="loading() || capturing()"
+      (click)="captureSample()"
+    >
+      Capture sample
+    </button>
+  </div>
+
+  <section class="metrics-history__summary" aria-label="Comparison history summary">
+    <p-card class="metrics-history__metric" animate.enter="scale-enter">
+      <span>Samples retained</span>
+      <strong>{{ sampleCount() }}</strong>
+    </p-card>
+    <p-card class="metrics-history__metric" animate.enter="scale-enter">
+      <span>Sample limit</span>
+      <strong>{{ history()?.sampleLimit ?? 20 }}</strong>
+    </p-card>
+    <p-card class="metrics-history__metric" animate.enter="scale-enter">
+      <span>Latest run</span>
+      <strong>{{ latestSample()?.mode ?? 'none' }}</strong>
+    </p-card>
+  </section>
+
+  <section class="metrics-history__grid">
+    <p-card class="metrics-history__panel" animate.enter="enter">
+      <ng-template pHeader>
+        <div>
+          <div class="metrics-history__card-title">Path averages</div>
+          <div class="metrics-history__card-subtitle">Rolling in-memory history from Nest</div>
+        </div>
+      </ng-template>
+
+      <div class="metrics-history__bars" aria-label="Average latency bars">
+        <div class="metrics-history__chart">
+          <canvas #latencyChart aria-label="Average latency by backend path"></canvas>
+        </div>
+
+        @for (row of summaryRows(); track row.pathId) {
+          <div class="metrics-history__bar-row">
+            <span>{{ row.label }}</span>
+            <div class="metrics-history__bar-track">
+              <div
+                class="metrics-history__bar-fill"
+                [style.width.%]="(row.averageLatencyMs / maxAverageLatency()) * 100"
+              ></div>
+            </div>
+            <strong>{{ row.averageLatencyMs }} ms</strong>
+          </div>
+        } @empty {
+          <p>No historical metrics have been captured yet.</p>
+        }
+      </div>
+
+      <p-table
+        [value]="summaryRows()"
+        styleClass="p-datatable-sm"
+        [paginator]="true"
+        [rows]="5"
+        [rowsPerPageOptions]="rowsPerPageOptions"
+        sortField="pathId"
+        [sortOrder]="1"
+      >
+        <ng-template #header>
+          <tr>
+            <th pSortableColumn="label">Path <p-sort-icon field="label"></p-sort-icon></th>
+            <th pSortableColumn="samples">Samples <p-sort-icon field="samples"></p-sort-icon></th>
+            <th pSortableColumn="averageLatencyMs">Avg latency <p-sort-icon field="averageLatencyMs"></p-sort-icon></th>
+            <th pSortableColumn="averagePayloadBytes">Avg payload <p-sort-icon field="averagePayloadBytes"></p-sort-icon></th>
+            <th pSortableColumn="latestStatus">Latest <p-sort-icon field="latestStatus"></p-sort-icon></th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-row>
+          <tr>
+            <td>{{ row.label }}</td>
+            <td>{{ row.samples }}</td>
+            <td>{{ row.averageLatencyMs }} ms</td>
+            <td>{{ row.averagePayloadBytes }} bytes</td>
+            <td><p-tag [severity]="statusSeverity(row.latestStatus)" [value]="row.latestStatus"></p-tag></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <p-card class="metrics-history__panel" animate.enter="enter">
+      <ng-template pHeader>
+        <div>
+          <div class="metrics-history__card-title">Recent samples</div>
+          <div class="metrics-history__card-subtitle">Newest samples first</div>
+        </div>
+      </ng-template>
+
+      <div class="table-toolbar">
+        <input
+          pInputText
+          type="search"
+          placeholder="Filter samples"
+          [ngModel]="filterText()"
+          (ngModelChange)="filterText.set($event)"
+        />
+      </div>
+
+      <p-table
+        [value]="filteredSamples()"
+        styleClass="p-datatable-sm"
+        [paginator]="true"
+        [rows]="5"
+        [rowsPerPageOptions]="rowsPerPageOptions"
+        sortField="observedAt"
+        [sortOrder]="-1"
+      >
+        <ng-template #header>
+          <tr>
+            <th pSortableColumn="observedAt">Observed <p-sort-icon field="observedAt"></p-sort-icon></th>
+            <th pSortableColumn="mode">Mode <p-sort-icon field="mode"></p-sort-icon></th>
+            <th>Path status</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-sample>
+          <tr>
+            <td>{{ sample.observedAt }}</td>
+            <td>{{ sample.mode }}</td>
+            <td>{{ pathSummary(sample) }}</td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="3">{{ loading() ? 'Loading historical metrics.' : 'No samples match the current filter.' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </section>
+</section>

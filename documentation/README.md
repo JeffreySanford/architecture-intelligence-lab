@@ -78,7 +78,7 @@ PrimeNG has been upgraded from the previous v17 dependency to `22.0.0-rc.1`, whi
 - The UI is PrimeNG-focused, with enterprise table/card patterns intended to support Capital Markets-style securities, pool, commitment, and disclosure workflows.
 - Capital markets and PrimeNG study context is captured in [20 Capital Markets And PrimeNG Knowledgebase](20-capital-markets-primeng-knowledgebase.md).
 - Shared DTO vocabulary is locked in [21 Capital Markets Vocabulary](21-capital-markets-vocabulary.md).
-- Persona selection calls Spring `POST /api/dev-auth/personas/{personaId}/select`; Spring sets an httpOnly `access_token` cookie containing the selected persona id until signed JWT auth exists.
+- Persona selection calls Spring `POST /api/dev-auth/personas/{personaId}/select`; Spring sets an httpOnly HMAC-signed demo `access_token` cookie that Spring and Nest validate with `DEV_AUTH_SECRET`.
 - Angular `AuthStore` uses Spring `/api/personas`, persona selection, and `/api/me`; permission state filters visible sidebar items.
 - Route-level permission guards now protect Phase 5 routes in addition to sidebar filtering.
 - Spring minimal API surface exists: `/api/health`, `/api/personas`, `/api/me`, `/api/dev-auth/personas/{personaId}/select`, and `/api/dashboard/snapshot?dataset=small`.

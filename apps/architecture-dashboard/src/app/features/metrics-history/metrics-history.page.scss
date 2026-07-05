@@ -1,0 +1,122 @@
+.metrics-history {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.metrics-history__header {
+  max-width: 72rem;
+}
+
+.metrics-history__eyebrow,
+.metrics-history__card-subtitle {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.metrics-history__header h1 {
+  margin: 0.25rem 0;
+}
+
+.metrics-history__header p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.metrics-history__error {
+  margin: 0;
+  border-left: 4px solid var(--color-danger);
+  padding: 0.75rem 1rem;
+  background: var(--color-danger-container);
+  color: var(--color-on-danger-container);
+}
+
+.metrics-history__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.metrics-history__summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+}
+
+.metrics-history__metric ::ng-deep .p-card-body {
+  min-height: 7rem;
+}
+
+.metrics-history__metric span {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.metrics-history__metric strong {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--color-text);
+  font-size: 1.8rem;
+}
+
+.metrics-history__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.metrics-history__panel {
+  min-width: 0;
+}
+
+.metrics-history__card-title {
+  color: var(--color-text);
+  font-weight: 800;
+}
+
+.metrics-history__bars {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.metrics-history__chart {
+  min-height: 14rem;
+}
+
+.metrics-history__bar-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 12rem) minmax(8rem, 1fr) 5rem;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.metrics-history__bar-track {
+  overflow: hidden;
+  height: 0.75rem;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+}
+
+.metrics-history__bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary-strong);
+}
+
+@media (min-width: 72rem) {
+  .metrics-history__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 48rem) {
+  .metrics-history__bar-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,4 +1,4 @@
-FROM node:24-alpine
+FROM node:24-alpine AS build
 
 WORKDIR /workspace
 
@@ -10,7 +10,13 @@ COPY apps ./apps
 COPY libs/generated ./libs/generated
 
 RUN pnpm install --frozen-lockfile
+RUN pnpm nx build architecture-dashboard --configuration=production
 
-EXPOSE 4200
+FROM nginx:stable-alpine AS runtime
 
-CMD ["pnpm", "nx", "serve", "architecture-dashboard", "--host", "0.0.0.0", "--port", "4200"]
+COPY --from=build /workspace/dist/apps/architecture-dashboard/browser /usr/share/nginx/html
+COPY apps/architecture-dashboard/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

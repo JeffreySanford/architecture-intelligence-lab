@@ -40,6 +40,23 @@ class SpringApiEndpointTests {
     }
 
     @Test
+    void shouldSetSignedDevAuthCookieWhenPersonaIsSelected() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(new URI("http://localhost:" + port + "/api/dev-auth/personas/fiona-contract-admin/select"))
+            .POST(HttpRequest.BodyPublishers.noBody())
+            .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        String setCookie = response.headers().firstValue("set-cookie").orElse("");
+        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(setCookie).contains("HttpOnly");
+        assertThat(setCookie).contains("SameSite=Lax");
+        assertThat(setCookie).contains("access_token=v1.");
+        assertThat(setCookie).doesNotContain("access_token=fiona-contract-admin;");
+    }
+
+    @Test
     void shouldReturnDashboardSnapshot() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
             .uri(new URI("http://localhost:" + port + "/api/dashboard/snapshot"))

@@ -2,6 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   BackendComparisonResponseDto,
+  BackendComparisonHistoryDto,
   GatewayHealthDto,
   GatewayLoanReadDto,
 } from './comparison.dto';
@@ -41,5 +42,12 @@ export class ComparisonController {
   @ApiOkResponse({ type: BackendComparisonResponseDto })
   compareLoans(): Promise<BackendComparisonResponseDto> {
     return this.comparisonService.compareLoans();
+  }
+
+  @Get('comparison/loans/history')
+  @ApiOperation({ operationId: 'getComparisonHistory' })
+  @ApiOkResponse({ type: BackendComparisonHistoryDto })
+  getComparisonHistory(): BackendComparisonHistoryDto {
+    return this.comparisonService.getComparisonHistory();
   }
 }

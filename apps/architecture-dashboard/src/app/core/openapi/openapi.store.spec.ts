@@ -53,6 +53,16 @@ describe('OpenApiStore', () => {
     );
   });
 
+  it('should expose Nginx-relative Swagger and OpenAPI routes', () => {
+    expect(store.swaggerLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ href: '/swagger/spring-json/' }),
+        expect.objectContaining({ href: '/swagger/nest/' }),
+        expect.objectContaining({ href: '/swagger/nest-json/' }),
+      ]),
+    );
+  });
+
   it('should simulate UI-driven filter interaction through signals', () => {
     expect(store.generatedClients().length).toBe(2);
 

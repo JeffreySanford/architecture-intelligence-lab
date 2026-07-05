@@ -1,6 +1,7 @@
 import { ExecutionContext, ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AccessTokenGuard } from './access-token.guard';
+import { createDevAccessToken } from './token.utils';
 
 function createRequest(cookie?: string) {
   return {
@@ -31,17 +32,23 @@ describe('AccessTokenGuard', () => {
   });
 
   it('throws ForbiddenException for unknown persona values', () => {
-    expect(() => guard.canActivate(createContext(createRequest('access_token=unknown-user')))).toThrow(
+    expect(() => guard.canActivate(createContext(createRequest(`access_token=${createDevAccessToken('unknown-user')}`)))).toThrow(
       ForbiddenException,
     );
   });
 
+  it('throws UnauthorizedException for unsigned persona cookie values', () => {
+    expect(() => guard.canActivate(createContext(createRequest('access_token=alice-viewer')))).toThrow(
+      UnauthorizedException,
+    );
+  });
+
   it('allows requests with a known persona cookie', () => {
-    expect(() => guard.canActivate(createContext(createRequest('access_token=alice-viewer')))).not.toThrow();
+    expect(() => guard.canActivate(createContext(createRequest(`access_token=${createDevAccessToken('alice-viewer')}`)))).not.toThrow();
   });
 
   it('denies access when a handler requires a different allowed persona', () => {
-    const request = createRequest('access_token=alice-viewer');
+    const request = createRequest(`access_token=${createDevAccessToken('alice-viewer')}`);
     const context = createContext(request);
     jest.spyOn(reflector, 'get').mockReturnValue(['grace-realtime-operator']);
 

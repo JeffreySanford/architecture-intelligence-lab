@@ -84,6 +84,38 @@ describe('NestApiFacade', () => {
     );
   });
 
+  it('loads historical comparison metrics from the Nest gateway endpoint', async () => {
+    const resultPromise = firstValueFrom(facade.getLoanComparisonHistory());
+    const req = httpMock.expectOne('/gateway/comparison/loans/history');
+
+    expect(req.request.method).toBe('GET');
+    req.flush({
+      subject: 'loans',
+      sampleLimit: 20,
+      sampleCount: 1,
+      samples: [],
+      summary: [
+        {
+          pathId: 'spring-direct',
+          label: 'Spring direct',
+          samples: 1,
+          averageLatencyMs: 40,
+          averagePayloadBytes: 700,
+          latestRecordCount: 5,
+          latestStatus: 'ok',
+          latestObservedAt: '2026-07-03T00:00:00.000Z',
+        },
+      ],
+    });
+
+    await expect(resultPromise).resolves.toEqual(
+      expect.objectContaining({
+        subject: 'loans',
+        summary: [expect.objectContaining({ pathId: 'spring-direct' })],
+      }),
+    );
+  });
+
   it('loads direct loan reads from the Nest gateway endpoint', async () => {
     const resultPromise = firstValueFrom(facade.getDirectLoanReads());
     const req = httpMock.expectOne('/gateway/loans/direct');

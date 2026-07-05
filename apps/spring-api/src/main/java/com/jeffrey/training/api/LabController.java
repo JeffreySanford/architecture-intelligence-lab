@@ -37,18 +37,21 @@ class LabController {
   private final LoanRepository loanRepository;
   private final LoanDocumentRepository loanDocumentRepository;
   private final LoanStatusCodeRepository loanStatusCodeRepository;
+  private final DevAuthTokenService devAuthTokenService;
 
   LabController(
       PersonaRepository personaRepository,
       BorrowerRepository borrowerRepository,
       LoanRepository loanRepository,
       LoanDocumentRepository loanDocumentRepository,
-      LoanStatusCodeRepository loanStatusCodeRepository) {
+      LoanStatusCodeRepository loanStatusCodeRepository,
+      DevAuthTokenService devAuthTokenService) {
     this.personaRepository = personaRepository;
     this.borrowerRepository = borrowerRepository;
     this.loanRepository = loanRepository;
     this.loanDocumentRepository = loanDocumentRepository;
     this.loanStatusCodeRepository = loanStatusCodeRepository;
+    this.devAuthTokenService = devAuthTokenService;
   }
 
   @GetMapping("/health")
@@ -69,7 +72,7 @@ class LabController {
       HttpServletResponse response
   ) {
     CurrentUserDto currentUser = currentUserFor(personaId);
-    ResponseCookie cookie = ResponseCookie.from("access_token", currentUser.persona().id())
+    ResponseCookie cookie = ResponseCookie.from("access_token", devAuthTokenService.createToken(currentUser.persona().id()))
         .httpOnly(true)
         .sameSite("Lax")
         .path("/")
@@ -84,7 +87,8 @@ class LabController {
   CurrentUserDto me(
       @CookieValue(name = "access_token", required = false) String personaId
   ) {
-    return currentUserFor(personaId == null || personaId.isBlank() ? DEFAULT_PERSONA_ID : personaId);
+    String resolvedPersonaId = devAuthTokenService.resolvePersonaId(personaId);
+    return currentUserFor(resolvedPersonaId == null || resolvedPersonaId.isBlank() ? DEFAULT_PERSONA_ID : resolvedPersonaId);
   }
 
   @GetMapping("/dashboard/snapshot")

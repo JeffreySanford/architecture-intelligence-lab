@@ -152,6 +152,86 @@ export async function mockPhaseFiveApi(page: Page, personaId: keyof typeof perso
     });
   });
 
+  await page.route('**/gateway/comparison/loans/history', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        subject: 'loans',
+        sampleLimit: 20,
+        sampleCount: 1,
+        samples: [
+          {
+            mode: 'live',
+            subject: 'loans',
+            observedAt: '2026-07-05T00:00:00.000Z',
+            paths: [
+              {
+                pathId: 'spring-direct',
+                label: 'Spring direct',
+                latencyMs: 35,
+                payloadBytes: 1024,
+                recordCount: 5,
+                status: 'ok',
+                observedAt: '2026-07-05T00:00:00.000Z',
+              },
+              {
+                pathId: 'nest-direct',
+                label: 'Nest direct',
+                latencyMs: 28,
+                payloadBytes: 980,
+                recordCount: 5,
+                status: 'ok',
+                observedAt: '2026-07-05T00:00:00.000Z',
+              },
+              {
+                pathId: 'nest-proxy',
+                label: 'Nest proxy',
+                latencyMs: 42,
+                payloadBytes: 1040,
+                recordCount: 5,
+                status: 'ok',
+                observedAt: '2026-07-05T00:00:00.000Z',
+              },
+            ],
+          },
+        ],
+        summary: [
+          {
+            pathId: 'spring-direct',
+            label: 'Spring direct',
+            samples: 1,
+            averageLatencyMs: 35,
+            averagePayloadBytes: 1024,
+            latestRecordCount: 5,
+            latestStatus: 'ok',
+            latestObservedAt: '2026-07-05T00:00:00.000Z',
+          },
+          {
+            pathId: 'nest-direct',
+            label: 'Nest direct',
+            samples: 1,
+            averageLatencyMs: 28,
+            averagePayloadBytes: 980,
+            latestRecordCount: 5,
+            latestStatus: 'ok',
+            latestObservedAt: '2026-07-05T00:00:00.000Z',
+          },
+          {
+            pathId: 'nest-proxy',
+            label: 'Nest proxy',
+            samples: 1,
+            averageLatencyMs: 42,
+            averagePayloadBytes: 1040,
+            latestRecordCount: 5,
+            latestStatus: 'ok',
+            latestObservedAt: '2026-07-05T00:00:00.000Z',
+          },
+        ],
+      }),
+    });
+  });
+
   const loanRead = {
     mode: 'live',
     recordCount: 2,

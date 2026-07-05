@@ -10,6 +10,11 @@ This repo intentionally keeps the current modern study stack: Angular 22, Nx 23 
 - [X] Phase 9 visual smoke coverage is green for route, nav, table, overlay, chart, SVG, mobile, and reduced-motion paths.
 - [X] Phase 9 realtime dashboard animation follow-through is covered by the Phase 10 Realtime Lab dashboard.
 - [X] Phase 10 Realtime Lab now has a dedicated `/lab/realtime` dashboard for emits, burst mode, event history, chart state, and derived Redis cache telemetry.
+- [X] Docker image configuration now serves the Angular production build through Nginx at `/` and proxies Spring/Nest Swagger routes under `/swagger`.
+- [X] Nest gateway and realtime HTTP endpoints now require signed dev persona cookies, and Socket.IO origins are restricted to configured local/dev origins.
+- [X] Metrics History at `/lab/metrics-history` shows authenticated rolling comparison history using the Nest gateway, Chart.js, and PrimeNG tables.
+- [X] Docker smoke passes for `/`, `/api/health`, stress dataset data, Spring/Nest Swagger proxies, OpenAPI JSON, live comparison metrics, and historical comparison metrics.
+- [X] Deferred hardening and optional follow-up are now closed for local lab scope: signed dev auth cookie integrity, historical metrics dashboard traceability, and public-hardening issue tracking are in place.
 
 PrimeNG has been moved to the Angular 22-aligned release-candidate line (`22.0.0-rc.1`) with `@angular/cdk` installed as its peer dependency. Treat PrimeNG 22 APIs as allowed only after local build/test validation, because this is still an RC dependency.
 

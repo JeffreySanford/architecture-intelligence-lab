@@ -4,10 +4,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import com.jeffrey.training.api.repository.PersonaRepository;
-import com.jeffrey.training.api.entity.Persona;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -44,7 +41,7 @@ class OpenApiDocsSecurityTests {
     void shouldAllowSwaggerUiForContractAdminPersonaCookie() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
             .uri(new URI("http://localhost:" + port + "/swagger-ui/index.html"))
-            .header("Cookie", "access_token=fiona-contract-admin")
+            .header("Cookie", selectPersonaCookie("fiona-contract-admin"))
             .GET()
             .build();
 
@@ -71,7 +68,7 @@ class OpenApiDocsSecurityTests {
   void shouldAllowApiDocsForContractAdminPersonaCookie() throws Exception {
       HttpRequest request = HttpRequest.newBuilder()
           .uri(new URI("http://localhost:" + port + "/v3/api-docs"))
-          .header("Cookie", "access_token=fiona-contract-admin")
+          .header("Cookie", selectPersonaCookie("fiona-contract-admin"))
           .GET()
           .build();
 
@@ -79,5 +76,33 @@ class OpenApiDocsSecurityTests {
 
       assertThat(response.statusCode()).isEqualTo(200);
       assertThat(response.body()).contains("openapi");
+  }
+
+  @Test
+  void shouldRejectApiDocsForUnsignedPersonaCookie() throws Exception {
+      HttpRequest request = HttpRequest.newBuilder()
+          .uri(new URI("http://localhost:" + port + "/v3/api-docs"))
+          .header("Cookie", "access_token=fiona-contract-admin")
+          .GET()
+          .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertThat(response.statusCode()).isEqualTo(403);
+      assertThat(response.body()).contains("forbidden");
+  }
+
+  private String selectPersonaCookie(String personaId) throws Exception {
+      HttpRequest request = HttpRequest.newBuilder()
+          .uri(new URI("http://localhost:" + port + "/api/dev-auth/personas/" + personaId + "/select"))
+          .POST(HttpRequest.BodyPublishers.noBody())
+          .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertThat(response.statusCode()).isEqualTo(200);
+      String setCookie = response.headers().firstValue("set-cookie").orElseThrow();
+      assertThat(setCookie).contains("access_token=v1.");
+      return setCookie.split(";", 2)[0];
   }
 }

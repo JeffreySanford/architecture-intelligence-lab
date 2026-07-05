@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { extractAccessToken, isKnownPersonaId } from './token.utils';
+import { extractPersonaId, isKnownPersonaId } from './token.utils';
 
 export const ALLOWED_PERSONAS_KEY = 'allowed_personas';
 
@@ -15,7 +15,7 @@ export class AccessTokenGuard implements CanActivate {
     const request = context.switchToHttp().getRequest() as {
       headers?: { cookie?: string };
     };
-    const personaId = extractAccessToken(request);
+    const personaId = extractPersonaId(request);
 
     if (!personaId) {
       throw new UnauthorizedException('access_token cookie is required');

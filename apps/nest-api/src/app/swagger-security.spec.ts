@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import axios from 'axios';
 import { createNestSwaggerApp } from '../main';
+import { createDevAccessToken } from './auth/token.utils';
 
 describe('Nest Swagger docs security', () => {
   let app: INestApplication;
@@ -38,14 +39,14 @@ describe('Nest Swagger docs security', () => {
   });
 
   it('allows Swagger UI access for contract admin persona', async () => {
-    const response = await fetchSwagger('/swagger', 'access_token=fiona-contract-admin');
+    const response = await fetchSwagger('/swagger', `access_token=${createDevAccessToken('fiona-contract-admin')}`);
     expect(response.status).toBe(200);
     expect(response.headers['content-type']).toContain('text/html');
     expect(typeof response.data).toBe('string');
   });
 
   it('allows raw Swagger JSON access for admin persona', async () => {
-    const response = await fetchSwagger('/swagger-json', 'access_token=grace-admin');
+    const response = await fetchSwagger('/swagger-json', `access_token=${createDevAccessToken('grace-admin')}`);
     expect(response.status).toBe(200);
     expect(response.data).toHaveProperty('openapi', '3.0.0');
   });

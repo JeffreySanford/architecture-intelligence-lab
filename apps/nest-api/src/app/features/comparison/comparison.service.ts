@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import axios, { AxiosError } from 'axios';
 import {
   BackendComparisonMetricDto,
+  BackendComparisonHistoryDto,
   BackendComparisonResponseDto,
   ComparisonPathId,
   GatewayHealthDto,
   GatewayLoanReadDto,
   MockLoanDto,
+  comparisonPathIds,
 } from './comparison.dto';
 
 interface SpringDashboardSnapshotDto {
@@ -56,10 +58,13 @@ const PATH_LABELS: Record<ComparisonPathId, string> = {
   'nest-proxy': 'Nest proxy',
 };
 
+const HISTORY_LIMIT = 20;
+
 @Injectable()
 export class ComparisonService {
   private readonly springApiTarget =
     process.env['SPRING_API_TARGET'] ?? 'http://localhost:18080';
+  private readonly comparisonHistory: BackendComparisonResponseDto[] = [];
 
   getHealth(): GatewayHealthDto {
     return {
@@ -94,11 +99,42 @@ export class ComparisonService {
       this.metricFromRead('nest-proxy', nestProxy, observedAt),
     ];
 
-    return {
+    const response: BackendComparisonResponseDto = {
       mode: paths.every((path) => path.status === 'ok') ? 'live' : 'degraded',
       subject: 'loans',
       observedAt,
       paths,
+    };
+    this.recordComparison(response);
+    return response;
+  }
+
+  getComparisonHistory(): BackendComparisonHistoryDto {
+    const samples = [...this.comparisonHistory].reverse();
+    const summary = comparisonPathIds.map((pathId) => {
+      const pathSamples = this.comparisonHistory
+        .map((sample) => sample.paths.find((path) => path.pathId === pathId))
+        .filter((path): path is BackendComparisonMetricDto => Boolean(path));
+      const latest = pathSamples.at(-1);
+
+      return {
+        pathId,
+        label: PATH_LABELS[pathId],
+        samples: pathSamples.length,
+        averageLatencyMs: this.average(pathSamples.map((path) => path.latencyMs)),
+        averagePayloadBytes: this.average(pathSamples.map((path) => path.payloadBytes)),
+        latestRecordCount: latest?.recordCount ?? 0,
+        latestStatus: latest?.status ?? 'warning',
+        latestObservedAt: latest?.observedAt ?? '',
+      };
+    });
+
+    return {
+      subject: 'loans',
+      sampleLimit: HISTORY_LIMIT,
+      sampleCount: this.comparisonHistory.length,
+      samples,
+      summary,
     };
   }
 
@@ -214,5 +250,21 @@ export class ComparisonService {
 
   private observedAt(): string {
     return new Date().toISOString();
+  }
+
+  private recordComparison(response: BackendComparisonResponseDto): void {
+    this.comparisonHistory.push(response);
+    if (this.comparisonHistory.length > HISTORY_LIMIT) {
+      this.comparisonHistory.splice(0, this.comparisonHistory.length - HISTORY_LIMIT);
+    }
+  }
+
+  private average(values: number[]): number {
+    if (values.length === 0) {
+      return 0;
+    }
+
+    const total = values.reduce((sum, value) => sum + value, 0);
+    return Math.round(total / values.length);
   }
 }

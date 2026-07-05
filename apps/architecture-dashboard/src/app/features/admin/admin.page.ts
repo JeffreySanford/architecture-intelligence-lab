@@ -75,9 +75,9 @@ export class AdminPage {
       area: 'Dev auth cookie integrity',
       status: 'watch',
       summary:
-        'Persona auth relies on a plain `access_token` cookie without signature or token verification.',
+        'Persona auth now relies on an HMAC-signed demo `access_token` cookie shared by Spring and Nest.',
       recommendation:
-        'Document this as dev-only auth and replace it with signed tokens or JWTs before expanding exposure.',
+        'Keep this documented as dev-only auth and replace it with IdP-backed JWTs or opaque sessions before expanding exposure.',
       owner: 'Spring dev auth',
     },
     {

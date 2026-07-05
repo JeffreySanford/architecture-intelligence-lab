@@ -144,6 +144,21 @@ export const appRoutes: Routes = [
         },
       },
       {
+        path: 'metrics-history',
+        loadComponent: () =>
+          import('./features/metrics-history/metrics-history.page').then(
+            (m) => m.MetricsHistoryPage,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          title: 'Metrics History',
+          eyebrow: 'Backend comparison',
+          description:
+            'Inspect rolling historical metrics for Spring direct, Nest direct, and Nest proxy paths.',
+          permission: 'backend-comparison:view',
+        },
+      },
+      {
         path: 'realtime',
         loadComponent: () =>
           import('./features/realtime-lab/realtime-lab.page').then(

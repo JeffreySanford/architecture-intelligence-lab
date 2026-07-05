@@ -15,7 +15,7 @@ The branch has completed Phases 0-13 foundation and styling work. The remaining 
 - Sprint 14: Backend parity, generated OpenAPI clients, and live audit coverage.
 - Sprint 15: Phase 6.5 security hardening, contract drift risk management, and safe runtime guards.
 - Sprint 16: Documentation closure, planning alignment, and backlog cleanup.
-- Sprint 17: Deferred follow-up work for optional metrics dashboards and long-term enterprise enhancements.
+- Sprint 17: Deferred follow-up work for optional metrics dashboards and long-term enterprise enhancements. [Done]
 
 This keeps the current work scoped to actual unfinished backlog items instead of extending the original sprint numbering from the early plan.
 
@@ -23,25 +23,26 @@ This keeps the current work scoped to actual unfinished backlog items instead of
 
 The current branch is a documentation-aligned lab checkpoint. Angular shell, persona flow, guarded lab routes, PrimeNG dense data screens, D3/Chart.js visualization surfaces, generated client facades, developer-only glossary, Phase 6.5 security artifact pages, and frontend-focused unit/e2e coverage are implemented.
 
-The release is not yet a final runtime release because the full Docker/Nginx startup path, live Nest parity data, and backend-enforced security hardening remain active Sprint 14/15 work.
+The current branch is a validated local lab checkpoint. Docker Compose starts the complete Angular/Nginx, Spring, Nest, Postgres, Redis, pgAdmin, and Redis Insight stack; Nginx serves `/` and proxies Spring/Nest OpenAPI routes; live comparison metrics return `mode: live`; backend guard coverage is in place; Spring/Nest use signed dev persona cookies; and the Metrics History route shows rolling comparison history through Chart.js and PrimeNG tables.
 
 ## Active Sprint 14/15 Blockers
 
-1. Validate `docker compose up --build` for the complete Angular/Nginx, Spring, Nest, Postgres, Redis, pgAdmin, and Redis Insight stack.
-2. Verify Nginx serves the Angular frontend at `/` and proxies Spring/Nest/OpenAPI paths correctly.
-3. Replace remaining mock/parity gaps with live Nest direct reads and live backend comparison metrics in the Phase 5 table and D3 chart.
-4. Add backend-enforced guards for protected Nest gateway, realtime, and OpenAPI routes.
-5. Tighten CORS, Socket.IO origin policy, and CSRF/same-site cookie handling or explicitly document the selected mitigation.
+1. Validate `docker compose up --build` for the complete Angular/Nginx, Spring, Nest, Postgres, Redis, pgAdmin, and Redis Insight stack. [Done]
+2. Verify Nginx serves the Angular frontend at `/` and proxies Spring/Nest/OpenAPI paths correctly. [Done]
+3. Add `apps/architecture-dashboard-e2e/src/example.spec.ts` coverage for app root loading and Nginx Swagger proxy configuration. [Done]
+4. Replace remaining mock/parity gaps with live Nest direct reads and live backend comparison metrics in the Phase 5 table and D3 chart. [Done]
+5. Add backend-enforced guards for protected Nest gateway, realtime, and OpenAPI routes. [Done]
+6. Tighten CORS, Socket.IO origin policy, and CSRF/same-site cookie handling or explicitly document the selected mitigation. [Done for local lab scope; signed dev cookie integrity is implemented]
 
-## Deferred Sprint 17 Scope
+## Completed Sprint 17 Scope
 
-- Optional historical comparison metrics dashboard using Grafana, Chart.js, or Highcharts after metrics persistence exists.
-- Long-term enterprise baseline variants or migration branches beyond the current Angular 22/Nx 23 beta study stack.
-- Public-hardening work that goes beyond the local training-lab runtime and should be tracked as future issue work.
+- Optional historical comparison metrics dashboard using the authenticated Nest rolling history endpoint and Chart.js.
+- Long-term enterprise baseline variants or migration branches beyond the current Angular 22/Nx 23 beta study stack are tracked in `planning/public-hardening-issue-tracking.md`.
+- Public-hardening work that goes beyond the local training-lab runtime is tracked in `planning/public-hardening-issue-tracking.md`.
 
 ## Next Implementation Handoff
 
-Start with Sprint 14 Docker/Nginx validation: run the complete Compose stack, verify the browser entrypoint at `/`, verify Spring and Nest proxy routes, and record any startup or routing failures as the next implementation task.
+Start next with selected public deployment work only if the lab needs to move beyond local training runtime: external identity provider, durable metrics storage, secret management, CSRF enforcement, security headers, and rate limits.
 
 For enterprise job-prep discussion, keep the conservative baseline visible: Angular 18/19/20, PrimeNG 18/19/20/21, Java 17/21, Spring Boot 3.x, PostgreSQL, Docker, and OpenAPI.
 

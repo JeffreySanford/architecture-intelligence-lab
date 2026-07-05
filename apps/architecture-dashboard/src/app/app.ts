@@ -93,6 +93,13 @@ export class App implements OnInit {
       icon: 'pi pi-sync',
     },
     {
+      label: 'Metrics History',
+      route: '/lab/metrics-history',
+      description: 'Comparison trends',
+      permission: 'backend-comparison:view',
+      icon: 'pi pi-chart-line',
+    },
+    {
       label: 'Infrastructure',
       route: '/lab/infrastructure',
       description: 'Docker and tooling health',

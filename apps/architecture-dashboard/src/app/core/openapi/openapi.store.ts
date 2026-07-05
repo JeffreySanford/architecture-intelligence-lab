@@ -43,17 +43,17 @@ export class OpenApiStore {
   readonly swaggerLinks = [
     {
       label: 'Spring OpenAPI JSON',
-      href: 'http://localhost:18080/v3/api-docs',
+      href: '/swagger/spring-json/',
       description: 'Source-of-truth business API contract',
     },
     {
       label: 'Nest Swagger UI',
-      href: 'http://localhost:13000/swagger',
+      href: '/swagger/nest/',
       description: 'Gateway, comparison, and realtime API contract',
     },
     {
       label: 'Nest OpenAPI JSON',
-      href: 'http://localhost:13000/swagger-json',
+      href: '/swagger/nest-json/',
       description: 'Generation source for the Nest Angular client',
     },
   ] as const;

@@ -7,17 +7,16 @@ services:
       dockerfile: apps/architecture-dashboard/Dockerfile
     container_name: architecture-lab-dashboard
     ports:
-      - "${ARCHITECTURE_DASHBOARD_PORT:-4200}:4200"
-    environment:
-      NODE_ENV: development
-      SPRING_API_TARGET: http://spring-api:8080
-    volumes:
-      - ./apps/architecture-dashboard/proxy.conf.cjs:/workspace/apps/architecture-dashboard/proxy.conf.cjs:ro
+      - "${ARCHITECTURE_DASHBOARD_PORT:-4200}:80"
     depends_on:
       spring-api:
         condition: service_healthy
       nest-api:
         condition: service_healthy
+      pgadmin:
+        condition: service_started
+      redis-insight:
+        condition: service_started
 
   spring-api:
     build:
@@ -50,6 +49,7 @@ services:
       - "${NEST_API_PORT:-13000}:3000"
     environment:
       NODE_ENV: development
+      SPRING_API_TARGET: http://spring-api:8080
     depends_on:
       postgres:
         condition: service_healthy

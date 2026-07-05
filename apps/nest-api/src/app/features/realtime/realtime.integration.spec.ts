@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { createDevAccessToken } from '../../auth/token.utils';
 import { RealtimeModule } from './realtime.module';
+
+const viewerCookie = `access_token=${createDevAccessToken('alice-viewer')}`;
 
 describe('Realtime API integration', () => {
   let app: INestApplication;
@@ -27,7 +30,7 @@ describe('Realtime API integration', () => {
   it('returns realtime event history from the Nest realtime endpoint', async () => {
     const response = await axios.get(`${baseUrl}/gateway/realtime/events`, {
       validateStatus: () => true,
-      headers: { Cookie: 'access_token=alice-viewer' },
+      headers: { Cookie: viewerCookie },
     });
 
     expect(response.status).toBe(200);
@@ -50,7 +53,7 @@ describe('Realtime API integration', () => {
   it('returns Redis adapter status from the realtime status endpoint', async () => {
     const response = await axios.get(`${baseUrl}/gateway/realtime/redis-status`, {
       validateStatus: () => true,
-      headers: { Cookie: 'access_token=alice-viewer' },
+      headers: { Cookie: viewerCookie },
     });
 
     expect(response.status).toBe(200);
@@ -71,7 +74,7 @@ describe('Realtime API integration', () => {
       },
       {
         validateStatus: () => true,
-        headers: { Cookie: 'access_token=alice-viewer' },
+        headers: { Cookie: viewerCookie },
       },
     );
 

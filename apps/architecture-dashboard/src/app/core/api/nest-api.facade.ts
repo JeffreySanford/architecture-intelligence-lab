@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
   BackendComparisonMetricDto,
+  BackendComparisonHistoryDto,
+  BackendComparisonHistorySummaryDto,
   BackendComparisonResponseDto,
   ComparisonApiService,
   GatewayLoanReadDto,
@@ -22,6 +24,8 @@ export type ComparisonPathId = BackendComparisonMetricDto.PathIdEnum;
 export type ComparisonStatus = BackendComparisonMetricDto.StatusEnum;
 export type GatewayMode = BackendComparisonResponseDto.ModeEnum;
 export type RealtimeEventType = RealtimeEventDto.TypeEnum;
+export type ComparisonHistory = BackendComparisonHistoryDto;
+export type ComparisonHistorySummary = BackendComparisonHistorySummaryDto;
 
 export type {
   BackendComparisonMetricDto,
@@ -44,6 +48,10 @@ export class NestApiFacade {
 
   getLoanComparison() {
     return this.comparisonApi.compareLoans(undefined, false, this.jsonAcceptOptions);
+  }
+
+  getLoanComparisonHistory() {
+    return this.comparisonApi.getComparisonHistory(undefined, false, this.jsonAcceptOptions);
   }
 
   getRealtimeEventHistory() {

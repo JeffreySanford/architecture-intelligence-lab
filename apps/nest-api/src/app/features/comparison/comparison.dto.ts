@@ -102,3 +102,46 @@ export class BackendComparisonResponseDto {
   @ApiProperty({ type: () => [BackendComparisonMetricDto] })
   paths!: BackendComparisonMetricDto[];
 }
+
+export class BackendComparisonHistorySummaryDto {
+  @ApiProperty({ enum: comparisonPathIds })
+  pathId!: ComparisonPathId;
+
+  @ApiProperty()
+  label!: string;
+
+  @ApiProperty()
+  samples!: number;
+
+  @ApiProperty()
+  averageLatencyMs!: number;
+
+  @ApiProperty()
+  averagePayloadBytes!: number;
+
+  @ApiProperty()
+  latestRecordCount!: number;
+
+  @ApiProperty({ enum: comparisonStatuses })
+  latestStatus!: ComparisonStatus;
+
+  @ApiProperty({ format: 'date-time' })
+  latestObservedAt!: string;
+}
+
+export class BackendComparisonHistoryDto {
+  @ApiProperty({ enum: ['loans'] })
+  subject!: 'loans';
+
+  @ApiProperty()
+  sampleLimit!: number;
+
+  @ApiProperty()
+  sampleCount!: number;
+
+  @ApiProperty({ type: () => [BackendComparisonResponseDto] })
+  samples!: BackendComparisonResponseDto[];
+
+  @ApiProperty({ type: () => [BackendComparisonHistorySummaryDto] })
+  summary!: BackendComparisonHistorySummaryDto[];
+}

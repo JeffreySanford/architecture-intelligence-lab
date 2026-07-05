@@ -87,7 +87,7 @@ sequenceDiagram
 
 Angular cannot read the cookie. The browser sends it automatically. This demonstrates why httpOnly cookies reduce token exposure to browser JavaScript.
 
-Current implementation shortcut: `access_token` contains the selected persona id, not a signed JWT. Replace this with a signed JWT or opaque server session before treating the flow as production-like auth.
+Current implementation: `access_token` is an HMAC-signed demo persona token shared by Spring and Nest through `DEV_AUTH_SECRET`. Replace the demo persona selector with a signed JWT from an external IdP or an opaque server session before treating the flow as production-like auth.
 
 CSRF must be discussed because cookies are automatically attached by the browser. For v1, use `SameSite=Lax` and keep state-changing endpoints explicit. A later hardening phase can add CSRF tokens for production-like behavior.
 

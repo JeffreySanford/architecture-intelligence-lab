@@ -28,7 +28,7 @@ class OpenApiContractAvailabilityTests {
     void shouldExposeOpenApiJsonForContractAdminPersonaCookie() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
             .uri(new URI("http://localhost:" + port + "/v3/api-docs"))
-            .header("Cookie", "access_token=fiona-contract-admin")
+            .header("Cookie", selectPersonaCookie("fiona-contract-admin"))
             .GET()
             .build();
 
@@ -38,5 +38,19 @@ class OpenApiContractAvailabilityTests {
         assertThat(response.headers().firstValue("content-type").orElse(""))
             .contains("application/json");
         assertThat(response.body()).contains("\"openapi\"");
+    }
+
+    private String selectPersonaCookie(String personaId) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(new URI("http://localhost:" + port + "/api/dev-auth/personas/" + personaId + "/select"))
+            .POST(HttpRequest.BodyPublishers.noBody())
+            .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertThat(response.statusCode()).isEqualTo(200);
+        String setCookie = response.headers().firstValue("set-cookie").orElseThrow();
+        assertThat(setCookie).contains("access_token=v1.");
+        return setCookie.split(";", 2)[0];
     }
 }

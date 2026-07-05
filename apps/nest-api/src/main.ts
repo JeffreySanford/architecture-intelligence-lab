@@ -8,7 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import { configureRedisIoAdapter } from './app/features/realtime/redis-io.adapter';
-import { parseAllowedOrigins } from './app/auth/token.utils';
+import { extractPersonaId, parseAllowedOrigins } from './app/auth/token.utils';
 
 type SwaggerRequest = {
   headers?: {
@@ -44,7 +44,7 @@ export async function createNestSwaggerApp(): Promise<INestApplication> {
     .build();
 
   app.use(['/swagger', '/swagger-json'], (req: SwaggerRequest, res: SwaggerResponse, next: SwaggerNext) => {
-    const accessToken = extractAccessToken(req);
+    const accessToken = extractPersonaId(req);
     const allowedPersonas = new Set(['fiona-contract-admin', 'grace-admin']);
     if (!accessToken || !allowedPersonas.has(accessToken)) {
       res.status(403).json({ error: 'forbidden' });
@@ -65,19 +65,6 @@ async function bootstrap() {
   await app.listen(port);
   logger.log(`Nest gateway is running on: http://localhost:${port}/gateway`);
   logger.log(`Nest Swagger UI is running on: http://localhost:${port}/swagger`);
-}
-
-export function extractAccessToken(req: { headers?: { cookie?: string } }): string | undefined {
-  const cookieHeader = req.headers?.cookie;
-  if (!cookieHeader) {
-    return undefined;
-  }
-
-  return cookieHeader
-    .split(';')
-    .map((cookie) => cookie.trim())
-    .find((cookie) => cookie.startsWith('access_token='))
-    ?.split('=')[1];
 }
 
 if (require.main === module) {

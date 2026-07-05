@@ -3,6 +3,7 @@ package com.jeffrey.training.config;
 import com.jeffrey.training.api.entity.Permission;
 import com.jeffrey.training.api.entity.Persona;
 import com.jeffrey.training.api.repository.PersonaRepository;
+import com.jeffrey.training.api.DevAuthTokenService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +27,8 @@ public class OpenApiDocsSecurityConfiguration {
 
   @Bean
   public FilterRegistrationBean<OncePerRequestFilter> openApiDocsSecurityFilter(
-      PersonaRepository personaRepository) {
+      PersonaRepository personaRepository,
+      DevAuthTokenService devAuthTokenService) {
     FilterRegistrationBean<OncePerRequestFilter> registrationBean = new FilterRegistrationBean<>();
     registrationBean.setFilter(new OncePerRequestFilter() {
       private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -44,7 +46,7 @@ public class OpenApiDocsSecurityConfiguration {
         }
 
         logger.info("OpenAPI doc request headers: Cookie={} Cookies={}", request.getHeader("Cookie"), request.getCookies());
-        Optional<Persona> persona = resolvePersona(request, personaRepository);
+        Optional<Persona> persona = resolvePersona(request, personaRepository, devAuthTokenService);
         if (persona.isEmpty() || !hasAllowedPermission(persona.get())) {
           logger.info("Denying OpenAPI docs access for path {} and persona cookie {}", path,
               extractToken(request));
@@ -80,11 +82,14 @@ public class OpenApiDocsSecurityConfiguration {
 
   private Optional<Persona> resolvePersona(
       HttpServletRequest request,
-      PersonaRepository personaRepository) {
+      PersonaRepository personaRepository,
+      DevAuthTokenService devAuthTokenService) {
     if (request.getCookies() != null) {
       for (Cookie cookie : request.getCookies()) {
         if ("access_token".equals(cookie.getName())) {
-          return Optional.ofNullable(personaRepository.findByIdWithRoleAndPermissions(cookie.getValue()));
+          String personaId = devAuthTokenService.resolvePersonaId(cookie.getValue());
+          return Optional.ofNullable(personaId)
+              .map(personaRepository::findByIdWithRoleAndPermissions);
         }
       }
     }
@@ -94,7 +99,9 @@ public class OpenApiDocsSecurityConfiguration {
       for (String cookieValue : cookieHeader.split(";")) {
         String[] parts = cookieValue.trim().split("=", 2);
         if (parts.length == 2 && "access_token".equals(parts[0].trim())) {
-          return Optional.ofNullable(personaRepository.findByIdWithRoleAndPermissions(parts[1].trim()));
+          String personaId = devAuthTokenService.resolvePersonaId(parts[1].trim());
+          return Optional.ofNullable(personaId)
+              .map(personaRepository::findByIdWithRoleAndPermissions);
         }
       }
     }

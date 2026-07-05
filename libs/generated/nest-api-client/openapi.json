@@ -103,6 +103,28 @@
         ]
       }
     },
+    "/gateway/comparison/loans/history": {
+      "get": {
+        "operationId": "getComparisonHistory",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackendComparisonHistoryDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "comparison"
+        ]
+      }
+    },
     "/gateway/realtime/events": {
       "get": {
         "operationId": "getRealtimeEventHistory",
@@ -146,6 +168,28 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RealtimeEventDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "realtime"
+        ]
+      }
+    },
+    "/gateway/realtime/redis-status": {
+      "get": {
+        "operationId": "getRealtimeRedisAdapterStatus",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RealtimeAdapterStatusDto"
                 }
               }
             }
@@ -362,6 +406,92 @@
           "paths"
         ]
       },
+      "BackendComparisonHistorySummaryDto": {
+        "type": "object",
+        "properties": {
+          "pathId": {
+            "type": "string",
+            "enum": [
+              "spring-direct",
+              "nest-direct",
+              "nest-proxy"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "samples": {
+            "type": "number"
+          },
+          "averageLatencyMs": {
+            "type": "number"
+          },
+          "averagePayloadBytes": {
+            "type": "number"
+          },
+          "latestRecordCount": {
+            "type": "number"
+          },
+          "latestStatus": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "warning",
+              "error"
+            ]
+          },
+          "latestObservedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "pathId",
+          "label",
+          "samples",
+          "averageLatencyMs",
+          "averagePayloadBytes",
+          "latestRecordCount",
+          "latestStatus",
+          "latestObservedAt"
+        ]
+      },
+      "BackendComparisonHistoryDto": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string",
+            "enum": [
+              "loans"
+            ]
+          },
+          "sampleLimit": {
+            "type": "number"
+          },
+          "sampleCount": {
+            "type": "number"
+          },
+          "samples": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BackendComparisonResponseDto"
+            }
+          },
+          "summary": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BackendComparisonHistorySummaryDto"
+            }
+          }
+        },
+        "required": [
+          "subject",
+          "sampleLimit",
+          "sampleCount",
+          "samples",
+          "summary"
+        ]
+      },
       "RealtimeEventDto": {
         "type": "object",
         "properties": {
@@ -465,6 +595,34 @@
             "type": "string"
           }
         }
+      },
+      "RealtimeAdapterStatusDto": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "redis",
+              "in-process",
+              "unknown"
+            ]
+          },
+          "connected": {
+            "type": "boolean"
+          },
+          "redisUrl": {
+            "type": "object",
+            "nullable": true
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode",
+          "connected",
+          "message"
+        ]
       }
     }
   }
