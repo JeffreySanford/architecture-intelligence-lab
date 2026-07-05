@@ -619,16 +619,16 @@ Goal: Prove the architecture end to end.
 
 Deliverables:
 
-- [ ] Angular unit tests for lab logic
-- [ ] Spring integration tests for source-of-truth API
-- [ ] Nest tests for gateway and realtime API
-- [ ] Playwright E2E tests
-- [ ] Docker smoke test
+- [X] Angular unit tests for lab logic
+- [X] Spring integration tests for source-of-truth API
+- [X] Nest tests for gateway and realtime API
+- [X] Playwright E2E tests
+- [X] Docker smoke test
 
 Acceptance criteria:
 
-- [ ] Main quality gates pass after full implementation.
-- [ ] Playwright covers the core learner journey.
+- [X] Main quality gates pass after full implementation.
+- [X] Playwright covers the core learner journey.
 
 ## Phase 13: Material Design 3 Express Styling System
 
