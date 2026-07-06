@@ -1,0 +1,84 @@
+.theme-governance {
+  display: grid;
+  gap: 1.5rem;
+  color: var(--color-text);
+}
+
+.theme-governance--compact {
+  gap: 0.85rem;
+}
+
+.theme-governance__summary,
+.theme-governance__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 1rem;
+}
+
+.theme-governance__card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.theme-governance__eyebrow {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.theme-governance h1,
+.theme-governance h2,
+.theme-governance p {
+  margin: 0.25rem 0 0;
+}
+
+.theme-governance p {
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.theme-governance__controls,
+.theme-governance__form-row,
+.theme-governance__dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.theme-governance__control {
+  display: inline-flex;
+  gap: 0.75rem;
+  align-items: center;
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.theme-governance__form-row {
+  margin: 1rem 0;
+}
+
+.theme-governance__form-row .p-inputtext,
+.theme-governance__form-row .p-select {
+  min-width: 220px;
+}
+
+.theme-governance__dialog-actions {
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+}
+
+code {
+  color: var(--color-primary-text);
+  font-weight: 700;
+}
+
+@media (max-width: 960px) {
+  .theme-governance__summary,
+  .theme-governance__grid {
+    grid-template-columns: 1fr;
+  }
+}

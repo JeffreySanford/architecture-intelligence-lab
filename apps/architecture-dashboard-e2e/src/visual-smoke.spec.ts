@@ -1,7 +1,12 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import { mockLandingApi } from './support/mock-landing-api';
 
 const reducedMotionTransitionPattern = /none|0s|0\.00001s|1e-05s/;
+
+const navItem = (page: Page, label: string) =>
+  page.locator('.app-frame__nav-item', {
+    has: page.locator('.app-frame__nav-label', { hasText: label }),
+  });
 
 test.describe('Visual smoke - Phase 9', () => {
   test('route transition wrapper is present and navigates through native animation routes', async ({ page }) => {
@@ -53,11 +58,11 @@ test.describe('Visual smoke - Phase 9', () => {
     await expect(page.locator('.route-transition')).toBeVisible();
   });
 
-  test('app brand shows a material icon and animation-ready header', async ({ page }) => {
+  test('app brand shows the PrimeNG chart icon and animation-ready header', async ({ page }) => {
     await mockLandingApi(page);
 
     await page.goto('/');
-    await expect(page.locator('.app-frame__brand-icon.material-icons')).toHaveText('insights');
+    await expect(page.locator('.app-frame__brand-icon.pi.pi-chart-line')).toBeVisible();
     await expect(page.locator('.app-frame__content-header')).toBeVisible();
     await expect(page.locator('.route-transition')).toBeVisible();
   });
@@ -115,7 +120,7 @@ test.describe('Visual smoke - Phase 9', () => {
     await page.locator('.p-select-option', { hasText: 'Grace Admin' }).click();
     await page.click('button:has-text("Enter As")');
 
-    await page.locator('.app-frame__nav-item', { hasText: 'OpenAPI' }).click();
+    await navItem(page, 'OpenAPI').click();
     await expect(page.locator('.app-frame__content-header h2')).toHaveText('OpenAPI Contract Lab');
     await expect(page.locator('svg[aria-label="OpenAPI contract tree"]')).toBeVisible();
     await expect(page.locator('.openapi__tree-node-label', { hasText: 'OpenAPI Contract Tree' })).toBeVisible();
@@ -130,8 +135,8 @@ test.describe('Visual smoke - Phase 9', () => {
     await page.locator('.p-select-option', { hasText: 'Grace Admin' }).click();
     await page.click('button:has-text("Enter As")');
 
-    await expect(page.locator('.app-frame__nav-item', { hasText: 'OpenAPI' })).toBeVisible();
-    await page.locator('.app-frame__nav-item', { hasText: 'OpenAPI' }).click();
+    await expect(navItem(page, 'OpenAPI')).toBeVisible();
+    await navItem(page, 'OpenAPI').click();
 
     await expect(page.locator('.app-frame__content-header h2')).toHaveText('OpenAPI Contract Lab');
     await expect(page.locator('.app-frame__content-header span')).toContainText('generated client status');
@@ -193,7 +198,7 @@ test.describe('Visual smoke - Phase 9', () => {
     await page.locator('.p-select-option', { hasText: 'Grace Admin' }).click();
     await page.click('button:has-text("Enter As")');
 
-    await page.locator('.app-frame__nav-item', { hasText: 'OpenAPI' }).click();
+    await navItem(page, 'OpenAPI').click();
     await expect(page.locator('.app-frame__content-header h2')).toHaveText('OpenAPI Contract Lab');
     const treeCard = page.locator('.openapi__tree-card');
     await expect(treeCard).toBeVisible();
@@ -323,7 +328,7 @@ test.describe('Visual smoke - Phase 9', () => {
     await page.locator('p-select[inputid="persona-select"]').click();
     await page.locator('.p-select-option', { hasText: 'Grace Admin' }).click();
     await page.click('button:has-text("Enter As")');
-    await page.locator('.app-frame__nav-item', { hasText: 'OpenAPI' }).click();
+    await navItem(page, 'OpenAPI').click();
 
     const card = page.locator('.openapi__link').first();
     await expect(card).toBeVisible();

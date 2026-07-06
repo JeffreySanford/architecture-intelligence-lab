@@ -48,10 +48,27 @@ Use both realistic names and role labels:
 | `admin:view` | View admin lab. |
 | `diagnostics:view` | View diagnostics panels. |
 | `contracts:view` | View OpenAPI contract lab. |
+| `developer:view` | View developer-only lab pages, including glossary and theme governance. |
 | `mcp:view` | View MCP dashboard. |
 | `realtime:view` | View realtime lab. |
 | `realtime:emit` | Trigger demo realtime events. |
 | `backend-comparison:view` | View backend comparison lab. |
+
+## Explicit Seeded Role Assignments
+
+Sidebar navigation is permission-driven only. The frontend should not carry a second role/persona assignment model. If a role should see a sidebar link, assign the corresponding permission in seed data.
+
+| Role id | Personas | Seeded permissions | Sidebar links unlocked |
+| --- | --- | --- | --- |
+| `viewer` | Alice Viewer | `dashboard:view`, `loans:view` | Dashboard, Architecture Flow, Map Inspector, Security Search, Capital Markets |
+| `reviewer` | Ben Reviewer, Irene Document Reviewer | `dashboard:view`, `loans:view`, `documents:view` | Dashboard, Architecture Flow, Map Inspector, Security Search, Capital Markets |
+| `approver` | Cara Approver | `dashboard:view`, `loans:view`, `loans:update` | Dashboard, Architecture Flow, Map Inspector, Security Search, Capital Markets |
+| `admin` | Diana Admin, Morgan Platform Admin, Nora Security Admin | `dashboard:view`, `loans:view`, `loans:update`, `documents:view`, `documents:update`, `admin:view`, `contracts:view`, `diagnostics:view`, `backend-comparison:view`, `realtime:view`, `developer:view`, `mcp:view` | Admin, OpenAPI, diagnostics, backend comparison, realtime, MCP, glossary, theme governance, and core learner links |
+| `diagnostics-admin` | Ethan Diagnostics Admin | `dashboard:view`, `diagnostics:view`, `backend-comparison:view` | Dashboard, Architecture Flow, Map Inspector, SignalStore Inspector, Infrastructure, Backend Comparison, Metrics History |
+| `contract-admin` | Fiona Contract Admin, Owen API Admin | `dashboard:view`, `contracts:view` | Dashboard, Architecture Flow, Map Inspector, OpenAPI |
+| `realtime-operator` | Grace Realtime Operator | `dashboard:view`, `realtime:view`, `realtime:emit` | Dashboard, Architecture Flow, Map Inspector, Backend Comparison, Realtime Lab |
+| `mcp-explorer` | Henry MCP Explorer | `dashboard:view`, `developer:view`, `mcp:view` | Dashboard, Architecture Flow, Map Inspector, MCP Dashboard, Glossary, Theme Governance |
+| `auditor` | Jason Auditor | `dashboard:view`, `loans:view`, `documents:view` | Dashboard, Architecture Flow, Map Inspector, Security Search, Capital Markets |
 
 ## Phase 5 Access Matrix
 

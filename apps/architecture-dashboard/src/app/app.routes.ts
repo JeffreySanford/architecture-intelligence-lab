@@ -234,6 +234,21 @@ export const appRoutes: Routes = [
         },
       },
       {
+        path: 'theme',
+        loadComponent: () =>
+          import('./features/theme-governance/theme-governance.page').then(
+            (m) => m.ThemeGovernancePage,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          title: 'Theme Governance Lab',
+          eyebrow: 'PrimeNG Nora',
+          description:
+            'Preview Zeroheight documentation guidance, PrimeNG Nora tokens, and themed component states.',
+          permission: 'developer:view',
+        },
+      },
+      {
         path: 'glossary',
         loadComponent: () =>
           import('./features/glossary/glossary.page').then(

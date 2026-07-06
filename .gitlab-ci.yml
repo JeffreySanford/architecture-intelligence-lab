@@ -1,0 +1,254 @@
+# Architecture Intelligence Lab
+# GitLab CE / Free CI pipeline
+#
+# GitHub remains the main source of truth.
+# GitLab is used as a secondary DevSecOps / Merge Request / CI lab.
+
+stages:
+  - validate
+  - install
+  - lint
+  - test
+  - contract
+  - build
+  - docker
+  - quality
+  - security
+
+workflow:
+  rules:
+    # Run on GitLab merge requests.
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+    # Run when pushing to the default branch.
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+    # Allow manual pipeline runs from the GitLab UI.
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+
+    # Skip everything else.
+    - when: never
+
+variables:
+  NODE_ENV: "test"
+  PNPM_HOME: "$CI_PROJECT_DIR/.pnpm-home"
+  PNPM_STORE_PATH: "$CI_PROJECT_DIR/.pnpm-store"
+  NX_CACHE_DIRECTORY: "$CI_PROJECT_DIR/.nx/cache"
+  FORCE_COLOR: "1"
+
+default:
+  image: node:22
+  interruptible: true
+  retry:
+    max: 1
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store/
+      - .pnpm-home/
+      - .nx/cache/
+    policy: pull-push
+  before_script:
+    - node --version
+    - npm --version
+    - corepack enable
+    - corepack prepare pnpm@11.9.0 --activate
+    - pnpm --version
+    - pnpm config set store-dir "$PNPM_STORE_PATH"
+    - pnpm install --frozen-lockfile
+
+validate_workspace:
+  stage: validate
+  script:
+    - pnpm nx show projects
+    - pnpm nx report
+
+install_lockfile_check:
+  stage: install
+  script:
+    - pnpm install --frozen-lockfile
+  artifacts:
+    name: "install-${CI_COMMIT_SHORT_SHA}"
+    expire_in: 1 week
+    paths:
+      - pnpm-lock.yaml
+      - node_modules/.modules.yaml
+
+lint_architecture_dashboard:
+  stage: lint
+  script:
+    - pnpm run lint:architecture-dashboard
+
+test_architecture_dashboard:
+  stage: test
+  script:
+    - pnpm run test:architecture-dashboard
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - coverage/
+      - test-results/
+    reports:
+      junit:
+        - junit.xml
+        - "**/junit.xml"
+
+openapi_contract_drift:
+  stage: contract
+  image: node:22
+  before_script:
+    - node --version
+    - npm --version
+    - apt-get update
+    - apt-get install -y --no-install-recommends openjdk-21-jre-headless
+    - java -version
+    - corepack enable
+    - corepack prepare pnpm@11.9.0 --activate
+    - pnpm --version
+    - pnpm config set store-dir "$PNPM_STORE_PATH"
+    - pnpm install --frozen-lockfile
+  script:
+    - pnpm run check:openapi-clients
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - libs/
+      - documentation/
+
+build_architecture_dashboard:
+  stage: build
+  script:
+    - pnpm nx build architecture-dashboard
+  artifacts:
+    name: "architecture-dashboard-${CI_COMMIT_SHORT_SHA}"
+    expire_in: 1 week
+    paths:
+      - dist/
+
+pnpm_audit:
+  stage: security
+  allow_failure: true
+  script:
+    - pnpm audit --audit-level moderate
+
+dependency_tree_snapshot:
+  stage: security
+  allow_failure: true
+  script:
+    - pnpm list --depth 2 > dependency-tree.txt
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - dependency-tree.txt
+
+# ---------------------------------------------------------------------------
+# Optional local-runner jobs
+# ---------------------------------------------------------------------------
+# These jobs require a GitLab runner that has Docker and Docker Compose access.
+# They are manual at first so GitLab.com shared runners do not fail immediately.
+# Enable these once your local GitLab runner is configured.
+
+lint_nest_api_docker:
+  stage: lint
+  when: manual
+  allow_failure: true
+  tags:
+    - docker-compose
+  script:
+    - pnpm run lint:nest-api
+
+lint_spring_api_docker:
+  stage: lint
+  when: manual
+  allow_failure: true
+  tags:
+    - docker-compose
+  script:
+    - pnpm run lint:spring-api
+
+test_nest_api_docker:
+  stage: test
+  when: manual
+  allow_failure: true
+  tags:
+    - docker-compose
+  script:
+    - pnpm run test:nest-api
+
+test_spring_api_docker:
+  stage: test
+  when: manual
+  allow_failure: true
+  tags:
+    - docker-compose
+  script:
+    - pnpm run test:spring-api
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - apps/spring-api/target/surefire-reports/
+    reports:
+      junit:
+        - apps/spring-api/target/surefire-reports/TEST-*.xml
+
+docker_compose_config:
+  stage: docker
+  when: manual
+  allow_failure: true
+  tags:
+    - docker-compose
+  script:
+    - docker compose version
+    - docker compose config --quiet
+
+docker_compose_smoke:
+  stage: docker
+  when: manual
+  allow_failure: true
+  tags:
+    - docker-compose
+  script:
+    - docker compose up -d postgres redis spring-api nest-api architecture-dashboard
+    - pnpm run smoke:docker
+  after_script:
+    - docker compose logs --no-color > docker-compose-smoke.log || true
+    - docker compose ps || true
+    - docker compose down --remove-orphans || true
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - docker-compose-smoke.log
+
+# ---------------------------------------------------------------------------
+# Optional GitLab Code Quality
+# ---------------------------------------------------------------------------
+# To enable this, first install:
+# pnpm add -D eslint-formatter-gitlab
+#
+# GitLab Code Quality can consume a codequality artifact and show findings
+# in merge requests. Keep this manual until the formatter is installed.
+
+eslint_code_quality:
+  stage: quality
+  when: manual
+  allow_failure: true
+  script:
+    - export ESLINT_CODE_QUALITY_REPORT=gl-code-quality-report.json
+    - pnpm nx lint architecture-dashboard --format gitlab || true
+  artifacts:
+    when: always
+    expire_in: 1 week
+    reports:
+      codequality: gl-code-quality-report.json
+    paths:
+      - gl-code-quality-report.json

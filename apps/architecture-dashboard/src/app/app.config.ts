@@ -4,10 +4,10 @@ import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideApi as provideNestApi } from '@generated/nest-api-client';
 import { provideApi as provideSpringApi } from '@generated/spring-api-client';
-import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
 import { getRuntimeConfig } from './core/config/runtime-config';
+import { ArchitecturePrimePreset } from './core/theme/architecture-prime-preset';
 
 const runtimeConfig = getRuntimeConfig();
 
@@ -20,7 +20,10 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       license: runtimeConfig.primeuiLicense,
       theme: {
-        preset: Aura,
+        preset: ArchitecturePrimePreset,
+        options: {
+          darkModeSelector: '.app-dark',
+        },
       },
     }),
     provideSpringApi({ basePath: '', withCredentials: true }),
