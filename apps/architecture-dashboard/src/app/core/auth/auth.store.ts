@@ -27,7 +27,6 @@ export class AuthStore {
     return this.api.getPersonas().pipe(
       tap((personas) => {
         this.personas.set(personas);
-        console.debug('[AuthStore] loaded personas', personas);
       }),
       finalize(() => this.loading.set(false)),
       catchError((error: unknown) => {

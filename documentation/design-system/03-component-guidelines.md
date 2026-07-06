@@ -9,6 +9,33 @@ The lab should demonstrate that PrimeNG components are themed through the Nora p
 - Use app layout classes for page composition, spacing, responsive grid behavior, and domain-specific arrangement.
 - Avoid nested cards and decorative wrappers that make dense workflow screens harder to scan.
 - Keep component copy concise and domain-specific.
+- Add or update a Storybook story when a component guideline becomes reusable across pages.
+
+## Storybook Story Contract
+
+Storybook should demonstrate the component states that Zeroheight documents and PrimeNG implements. The story is not the source of truth for design decisions; it is the executable example layer.
+
+| Storybook concern | Zeroheight link | PrimeNG link |
+| --- | --- | --- |
+| Component purpose | Zeroheight component page or this file | PrimeNG component selection and imports |
+| Token behavior | Foundations and token documentation | `ArchitecturePrimePreset` and PrimeNG CSS variables |
+| Interaction states | Component do and do-not examples | PrimeNG state classes and component tokens |
+| Accessibility notes | Accessibility checklist | Focus ring, invalid state, disabled state, overlays |
+
+Recommended first story:
+
+```text
+ThemeGovernance/PrimeNGStates
+```
+
+Recommended examples in that story:
+
+- Primary, text, and danger buttons.
+- InputText default, focused, invalid, and disabled states.
+- Select with finite workflow choices.
+- DataTable with hover, selected, empty, and dense rows.
+- Card with operational summary content.
+- Tag severities for success, warning, danger, and info.
 
 ## Buttons
 
@@ -76,3 +103,4 @@ The lab should demonstrate that PrimeNG components are themed through the Nora p
 | Keep pages dense but organized. | Add decorative cards around every section. |
 | Use text plus color for status. | Communicate status with color alone. |
 | Document reusable component decisions here. | Leave one-off component behavior unexplained when it becomes a pattern. |
+| Link Storybook examples to Zeroheight guidance. | Let Storybook become an undocumented alternate design system. |

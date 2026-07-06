@@ -211,12 +211,12 @@ describe('App', () => {
     expect(navText).toContain('Glossary');
   });
 
-  it('renders a PrimeIcon in the app brand', async () => {
+  it('renders the brand logo in the app header', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.app-frame__brand-icon.pi.pi-chart-line')).toBeTruthy();
+    expect(compiled.querySelector('.app-frame__brand-logo')).toBeTruthy();
   });
 });

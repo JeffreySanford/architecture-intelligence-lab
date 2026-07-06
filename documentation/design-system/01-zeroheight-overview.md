@@ -7,6 +7,7 @@ Zeroheight is the design-system documentation and governance layer for this lab.
 ```text
 Design intent and product rules
         -> Zeroheight styleguide and governance
+        -> Storybook component examples and interaction states
         -> Token JSON and PrimeNG Nora preset
         -> Angular PrimeNG components and app CSS variables
         -> Tested lab pages
@@ -22,6 +23,7 @@ Design intent and product rules
 | `04-accessibility.md` | Defines the accessibility checklist for token and component changes. |
 | `05-onboarding-ramp-up.md` | Defines safe pre-onboarding ramp-up work and learning areas. |
 | `06-zeroheight-primeng-theme-governance.md` | Defines the full governance workflow, change process, and validation gates. |
+| `07-storybook-integration.md` | Defines Storybook's role as the isolated component example and state-review layer. |
 
 ## Source Of Truth
 
@@ -32,6 +34,8 @@ Design intent and product rules
 | MD3 alias map | `design-system/tokens/md3-to-primeng-map.json` | Maps old app aliases to current PrimeNG token paths. |
 | Runtime preset | `apps/architecture-dashboard/src/app/core/theme/architecture-prime-preset.ts` | Actual PrimeNG Nora preset used by Angular. |
 | Alias bridge | `apps/architecture-dashboard/src/styles/_colors.scss` | Keeps existing page SCSS stable while migration continues. |
+| Storybook integration | `documentation/design-system/07-storybook-integration.md` | Defines story ownership, structure, and Zeroheight linking. |
+| Storybook stories | `apps/architecture-dashboard/src/app/**/*.stories.ts` | Demonstrate PrimeNG component states referenced from Zeroheight. |
 | Live preview | `/lab/theme` | Demonstrates token and component behavior in the running app. |
 
 ## Zeroheight Responsibilities
@@ -40,8 +44,17 @@ Design intent and product rules
 - Explain component usage for PrimeNG buttons, inputs, selects, tables, cards, dialogs, tags, messages, and overlays.
 - Hold accessibility guidance for contrast, keyboard focus, validation, reduced motion, and table readability.
 - Link to Figma, Storybook, GitHub, GitLab, generated tokens, and implementation references where available.
+- Link each governed component page to the matching Storybook story when one exists.
 - Capture do and do-not examples for Capital Markets and architecture lab workflows.
 - Record change history and decision context when tokens or component standards change.
+
+## Storybook Responsibilities
+
+- Show interactive component examples for the states documented in Zeroheight.
+- Exercise PrimeNG components through `ArchitecturePrimePreset`, not through separate Storybook-only styling.
+- Provide examples for default, hover-ready, focused, invalid, disabled, loading, selected, empty, and dense states.
+- Include accessibility notes and controls where they help validate token behavior.
+- Link back to Zeroheight or this documentation folder as the governing source of truth.
 
 ## PrimeNG Responsibilities
 
@@ -55,6 +68,7 @@ Design intent and product rules
 
 - Token changes must update the JSON token file, PrimeNG preset, and documentation together.
 - Component behavior changes must include a note in `03-component-guidelines.md` when they set a reusable pattern.
+- Storybook stories must be updated when a reusable component state or example changes.
 - Accessibility-impacting changes must be checked against `04-accessibility.md`.
 - Runtime changes must be validated with `pnpm nx run architecture-dashboard:test`, `pnpm nx run architecture-dashboard:lint`, and `pnpm nx run architecture-dashboard:build`.
 - The `/lab/theme` route should be used as the visual smoke test for token and component changes.

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -44,10 +44,10 @@ type PreviewRow = {
   styleUrl: './theme-governance.page.scss',
 })
 export class ThemeGovernancePage {
-  protected compactDensity = false;
-  protected darkPreview = false;
-  protected dialogVisible = false;
-  protected selectedPattern = 'Commitments';
+  @Input() compactDensity = false;
+  @Input() darkPreview = false;
+  @Input() dialogVisible = false;
+  @Input() selectedPattern = 'Commitments';
 
   protected readonly patternOptions = [
     { label: 'Commitments', value: 'Commitments' },

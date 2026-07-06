@@ -15,7 +15,7 @@ If there are particular repos, docs, tickets, domain concepts, or UI patterns yo
 ## Useful Ramp-Up Areas
 
 - Environment readiness: setup docs, local dev requirements, Node and Java versions, package manager, Docker expectations, VPN or access expectations, PrimeNG version, and test commands.
-- Design system and PrimeNG: Zeroheight, Nora preset, token structure, dark mode, density, form standards, table standards, overlay standards, and accessibility rules.
+- Design system and PrimeNG: Zeroheight, Storybook, Nora preset, token structure, dark mode, density, form standards, table standards, overlay standards, and accessibility rules.
 - Capital Markets vocabulary: securities, pools, commitments, trades, pricing, disclosures, settlement, audit history, operational metrics, and approval workflows.
 - Safe code review or shadowing: read PRs, note patterns, identify repeated UI decisions, and ask architecture questions.
 - Testing and documentation: setup notes, README cleanup, glossary additions, UI behavior documentation, accessibility observations, and design-system gaps.
@@ -27,13 +27,16 @@ If there are particular repos, docs, tickets, domain concepts, or UI patterns yo
 3. `documentation/design-system/03-component-guidelines.md`
 4. `documentation/design-system/04-accessibility.md`
 5. `documentation/design-system/06-zeroheight-primeng-theme-governance.md`
-6. `apps/architecture-dashboard/src/app/core/theme/architecture-prime-preset.ts`
-7. `apps/architecture-dashboard/src/styles/_colors.scss`
-8. `/lab/theme` in the running dashboard
+6. `documentation/design-system/07-storybook-integration.md`
+7. `apps/architecture-dashboard/src/app/core/theme/architecture-prime-preset.ts`
+8. `apps/architecture-dashboard/src/styles/_colors.scss`
+9. `/lab/theme` in the running dashboard
+10. Any Storybook stories once Storybook is configured for the Angular app
 
 ## Good Questions To Ask
 
 - Which design-system source is authoritative today: Zeroheight, Figma, Storybook, repo docs, or a mix?
+- Should Storybook stories be linked from Zeroheight pages, generated from docs, or maintained manually?
 - Are there approved PrimeNG component patterns for dense tables, filters, dialogs, and workflow actions?
 - What are the required Capital Markets status terms and severity mappings?
 - Are dark mode, compact density, and multi-theme support active requirements or future concerns?
@@ -44,6 +47,7 @@ If there are particular repos, docs, tickets, domain concepts, or UI patterns yo
 - A short environment setup note with commands that worked and any blockers.
 - A glossary update for domain terms and UI terms.
 - A component inventory of PrimeNG usage across key pages.
+- A proposed Storybook story inventory for reusable PrimeNG component states.
 - A token gap list comparing docs, token JSON, preset, and live UI.
 - A focused accessibility observation list with screenshots or route names.
 
@@ -52,4 +56,5 @@ If there are particular repos, docs, tickets, domain concepts, or UI patterns yo
 - Do not request production data or credentials for ramp-up work.
 - Do not change approved token values without design-system owner review.
 - Do not introduce a new component library when PrimeNG already covers the need.
+- Do not use Storybook-only styles that differ from the app's PrimeNG preset.
 - Do not treat Zeroheight as a package to install in Angular; it is the documentation and governance layer.

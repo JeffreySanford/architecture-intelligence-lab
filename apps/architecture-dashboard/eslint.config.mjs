@@ -66,5 +66,14 @@ export default [
         rules: {
             "@nx/enforce-module-boundaries": "off"
         }
+    },
+    {
+        files: [
+            ".storybook/**/*.ts",
+            "src/app/**/*.stories.ts"
+        ],
+        rules: {
+            "@nx/enforce-module-boundaries": "off"
+        }
     }
 ];

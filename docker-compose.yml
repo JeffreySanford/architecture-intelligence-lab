@@ -9,7 +9,7 @@ services:
     ports:
       - "${ARCHITECTURE_DASHBOARD_PORT:-4200}:80"
     environment:
-      - ARCHITECTURE_DASHBOARD_ACCESS_LOG=${ARCHITECTURE_DASHBOARD_ACCESS_LOG:-on}
+      - ARCHITECTURE_DASHBOARD_ACCESS_LOG=${ARCHITECTURE_DASHBOARD_ACCESS_LOG:-off}
     depends_on:
       spring-api:
         condition: service_healthy

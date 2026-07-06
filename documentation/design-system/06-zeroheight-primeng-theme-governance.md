@@ -7,6 +7,7 @@ This is the full design-system workflow for the lab. Zeroheight is the documenta
 ```text
 Design intent
         -> Zeroheight or repo design-system documentation
+        -> Storybook examples for component states
         -> Token JSON
         -> PrimeNG Nora preset
         -> PrimeNG CSS variables
@@ -25,6 +26,8 @@ Design intent
 | Legacy alias bridge | `apps/architecture-dashboard/src/styles/_colors.scss` |
 | Token docs | `design-system/tokens/architecture-tokens.json` |
 | Alias map | `design-system/tokens/md3-to-primeng-map.json` |
+| Storybook guidance | `documentation/design-system/07-storybook-integration.md` |
+| Storybook stories | `apps/architecture-dashboard/src/app/**/*.stories.ts` |
 | Preview route | `/lab/theme` |
 | Route permission | `developer:view` |
 
@@ -33,6 +36,7 @@ Design intent
 | Layer | Owns | Does not own |
 | --- | --- | --- |
 | Zeroheight or repo docs | Intent, usage rules, examples, accessibility guidance, change history. | Runtime component styling. |
+| Storybook | Executable examples, state coverage, controls, and visual review references. | Token ownership or independent styling. |
 | Token JSON | Portable token inventory and mappings. | Angular execution. |
 | PrimeNG preset | Runtime primitive, semantic, and component tokens. | Product copy and workflow decisions. |
 | Alias bridge | Temporary compatibility for existing app SCSS. | New design-system semantics. |
@@ -114,8 +118,9 @@ Use this flow for token or component-standard changes:
 4. Update `md3-to-primeng-map.json` when an alias mapping changes.
 5. Update `ArchitecturePrimePreset` for runtime token behavior.
 6. Update `_colors.scss` only when existing app aliases need to bridge to the new token.
-7. Check `/lab/theme` visually.
-8. Run test, lint, and build.
+7. Update Storybook stories when component states, examples, or accessibility notes change.
+8. Check `/lab/theme` visually.
+9. Run test, lint, and build.
 
 ## Validation Gates
 
@@ -131,6 +136,7 @@ Recommended browser smoke checks:
 
 - Select Henry MCP Explorer and confirm `/lab/theme` is visible.
 - Open `/lab/theme` and inspect button, input, table, card, and tag states.
+- Open the matching Storybook story when Storybook is configured and inspect the same states in isolation.
 - Confirm focus is visible with keyboard tabbing.
 - Confirm no Angular console errors appear.
 - Confirm a hard reload keeps permission-driven navigation stable.
@@ -161,13 +167,21 @@ When this repo content is moved or mirrored into Zeroheight, use this structure:
    - Alias bridge policy
 4. Components
    - Button
+   - Storybook story link
    - InputText
+   - Storybook story link
    - Select
+   - Storybook story link
    - ToggleSwitch
+   - Storybook story link
    - DataTable
+   - Storybook story link
    - Card
+   - Storybook story link
    - Dialog and overlays
+   - Storybook story link
    - Tags and messages
+   - Storybook story link
 5. Accessibility
    - Contrast
    - Keyboard focus
@@ -211,6 +225,59 @@ Expected examples:
 - Data table hover and selected row states
 - Capital Markets card or operational summary
 
+## Storybook Integration
+
+Storybook should sit between Zeroheight governance and the Angular runtime. Zeroheight explains what the component standard is. Storybook proves the standard in isolated examples. PrimeNG provides the real implementation and token behavior.
+
+```text
+Zeroheight component page
+        -> links to Storybook story
+        -> story renders PrimeNG component with ArchitecturePrimePreset
+        -> story links back to source docs and implementation files
+```
+
+Recommended first story:
+
+```text
+ThemeGovernance/PrimeNGStates
+```
+
+Suggested story metadata:
+
+```ts
+const meta = {
+  title: 'ThemeGovernance/PrimeNGStates',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'PrimeNG component states governed by Zeroheight and implemented through ArchitecturePrimePreset.',
+      },
+    },
+    designSystem: {
+      zeroheight: 'Architecture Intelligence Lab Design System / Components',
+      primeNgPreset: 'ArchitecturePrimePreset',
+      tokenMap: 'documentation/design-system/02-md3-to-primeng-token-map.md',
+    },
+  },
+};
+```
+
+Suggested first story variants:
+
+- `Buttons`: primary, text, danger, disabled, loading.
+- `Forms`: InputText, Select, ToggleSwitch, invalid, disabled.
+- `DataTable`: default, hover-ready, selected, empty, dense.
+- `CardsAndTags`: operational summary card and status severities.
+
+Storybook rules:
+
+- Import PrimeNG modules used by the example.
+- Use the same global styles and PrimeNG provider configuration as the app.
+- Do not add Storybook-only token values.
+- Link the story docs panel back to Zeroheight or these markdown files.
+- Use Storybook for isolated state review and `/lab/theme` for integrated app review.
+
 ## Decision Records
 
 Record these decisions in pull requests or follow-up docs when they change:
@@ -222,6 +289,7 @@ Record these decisions in pull requests or follow-up docs when they change:
 - Data table density and interaction behavior.
 - Dark mode support.
 - Permission required for `/lab/theme`.
+- Storybook story naming and Zeroheight link strategy. See `07-storybook-integration.md`.
 
 ## Enterprise Readiness Notes
 
@@ -233,6 +301,7 @@ Free-style scope:
 - One token set
 - Design-tool and developer-tool references
 - Documentation and governance examples
+- Storybook component-state examples
 - Local live preview in Angular
 
 Enterprise-style concerns to model later:
@@ -246,4 +315,4 @@ Enterprise-style concerns to model later:
 
 ## Short Answer
 
-Use Zeroheight as the documented source of truth, not as an Angular package. Use PrimeNG Nora and `ArchitecturePrimePreset` as the runtime implementation. Keep the MD3-style aliases only as a bridge while migrating page styles. Validate every reusable theme change through docs, token JSON, preset code, `/lab/theme`, and Nx test/lint/build checks.
+Use Zeroheight as the documented source of truth, not as an Angular package. Use Storybook as the isolated component example layer. Use PrimeNG Nora and `ArchitecturePrimePreset` as the runtime implementation. Keep the MD3-style aliases only as a bridge while migrating page styles. Validate every reusable theme change through docs, token JSON, preset code, Storybook stories, `/lab/theme`, and Nx test/lint/build checks.

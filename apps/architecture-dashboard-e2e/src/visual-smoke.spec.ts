@@ -58,11 +58,11 @@ test.describe('Visual smoke - Phase 9', () => {
     await expect(page.locator('.route-transition')).toBeVisible();
   });
 
-  test('app brand shows the PrimeNG chart icon and animation-ready header', async ({ page }) => {
+  test('app brand shows the Architecture Intelligence Lab logo and animation-ready header', async ({ page }) => {
     await mockLandingApi(page);
 
     await page.goto('/');
-    await expect(page.locator('.app-frame__brand-icon.pi.pi-chart-line')).toBeVisible();
+    await expect(page.locator('.app-frame__brand-logo')).toBeVisible();
     await expect(page.locator('.app-frame__content-header')).toBeVisible();
     await expect(page.locator('.route-transition')).toBeVisible();
   });
