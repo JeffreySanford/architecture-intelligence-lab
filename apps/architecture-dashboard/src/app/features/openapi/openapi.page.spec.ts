@@ -120,6 +120,28 @@ describe('OpenApiPage', () => {
     );
   });
 
+  it('should render contract gap alerts for facade critical-field validation', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    expect(compiled.querySelectorAll('[data-testid="contract-gap-alert-row"]')).toHaveLength(4);
+    expect(compiled.textContent).toContain('Spring dashboard snapshot');
+    expect(compiled.textContent).toContain('SpringApiFacade.validateDashboardSnapshot');
+    expect(compiled.textContent).toContain('NestApiFacade.validateRealtimeEventHistory');
+  });
+
+  it('should filter contract gap alerts by surface text', () => {
+    const page = component as unknown as {
+      contractGapFilter: { set(value: string): void };
+      filteredContractGapAlerts(): Array<{ surface: string }>;
+    };
+
+    page.contractGapFilter.set('future');
+
+    expect(page.filteredContractGapAlerts()).toEqual([
+      expect.objectContaining({ surface: 'Future securities and disclosure DTOs' }),
+    ]);
+  });
+
   it('should handle large generated client lists and maintain filtering responsiveness', () => {
     const store = TestBed.inject(OpenApiStore);
     const largeClientRows: GeneratedClientStatus[] = Array.from({ length: 520 }, (_, index) => ({

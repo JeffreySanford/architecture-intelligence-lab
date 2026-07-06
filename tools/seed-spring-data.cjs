@@ -35,9 +35,9 @@ function buildSql() {
     'Nora Grant', 'Eli Ross', 'Ivy Scott', 'Noah West', 'Lena Ray',
   ];
 
-  for (let index = 1; index <= 150; index += 1) {
+  for (let index = 1; index <= 30000; index += 1) {
     const id = `borrower-${pad(index)}`;
-    const name = borrowerNames[(index - 1) % borrowerNames.length];
+    const name = borrowerNames[(index - 1) % borrowerNames.length] + ` ${Math.floor((index - 1) / borrowerNames.length) + 1}`;
     const creditScore = 550 + ((index * 17) % 250);
     const riskBand = riskBands[index % riskBands.length];
 
@@ -51,7 +51,7 @@ function buildSql() {
     'Employment Verification', 'Title Insurance', 'Insurance Declaration', 'Property Survey',
   ];
 
-  for (let index = 1; index <= 150; index += 1) {
+  for (let index = 1; index <= 30000; index += 1) {
     const loanId = `loan-${pad(index)}`;
     const borrowerId = `borrower-${pad(index)}`;
     const loanNumber = `TL-${1000 + index}`;
@@ -61,13 +61,9 @@ function buildSql() {
 
     loans.push(`  (${quote(loanId)}, ${quote(borrowerId)}, ${quote(loanNumber)}, ${amount.toFixed(2)}, ${quote(statusCode)}, ${updatedAt})`);
 
-    const documentCount = 2 + (index % 3);
-    for (let docIndex = 1; docIndex <= documentCount; docIndex += 1) {
-      const documentId = `doc-${pad((index - 1) * 3 + docIndex)}`;
-      const documentType = documentTypes[(index + docIndex) % documentTypes.length];
-      const status = docIndex === 1 ? 'received' : docIndex === 2 ? 'pending' : 'missing';
-      documents.push(`  (${quote(documentId)}, ${quote(loanId)}, ${quote(documentType)}, ${quote(status)})`);
-    }
+    const documentId = `doc-${pad(index, 5)}`;
+    const documentType = documentTypes[index % documentTypes.length];
+    documents.push(`  (${quote(documentId)}, ${quote(loanId)}, ${quote(documentType)}, ${quote('received')})`);
   }
 
   return [

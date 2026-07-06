@@ -109,7 +109,7 @@ export class LabShellComponent {
       label: 'OpenAPI Contract Lab',
       route: '/lab/openapi',
       description: 'Contracts and clients',
-      permission: 'contracts:view',
+      permission: { anyOf: ['contracts:view', 'admin:view'] },
       icon: 'pi pi-code',
     },
     {

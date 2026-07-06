@@ -27,6 +27,14 @@ export type DriftBoundary = {
   status: ContractStatus;
 };
 
+export type ContractGapAlert = {
+  surface: string;
+  criticalFields: string;
+  validator: string;
+  failureSignal: string;
+  status: ContractStatus;
+};
+
 @Injectable({ providedIn: 'root' })
 export class OpenApiStore {
   readonly openApiDriftStatus = {
@@ -38,6 +46,7 @@ export class OpenApiStore {
   readonly clientFilter = signal('');
   readonly endpointFilter = signal('');
   readonly driftFilter = signal('');
+  readonly contractGapFilter = signal('');
   readonly rowsPerPageOptions = [5, 10, 25];
 
   readonly swaggerLinks = [
@@ -167,6 +176,37 @@ export class OpenApiStore {
     },
   ]);
 
+  readonly contractGapAlerts = signal<ContractGapAlert[]>([
+    {
+      surface: 'Spring dashboard snapshot',
+      criticalFields: 'dataset, loans[], loan id, borrowerId, loanNumber, amount, statusCode',
+      validator: 'SpringApiFacade.validateDashboardSnapshot',
+      failureSignal: 'Facade throws `Spring dashboard contract gap` before state projection.',
+      status: 'wrapped',
+    },
+    {
+      surface: 'Nest comparison metrics',
+      criticalFields: 'subject, observedAt, pathId, label, status, latencyMs, payloadBytes, recordCount',
+      validator: 'NestApiFacade.validateComparisonResponse',
+      failureSignal: 'Facade throws `Nest comparison contract gap` before charts or tables bind.',
+      status: 'wrapped',
+    },
+    {
+      surface: 'Nest realtime events',
+      criticalFields: 'eventId, type, loanId, loanNumber, previousStatus, nextStatus, source, observedAt',
+      validator: 'NestApiFacade.validateRealtimeEventHistory',
+      failureSignal: 'Facade throws `Nest realtime contract gap` before event history projection.',
+      status: 'wrapped',
+    },
+    {
+      surface: 'Future securities and disclosure DTOs',
+      criticalFields: 'security id, commitment id, disclosure file id, pricing status',
+      validator: 'Future generated facade validators',
+      failureSignal: 'Track as a watch item until these backend DTOs exist.',
+      status: 'watch',
+    },
+  ]);
+
   readonly filteredGeneratedClients = computed(() =>
     this.filterRows(this.generatedClients(), this.clientFilter()),
   );
@@ -177,6 +217,10 @@ export class OpenApiStore {
 
   readonly filteredDriftBoundaries = computed(() =>
     this.filterRows(this.driftBoundaries(), this.driftFilter()),
+  );
+
+  readonly filteredContractGapAlerts = computed(() =>
+    this.filterRows(this.contractGapAlerts(), this.contractGapFilter()),
   );
 
   statusSeverity(status: ContractStatus): 'success' | 'info' | 'warn' {

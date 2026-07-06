@@ -43,21 +43,31 @@ export class AdminPage {
     {
       id: 'openapi-docs-permission',
       area: 'OpenAPI docs permission protection',
-      status: 'issue',
+      status: 'ok',
       summary:
-        'Raw contract endpoints are publicly reachable and linked from the contract lab without a permission guard.',
+        'Spring and Nest Swagger/OpenAPI endpoints are guarded by signed dev persona cookies and contract/admin permissions.',
       recommendation:
-        'Restrict `/v3/api-docs`, `/swagger-json`, and Swagger UI behind role-based access or hidden dev-only routes.',
+        'Keep raw docs links visible only to contract/admin personas and run the docs access probes during security scans.',
       owner: 'Spring / Nest API teams',
+    },
+    {
+      id: 'contract-docs-access-monitor',
+      area: 'Raw contract docs access monitor',
+      status: 'watch',
+      summary:
+        'The admin dashboard tracks docs access as an explicit security monitoring item for `/swagger/spring-json/`, `/swagger/nest/`, and `/swagger/nest-json/`.',
+      recommendation:
+        'Review backend logs and Docker smoke output for unauthorized docs probes after changes to auth, proxy, or Swagger routing.',
+      owner: 'Admin security monitoring',
     },
     {
       id: 'nest-realtime-auth-guard',
       area: 'Nest realtime and gateway auth guards',
-      status: 'watch',
+      status: 'ok',
       summary:
-        'Realtime and gateway APIs are currently exposed without explicit authentication or authorization enforcement.',
+        'Realtime and gateway APIs require signed dev persona cookies and role-aware backend guards.',
       recommendation:
-        'Add route guards on gateway endpoints and require persona roles for emit/history control paths.',
+        'Keep guard regression tests on gateway comparison, realtime history, and realtime emit paths.',
       owner: 'Nest gateway',
     },
     {
@@ -89,6 +99,16 @@ export class AdminPage {
       recommendation:
         'Review the risk map in planning/phase-6-5-security-risk-map.md and keep it updated as hardening progresses.',
       owner: 'Planning / Admin',
+    },
+    {
+      id: 'generated-client-contract-gaps',
+      area: 'Generated client facade validation',
+      status: 'watch',
+      summary:
+        'SpringApiFacade and NestApiFacade now fail fast on missing critical DTO identifiers, counters, and realtime transition fields.',
+      recommendation:
+        'Add new facade validators when generated clients start carrying securities, commitments, disclosures, or pricing DTOs.',
+      owner: 'Angular data-access facades',
     },
   ]);
 

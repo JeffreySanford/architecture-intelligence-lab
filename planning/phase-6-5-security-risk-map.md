@@ -24,7 +24,7 @@ The following risk areas are included:
 
 ### Auth
 
-- `access_token` cookie is a dev-only persona identifier with no signature or integrity checks.
+- `access_token` cookie is an HMAC-signed dev-only persona token with expiry and integrity checks.
 - Spring and Nest both validate a signed demo persona cookie, but that cookie still represents local training identity rather than production-grade authentication.
 - Reloading a protected `/lab/*` route must clear stale auth state and reset persona selection, or stale UI/session state may expose broader access than intended.
 - No CSRF protection exists for state-changing APIs, so cookie-based auth can be abused by third-party pages.
@@ -32,8 +32,8 @@ The following risk areas are included:
 
 ### Authorization
 
-- OpenAPI docs endpoints are protected by role/permission checks, but the baseline gateway and realtime API routes are still exposed.
-- `contracts:view` is used for contract lab access, while `admin:view` is also allowed for docs access; permission boundaries should be audited for least privilege.
+- OpenAPI docs endpoints, gateway routes, and realtime API routes are protected by backend role/permission checks.
+- `contracts:view` is the required permission for the OpenAPI Contract Lab, while raw docs endpoints also accept `admin:view`. Admin personas are seeded with both `admin:view` and `contracts:view` in this local lab so UI, docs, and contract access remain aligned.
 - Angular route guards are effective for UI navigation, but backend enforcement is the true security boundary.
 - Persona authorization is currently based on repository lookup by cookie value, so missing or malformed cookies may bypass intended persona restrictions if not normalized consistently.
 
@@ -46,7 +46,7 @@ The following risk areas are included:
 
 ### CSRF
 
-- Cookie-based auth with no anti-CSRF token or same-site enforcement is vulnerable in a cross-origin browser context.
+- Cookie-based auth remains sensitive in a cross-origin browser context; local-lab mitigation uses same-site cookie enforcement and restricted CORS/origin policy.
 - Any state-changing endpoint exposed by the lab should either use same-site cookies or an explicit CSRF token header.
 - The OpenAPI docs filter should also consider the risk of stateful GET requests being repurposed in a CSRF attack if backend auth changes over time.
 
@@ -71,7 +71,7 @@ The following risk areas are included:
 - [X] Define a follow-up mitigation plan for CSRF and cookie integrity.
 - [X] Validate refresh hardening for protected lab routes, including direct `/lab/mcp` reloads, stale auth state reset, and landing redirect behavior.
 - [X] Validate local Spring persona load through `/api/personas` and confirm the landing page auth flow functions after the Flyway repair.
-- [ ] Review generated client drift coverage and add contract change alerts to the OpenAPI Contract Lab.
+- [X] Review generated client drift coverage and add contract change alerts to the OpenAPI Contract Lab.
 - [X] Add unit and Playwright regression coverage for protected docs, gateway, and realtime auth guard behavior.
 - [X] Consolidate deferred hardening work into `planning/phase-6-5-follow-up.md`.
 
@@ -81,13 +81,13 @@ Title: Phase 6.5 OpenAPI security hardening and risk remediation
 
 Body:
 
-- [ ] Review and harden Spring `access_token` persona auth model
-- [ ] Tighten Nest gateway and realtime route auth guards
-- [ ] Restrict Socket.IO origin handling for non-local use
-- [ ] Validate CORS policy across Angular, Spring, and Nest clients
-- [ ] Add CSRF protection or same-site cookie enforcement for state-changing APIs
-- [ ] Monitor contract docs access from the admin security page
-- [ ] Track generated client drift and raw contract metadata exposure as follow-up work
+- [X] Review and harden Spring `access_token` persona auth model
+- [X] Tighten Nest gateway and realtime route auth guards
+- [X] Restrict Socket.IO origin handling for non-local use
+- [X] Validate CORS policy across Angular, Spring, and Nest clients
+- [X] Add CSRF protection or same-site cookie enforcement for state-changing APIs
+- [X] Monitor contract docs access from the admin security page
+- [X] Track generated client drift and raw contract metadata exposure as follow-up work
 
 Labels: `security`, `phase-6.5`, `openapi`, `risk` 
 

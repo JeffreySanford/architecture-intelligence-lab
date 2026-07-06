@@ -105,6 +105,12 @@ insert into role_permissions (role_id, permission_id) values
   ('admin', 'documents:view'),
   ('admin', 'documents:update'),
   ('admin', 'admin:view'),
+  ('admin', 'contracts:view'),
+  ('admin', 'diagnostics:view'),
+  ('admin', 'backend-comparison:view'),
+  ('admin', 'realtime:view'),
+  ('admin', 'developer:view'),
+  ('admin', 'mcp:view'),
   ('diagnostics-admin', 'dashboard:view'),
   ('diagnostics-admin', 'diagnostics:view'),
   ('diagnostics-admin', 'backend-comparison:view'),
@@ -262,4 +268,34 @@ insert into loan_documents (id, loan_id, document_type, status) values
   ('doc-028', 'loan-026', 'Appraisal', 'received'),
   ('doc-029', 'loan-027', 'Tax Return', 'missing'),
   ('doc-030', 'loan-028', 'Debt-to-Income Statement', 'received')
+on conflict (id) do nothing;
+
+insert into borrowers (id, display_name, credit_score, risk_band)
+select format('borrower-%s', to_char(idx, 'FM000')),
+       concat('Borrower ', idx),
+       550 + ((idx * 17) % 301),
+       case (idx % 3)
+         when 0 then 'Low'
+         when 1 then 'Medium'
+         else 'High'
+       end
+from generate_series(31, 30000) as s(idx)
+on conflict (id) do nothing;
+
+insert into loans (id, borrower_id, loan_number, amount, status_code, updated_at)
+select format('loan-%s', to_char(idx, 'FM000')),
+       format('borrower-%s', to_char(idx, 'FM000')),
+       format('TL-%s', to_char(1000 + idx, 'FM0000')),
+       180000.00 + ((idx * 7137) % 720001),
+       (array['submitted', 'in_review', 'conditional_approval', 'approved', 'needs_documents'])[(idx % 5) + 1],
+       now()
+from generate_series(31, 30000) as s(idx)
+on conflict (id) do nothing;
+
+insert into loan_documents (id, loan_id, document_type, status)
+select format('doc-%s', to_char(idx, 'FM000')),
+       format('loan-%s', to_char(idx, 'FM000')),
+       (array['Income Verification', 'Credit Report', 'Appraisal', 'Bank Statement', 'Title Insurance', 'Purchase Agreement', 'Closing Disclosure', 'Debt-to-Income Statement', 'Employment Verification', 'Insurance Declaration'])[(idx % 10) + 1],
+       (array['received', 'pending', 'missing'])[(idx % 3) + 1]
+from generate_series(31, 30000) as s(idx)
 on conflict (id) do nothing;

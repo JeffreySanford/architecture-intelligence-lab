@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import {
   BackendComparisonMetricDto,
   BackendComparisonHistoryDto,
@@ -47,7 +48,9 @@ export class NestApiFacade {
   };
 
   getLoanComparison() {
-    return this.comparisonApi.compareLoans(undefined, false, this.jsonAcceptOptions);
+    return this.comparisonApi.compareLoans(undefined, false, this.jsonAcceptOptions).pipe(
+      map((comparison) => this.validateComparisonResponse(comparison)),
+    );
   }
 
   getLoanComparisonHistory() {
@@ -55,11 +58,15 @@ export class NestApiFacade {
   }
 
   getRealtimeEventHistory() {
-    return this.realtimeApi.getRealtimeEventHistory(undefined, false, this.jsonAcceptOptions);
+    return this.realtimeApi.getRealtimeEventHistory(undefined, false, this.jsonAcceptOptions).pipe(
+      map((history) => this.validateRealtimeEventHistory(history)),
+    );
   }
 
   emitLoanStatusEvent(request: LoanStatusEventRequestDto) {
-    return this.realtimeApi.emitLoanStatusEvent(request, undefined, false, this.jsonAcceptOptions);
+    return this.realtimeApi.emitLoanStatusEvent(request, undefined, false, this.jsonAcceptOptions).pipe(
+      map((event) => this.validateRealtimeEvent(event)),
+    );
   }
 
   getRealtimeRedisAdapterStatus() {
@@ -74,5 +81,48 @@ export class NestApiFacade {
 
   getProxyLoanReads() {
     return this.comparisonApi.getProxyLoans(undefined, false, this.jsonAcceptOptions);
+  }
+
+  private validateComparisonResponse(
+    response: BackendComparisonResponseDto,
+  ): BackendComparisonResponseDto {
+    if (!response.subject || !response.observedAt || !Array.isArray(response.paths)) {
+      throw new Error('Nest comparison contract gap: missing subject, observedAt, or paths.');
+    }
+
+    for (const metric of response.paths) {
+      if (!metric.pathId || !metric.label || !metric.status || !metric.observedAt) {
+        throw new Error('Nest comparison contract gap: metric is missing a critical field.');
+      }
+
+      if (metric.latencyMs < 0 || metric.payloadBytes < 0 || metric.recordCount < 0) {
+        throw new Error('Nest comparison contract gap: metric counters must be non-negative.');
+      }
+    }
+
+    return response;
+  }
+
+  private validateRealtimeEventHistory(
+    history: RealtimeEventHistoryDto,
+  ): RealtimeEventHistoryDto {
+    if (!history.namespace || !history.eventName || !Array.isArray(history.events)) {
+      throw new Error('Nest realtime contract gap: missing namespace, eventName, or events.');
+    }
+
+    history.events.forEach((event) => this.validateRealtimeEvent(event));
+    return history;
+  }
+
+  private validateRealtimeEvent(event: RealtimeEventDto): RealtimeEventDto {
+    if (!event.eventId || !event.type || !event.loanId || !event.loanNumber || !event.observedAt) {
+      throw new Error('Nest realtime contract gap: event is missing a critical identifier field.');
+    }
+
+    if (!event.previousStatus || !event.nextStatus || !event.source) {
+      throw new Error('Nest realtime contract gap: event is missing status transition metadata.');
+    }
+
+    return event;
   }
 }

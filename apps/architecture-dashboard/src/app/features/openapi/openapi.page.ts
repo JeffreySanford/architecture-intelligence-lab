@@ -46,14 +46,17 @@ export class OpenApiPage implements AfterViewInit {
   protected readonly clientFilter = this.openApiStore.clientFilter;
   protected readonly endpointFilter = this.openApiStore.endpointFilter;
   protected readonly driftFilter = this.openApiStore.driftFilter;
+  protected readonly contractGapFilter = this.openApiStore.contractGapFilter;
   protected readonly rowsPerPageOptions = this.openApiStore.rowsPerPageOptions;
   protected readonly swaggerLinks = this.openApiStore.swaggerLinks;
   protected readonly generatedClients = this.openApiStore.generatedClients;
   protected readonly contractEndpoints = this.openApiStore.contractEndpoints;
   protected readonly driftBoundaries = this.openApiStore.driftBoundaries;
+  protected readonly contractGapAlerts = this.openApiStore.contractGapAlerts;
   protected readonly filteredGeneratedClients = this.openApiStore.filteredGeneratedClients;
   protected readonly filteredContractEndpoints = this.openApiStore.filteredContractEndpoints;
   protected readonly filteredDriftBoundaries = this.openApiStore.filteredDriftBoundaries;
+  protected readonly filteredContractGapAlerts = this.openApiStore.filteredContractGapAlerts;
 
   ngAfterViewInit(): void {
     this.renderContractTree();

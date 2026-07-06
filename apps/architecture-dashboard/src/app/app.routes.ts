@@ -185,7 +185,7 @@ export const appRoutes: Routes = [
           eyebrow: 'Anti-drift workflow',
           description:
             'Inspect Spring and Nest Swagger, generated client status, DTOs, endpoints, and drift checks.',
-          permission: 'contracts:view',
+          permission: { anyOf: ['contracts:view', 'admin:view'] },
         },
       },
       {

@@ -326,4 +326,61 @@
       </ng-template>
     </p-table>
   </p-card>
+
+  <p-card animate.enter="enter" animate.leave="exit">
+    <ng-template pHeader>
+      <div class="openapi__card-header">
+        <div>
+          <div class="openapi__card-title">Contract gap alerts</div>
+          <div class="openapi__card-subtitle">Critical DTO fields validated by facades before UI projection</div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="table-toolbar">
+      <input
+        pInputText
+        type="search"
+        placeholder="Filter contract gap alerts"
+        [ngModel]="contractGapFilter()"
+        (ngModelChange)="contractGapFilter.set($event)"
+      />
+    </div>
+
+    <p-table
+      [value]="filteredContractGapAlerts()"
+      styleClass="p-datatable-sm"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      sortMode="multiple"
+      dataKey="surface"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="surface">Surface <p-sort-icon field="surface"></p-sort-icon></th>
+          <th>Critical fields</th>
+          <th>Validator</th>
+          <th>Failure signal</th>
+          <th pSortableColumn="status">Status <p-sort-icon field="status"></p-sort-icon></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-alert>
+        <tr data-testid="contract-gap-alert-row" animate.enter="row-enter">
+          <td>{{ alert.surface }}</td>
+          <td>{{ alert.criticalFields }}</td>
+          <td><code>{{ alert.validator }}</code></td>
+          <td>{{ alert.failureSignal }}</td>
+          <td>
+            <p-tag [severity]="statusSeverity(alert.status)" [value]="alert.status"></p-tag>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr animate.enter="row-enter">
+          <td colspan="5">No contract gap alerts match the current filter.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
 </section>

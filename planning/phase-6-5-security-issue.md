@@ -8,7 +8,7 @@ This issue is referenced by the admin security monitoring page and the Phase 6.5
 
 ## Summary
 
-The lab currently secures raw OpenAPI docs access and protects the Nest Swagger UI, but the remaining hardening work still needs a tracked issue:
+The lab secures raw OpenAPI docs access, protects the Nest Swagger UI, and tracks the closed local-lab hardening work:
 
 - strengthen dev persona auth integrity
 - tighten Nest gateway and realtime auth guards
@@ -18,13 +18,13 @@ The lab currently secures raw OpenAPI docs access and protects the Nest Swagger 
 
 ## Tasks
 
-- [ ] Review and harden Spring `access_token` persona auth model
+- [X] Review and harden Spring `access_token` persona auth model
 - [X] Add backend-enforced Nest gateway and realtime auth guards
 - [X] Restrict Socket.IO origin handling for non-local development
 - [X] Validate CORS policy across Angular, Spring, and Nest clients
 - [X] Add CSRF protection or same-site cookie enforcement for state-changing endpoints
 - [X] Validate refresh hardening and landing redirect behavior for protected MCP and contract routes
-- [ ] Monitor contract docs access from the admin security monitoring page
+- [X] Monitor contract docs access from the admin security monitoring page
 - [X] Track generated client drift and raw contract metadata exposure as follow-up work
 - [X] Consolidate active Sprint 15 hardening work and deferred Sprint 17 follow-up into `planning/phase-6-5-follow-up.md`
 

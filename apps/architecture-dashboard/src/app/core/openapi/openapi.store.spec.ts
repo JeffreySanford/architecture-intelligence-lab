@@ -53,6 +53,29 @@ describe('OpenApiStore', () => {
     );
   });
 
+  it('should expose contract gap alerts for facade-level critical DTO validation', () => {
+    expect(store.contractGapAlerts()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          surface: 'Spring dashboard snapshot',
+          validator: 'SpringApiFacade.validateDashboardSnapshot',
+        }),
+        expect.objectContaining({
+          surface: 'Nest realtime events',
+          validator: 'NestApiFacade.validateRealtimeEventHistory',
+        }),
+      ]),
+    );
+  });
+
+  it('should compute filtered contract gap alerts when contractGapFilter changes', () => {
+    store.contractGapFilter.set('realtime');
+
+    expect(store.filteredContractGapAlerts()).toEqual([
+      expect.objectContaining({ surface: 'Nest realtime events' }),
+    ]);
+  });
+
   it('should expose Nginx-relative Swagger and OpenAPI routes', () => {
     expect(store.swaggerLinks).toEqual(
       expect.arrayContaining([
@@ -84,18 +107,22 @@ describe('OpenApiStore', () => {
     store.clientFilter.set('nest');
     store.endpointFilter.set('proxy');
     store.driftFilter.set('watch');
+    store.contractGapFilter.set('future');
 
     expect(store.filteredGeneratedClients()).toHaveLength(1);
     expect(store.filteredContractEndpoints()).toHaveLength(1);
     expect(store.filteredDriftBoundaries()).toHaveLength(2);
+    expect(store.filteredContractGapAlerts()).toHaveLength(1);
 
     store.clientFilter.set('');
     store.endpointFilter.set('');
     store.driftFilter.set('');
+    store.contractGapFilter.set('');
 
     expect(store.filteredGeneratedClients()).toHaveLength(2);
     expect(store.filteredContractEndpoints()).toHaveLength(store.contractEndpoints().length);
     expect(store.filteredDriftBoundaries()).toHaveLength(store.driftBoundaries().length);
+    expect(store.filteredContractGapAlerts()).toHaveLength(store.contractGapAlerts().length);
   });
 
   it('should preserve filter state across store retrievals', () => {

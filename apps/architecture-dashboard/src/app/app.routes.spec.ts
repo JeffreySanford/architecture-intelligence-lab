@@ -13,7 +13,7 @@ describe('App route configuration', () => {
     ['backend-comparison', ['backend-comparison:view', 'realtime:view']],
     ['infrastructure', ['diagnostics:view', 'admin:view']],
     ['realtime', 'realtime:view'],
-    ['openapi', 'contracts:view'],
+    ['openapi', { anyOf: ['contracts:view', 'admin:view'] }],
     ['mcp', { allOf: ['developer:view', 'mcp:view'] }],
     ['glossary', 'developer:view'],
     ['admin', 'admin:view'],

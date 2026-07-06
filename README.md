@@ -15,6 +15,8 @@ This repo intentionally keeps the current modern study stack: Angular 22, Nx 23 
 - [X] Metrics History at `/lab/metrics-history` shows authenticated rolling comparison history using the Nest gateway, Chart.js, and PrimeNG tables.
 - [X] Docker smoke passes for `/`, `/api/health`, stress dataset data, Spring/Nest Swagger proxies, OpenAPI JSON, live comparison metrics, and historical comparison metrics.
 - [X] Deferred hardening and optional follow-up are now closed for local lab scope: signed dev auth cookie integrity, historical metrics dashboard traceability, and public-hardening issue tracking are in place.
+- [X] Phase 6.5 security follow-up is closed for local lab scope: raw contract docs access is monitored from the admin page, generated-client facades validate critical DTO fields, and the OpenAPI Contract Lab shows contract gap alerts.
+- [X] Security scan status: `pnpm audit` reports no known vulnerabilities after workspace overrides for `multer`, `uuid`, `esbuild`, and `@babel/core`.
 
 PrimeNG has been moved to the Angular 22-aligned release-candidate line (`22.0.0-rc.1`) with `@angular/cdk` installed as its peer dependency. Treat PrimeNG 22 APIs as allowed only after local build/test validation, because this is still an RC dependency.
 
@@ -44,6 +46,8 @@ pnpm run start:all
 pnpm run mcp:angular
 pnpm run test:all
 pnpm run lint:all
+pnpm audit
+pnpm run check:openapi-clients
 ```
 
 ## Angular MCP

@@ -21,9 +21,9 @@ The lab currently has strong Phase 6/6.5 documentation and UI visibility for gen
 - [X] Verify refresh hardening for protected lab routes: clearing stale auth state, resetting persona selection, and redirecting to landing on `/lab/*` reloads.
 - [X] Add unit and Playwright regression coverage for refresh hardening and developer-only MCP route guard behavior.
 - [X] Review Phase 6.5 UI/UX artifacts to ensure data visualization, PrimeIcons, and Angular animation reinforce the security and developer guidance narrative.
-- [ ] Monitor raw contract docs access from the admin security monitoring page.
+- [X] Monitor raw contract docs access from the admin security monitoring page.
 - [X] Add generated client drift watch items to the admin security monitoring narrative.
-- [ ] Review generated client facade validation and add contract gap alerts for critical DTO fields.
+- [X] Review generated client facade validation and add contract gap alerts for critical DTO fields.
 - [X] Cross-reference the deferred backlog with `planning/phase-6-5-security-risk-map.md`, `planning/phase-6-5-openapi-client-risk-inventory.md`, and `planning/phase-6-5-security-issue.md`.
 
 ## Deferred Sprint 17 tasks

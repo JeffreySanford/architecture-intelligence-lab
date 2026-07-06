@@ -11,7 +11,7 @@ describe('NestApiFacade', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [NestApiFacade, provideNestApi('')],
+      providers: [NestApiFacade, provideNestApi({ basePath: '', withCredentials: true })],
     }).compileComponents();
 
     facade = TestBed.inject(NestApiFacade);
@@ -27,6 +27,7 @@ describe('NestApiFacade', () => {
     const req = httpMock.expectOne('/gateway/comparison/loans');
 
     expect(req.request.method).toBe('GET');
+    expect(req.request.withCredentials).toBe(true);
     req.flush({
       mode: 'mock',
       subject: 'loans',
@@ -52,11 +53,36 @@ describe('NestApiFacade', () => {
     );
   });
 
+  it('rejects comparison metrics with invalid critical counters', async () => {
+    const resultPromise = firstValueFrom(facade.getLoanComparison());
+    const req = httpMock.expectOne('/gateway/comparison/loans');
+
+    req.flush({
+      mode: 'mock',
+      subject: 'loans',
+      observedAt: '2026-07-03T00:00:00.000Z',
+      paths: [
+        {
+          pathId: 'spring-direct',
+          label: 'Spring direct',
+          latencyMs: -1,
+          payloadBytes: 768,
+          recordCount: 2,
+          status: 'ok',
+          observedAt: '2026-07-03T00:00:00.000Z',
+        },
+      ],
+    });
+
+    await expect(resultPromise).rejects.toThrow('Nest comparison contract gap');
+  });
+
   it('loads realtime event history from the Nest gateway endpoint', async () => {
     const resultPromise = firstValueFrom(facade.getRealtimeEventHistory());
     const req = httpMock.expectOne('/gateway/realtime/events');
 
     expect(req.request.method).toBe('GET');
+    expect(req.request.withCredentials).toBe(true);
     req.flush({
       mode: 'mock',
       namespace: '/gateway/realtime',
@@ -82,6 +108,32 @@ describe('NestApiFacade', () => {
         events: [expect.objectContaining({ eventId: 'event-seed-001' })],
       }),
     );
+  });
+
+  it('rejects realtime event history with missing critical identifiers', async () => {
+    const resultPromise = firstValueFrom(facade.getRealtimeEventHistory());
+    const req = httpMock.expectOne('/gateway/realtime/events');
+
+    req.flush({
+      mode: 'mock',
+      namespace: '/gateway/realtime',
+      eventName: 'loan.status.updated',
+      observedAt: '2026-07-03T00:00:00.000Z',
+      events: [
+        {
+          eventId: '',
+          type: 'loan.status.updated',
+          loanId: 'loan-001',
+          loanNumber: 'TL-1001',
+          previousStatus: 'Submitted',
+          nextStatus: 'In Review',
+          source: 'mock-http',
+          observedAt: '2026-07-03T00:00:00.000Z',
+        },
+      ],
+    });
+
+    await expect(resultPromise).rejects.toThrow('Nest realtime contract gap');
   });
 
   it('loads historical comparison metrics from the Nest gateway endpoint', async () => {

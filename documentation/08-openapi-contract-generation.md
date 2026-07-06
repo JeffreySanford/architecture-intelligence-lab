@@ -38,6 +38,18 @@ Component
 | Frontend mapping drift | ViewModel tests |
 | Runtime behavior drift | Playwright E2E |
 
+## Critical Contract Gap Alerts
+
+Generated DTOs are treated as raw contract data. Facades validate critical fields before data reaches stores or page views:
+
+| Surface | Facade validator | Critical fields |
+| --- | --- | --- |
+| Spring dashboard snapshot | `SpringApiFacade.validateDashboardSnapshot` | `dataset`, `loans[]`, `loan.id`, `borrowerId`, `loanNumber`, positive `amount`, `statusCode` |
+| Nest comparison metrics | `NestApiFacade.validateComparisonResponse` | `subject`, `observedAt`, `pathId`, `label`, `status`, non-negative metric counters |
+| Nest realtime events | `NestApiFacade.validateRealtimeEventHistory` | `eventId`, `type`, `loanId`, `loanNumber`, status transition fields, `source`, `observedAt` |
+
+The OpenAPI Contract Lab exposes these as contract gap alerts. Future securities, commitments, disclosures, and pricing DTOs should add equivalent facade validators when their generated APIs are introduced.
+
 ## Generated Library Structure
 
 ```text

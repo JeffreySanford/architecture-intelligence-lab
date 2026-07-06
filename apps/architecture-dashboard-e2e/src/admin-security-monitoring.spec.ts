@@ -19,8 +19,9 @@ test.describe('Admin security monitoring', () => {
     await page.goto(adminRoute);
     await expect(page).toHaveURL(/.*\/lab\/admin(\?.*)?$/, { timeout: 15000 });
     await expect(page.locator('app-admin-page h1', { hasText: 'Admin Security Monitoring' })).toBeVisible();
-    await expect(page.locator('[data-testid="security-item-row"]')).toHaveCount(5);
-    await expect(page.locator('tr[data-testid="security-item-row"] .p-tag', { hasText: 'issue' }).first()).toBeVisible();
+    await expect(page.locator('[data-testid="security-item-row"]')).toHaveCount(8);
+    await expect(page.locator('tr[data-testid="security-item-row"]', { hasText: 'Raw contract docs access monitor' })).toBeVisible();
+    await expect(page.locator('tr[data-testid="security-item-row"]', { hasText: 'Generated client facade validation' })).toBeVisible();
     await expect(page.locator('tr[data-testid="security-item-row"] .p-tag', { hasText: 'watch' }).first()).toBeVisible();
   });
 

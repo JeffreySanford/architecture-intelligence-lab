@@ -59,4 +59,30 @@ describe('SpringApiFacade', () => {
     expect(snapshot.dataset).toBe('small');
     expect(snapshot.loans).toEqual([]);
   });
+
+  it('should reject dashboard snapshots with invalid critical loan fields', async () => {
+    const api = TestBed.inject(LabControllerApiService) as unknown as {
+      dashboardSnapshot: ReturnType<typeof vi.fn>;
+    };
+    vi.spyOn(api, 'dashboardSnapshot').mockReturnValueOnce(of({
+      dataset: 'small',
+      loans: [
+        {
+          id: 'loan-001',
+          borrowerId: 'borrower-001',
+          loanNumber: 'TL-1001',
+          amount: 0,
+          statusCode: 'Submitted',
+          updatedAt: '2026-07-03T00:00:00.000Z',
+        },
+      ],
+      borrowers: [],
+      documents: [],
+      statusCodes: [],
+    } as DashboardSnapshotDto));
+
+    await expect(firstValueFrom(facade.getDashboardSnapshot('small'))).rejects.toThrow(
+      'Spring dashboard contract gap',
+    );
+  });
 });

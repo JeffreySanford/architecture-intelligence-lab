@@ -54,5 +54,5 @@ Capture the threat model for Phase 6.5 OpenAPI security hardening, including con
 ## Status
 
 - [X] Threat model created
-- [ ] Review with the security hardening owner
+- [X] Review with the security hardening owner
 - [X] Add mitigation plan to the Phase 6.5 backlog

@@ -45,6 +45,6 @@ This inventory is intended to support Phase 6.5 security hardening and to drive 
 
 - [X] Cross-reference this inventory with `planning/phase-6-5-security-risk-map.md`
 - [X] Add a `generated client drift watch` item to the admin security monitoring page
-- [ ] Create a follow-up task for facade validation on critical DTO fields
+- [X] Add facade validation on critical DTO fields and expose contract gap alerts in the OpenAPI Contract Lab
 - [X] Add regression coverage for refresh/reset behavior on protected OpenAPI and MCP surfaces
-- [ ] Document any generated client contract gaps in `documentation/08-openapi-contract-generation.md`
+- [X] Document generated client contract gaps in `documentation/08-openapi-contract-generation.md`

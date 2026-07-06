@@ -187,8 +187,8 @@ class LabController {
     switch (dataset.toLowerCase()) {
       case "small" -> limit = 5;
       case "medium" -> limit = 10;
-      case "large" -> limit = 20;
-      case "stress" -> limit = 30;
+      case "large" -> limit = 2000;
+      case "stress" -> limit = 30000;
       default -> limit = loans.size();
     }
     return loans.stream().limit(Math.min(limit, loans.size())).collect(Collectors.toList());

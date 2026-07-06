@@ -117,7 +117,7 @@ export class App implements OnInit {
       label: 'OpenAPI',
       route: '/lab/openapi',
       description: 'Contracts and clients',
-      permission: 'contracts:view',
+      permission: { anyOf: ['contracts:view', 'admin:view'] },
       icon: 'pi pi-code',
     },
     {
