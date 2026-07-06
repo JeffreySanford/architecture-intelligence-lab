@@ -6,13 +6,18 @@ import { AuthStore } from './core/auth/auth.store';
 
 class MockAuthStore {
   currentUser = signal<{
-    persona: { id?: string; name: string; role: string };
+    persona: { id?: string; name: string; role: string; permissions?: string[] };
     permissions: string[];
   } | null>(null);
   permissions = signal<string[]>([]);
 
   hasPermission(permission: string) {
-    return this.permissions().includes(permission);
+    const currentUser = this.currentUser();
+    return [
+      ...(currentUser?.permissions ?? []),
+      ...(currentUser?.persona.permissions ?? []),
+      ...this.permissions(),
+    ].includes(permission);
   }
 }
 
@@ -96,7 +101,7 @@ describe('App', () => {
     ['Alice Viewer', 'Viewer', ['dashboard:view', 'loans:view']],
     ['Ben Reviewer', 'Reviewer', ['dashboard:view', 'loans:view', 'documents:view']],
     ['Cara Approver', 'Approver', ['dashboard:view', 'loans:view', 'loans:update']],
-  ])('renders learner navigation explicitly assigned to %s', async (name, role, permissions) => {
+  ])('renders learner navigation from permissions for %s', async (name, role, permissions) => {
     const fixture = TestBed.createComponent(App);
     const component = fixture.componentInstance;
     const authStore = TestBed.inject(AuthStore) as unknown as MockAuthStore;
@@ -121,7 +126,7 @@ describe('App', () => {
     expect(navText).not.toContain('Admin');
   });
 
-  it('renders admin navigation from the selected user role', async () => {
+  it('renders admin navigation from seeded admin permissions', async () => {
     const fixture = TestBed.createComponent(App);
     const component = fixture.componentInstance;
     const authStore = TestBed.inject(AuthStore) as unknown as MockAuthStore;
@@ -154,9 +159,10 @@ describe('App', () => {
     expect(navText).toContain('Realtime Lab');
     expect(navText).toContain('MCP Dashboard');
     expect(navText).toContain('Glossary');
+    expect(navText).toContain('Theme Governance');
   });
 
-  it('renders glossary navigation for a developer persona', async () => {
+  it('renders developer navigation from developer permissions', async () => {
     const fixture = TestBed.createComponent(App);
     const component = fixture.componentInstance;
     const authStore = TestBed.inject(AuthStore) as unknown as MockAuthStore;
@@ -174,16 +180,43 @@ describe('App', () => {
     const navText = compiled.querySelector('aside[aria-label="Primary navigation"]')?.textContent ?? '';
     expect(navText).toContain('MCP Dashboard');
     expect(navText).toContain('Glossary');
+    expect(navText).toContain('Theme Governance');
     expect(navText).not.toContain('Realtime Lab');
   });
 
-  it('renders a Material icon in the app brand', async () => {
+  it('renders Henry sidebar links when permissions are only present on the persona payload', async () => {
+    const fixture = TestBed.createComponent(App);
+    const component = fixture.componentInstance;
+    const authStore = TestBed.inject(AuthStore) as unknown as MockAuthStore;
+
+    authStore.currentUser.set({
+      persona: {
+        id: 'henry-mcp-explorer',
+        name: 'Henry MCP Explorer',
+        role: 'MCP Explorer',
+        permissions: ['dashboard:view', 'developer:view', 'mcp:view'],
+      },
+      permissions: [],
+    });
+    authStore.permissions.set(['dashboard:view', 'developer:view', 'mcp:view']);
+    component.currentUrl.set('/lab/dashboard');
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const navText = compiled.querySelector('aside[aria-label="Primary navigation"]')?.textContent ?? '';
+    expect(navText).toContain('Dashboard');
+    expect(navText).toContain('MCP Dashboard');
+    expect(navText).toContain('Theme Governance');
+    expect(navText).toContain('Glossary');
+  });
+
+  it('renders a PrimeIcon in the app brand', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.app-frame__brand-icon.material-icons')).toBeTruthy();
-    expect(compiled.querySelector('.app-frame__brand-icon')?.textContent?.trim()).toBe('insights');
+    expect(compiled.querySelector('.app-frame__brand-icon.pi.pi-chart-line')).toBeTruthy();
   });
 });

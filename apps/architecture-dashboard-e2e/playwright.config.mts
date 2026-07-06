@@ -1,6 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
-import { workspaceRoot } from '@nx/devkit';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 

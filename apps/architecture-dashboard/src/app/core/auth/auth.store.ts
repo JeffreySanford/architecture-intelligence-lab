@@ -12,9 +12,13 @@ export class AuthStore {
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
-  readonly permissionSet = computed(
-    () => new Set(this.currentUser()?.permissions ?? []),
-  );
+  readonly permissionSet = computed(() => {
+    const currentUser = this.currentUser();
+    return new Set([
+      ...(currentUser?.permissions ?? []),
+      ...(currentUser?.persona?.permissions ?? []),
+    ]);
+  });
 
   loadPersonas(): Observable<PersonaDto[]> {
     this.loading.set(true);

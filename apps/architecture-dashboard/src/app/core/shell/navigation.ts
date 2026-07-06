@@ -7,12 +7,7 @@ export type LabNavItem = {
   description: string;
   permission: PermissionRequirement;
   icon: string;
-  assignedRoles?: string[];
-  assignedPersonas?: string[];
 };
-
-const GENERAL_LEARNER_ROLES = ['viewer', 'reviewer', 'approver'];
-const ADMIN_ROLES = ['admin'];
 
 export const LAB_NAV_ITEMS: LabNavItem[] = [
   {
@@ -21,14 +16,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Loan workspace',
     permission: 'dashboard:view',
     icon: 'pi pi-chart-bar',
-    assignedRoles: [
-      ...GENERAL_LEARNER_ROLES,
-      ...ADMIN_ROLES,
-      'diagnostics-admin',
-      'contract-admin',
-      'mcp-explorer',
-      'realtime-operator',
-    ],
   },
   {
     label: 'Security Search',
@@ -36,7 +23,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Security and disclosure table',
     permission: 'loans:view',
     icon: 'pi pi-search',
-    assignedRoles: [...GENERAL_LEARNER_ROLES, ...ADMIN_ROLES],
   },
   {
     label: 'Capital Markets',
@@ -44,7 +30,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Commitment sample',
     permission: 'loans:view',
     icon: 'pi pi-briefcase',
-    assignedRoles: [...GENERAL_LEARNER_ROLES, ...ADMIN_ROLES],
   },
   {
     label: 'Map Inspector',
@@ -52,7 +37,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Map and Set indexes',
     permission: 'dashboard:view',
     icon: 'pi pi-map',
-    assignedRoles: [...GENERAL_LEARNER_ROLES, ...ADMIN_ROLES, 'diagnostics-admin'],
   },
   {
     label: 'SignalStore Inspector',
@@ -60,7 +44,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Computed state',
     permission: 'diagnostics:view',
     icon: 'pi pi-sliders-h',
-    assignedRoles: [...ADMIN_ROLES, 'diagnostics-admin'],
   },
   {
     label: 'Architecture Flow',
@@ -68,14 +51,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Backend request paths',
     permission: 'dashboard:view',
     icon: 'pi pi-sitemap',
-    assignedRoles: [
-      ...GENERAL_LEARNER_ROLES,
-      ...ADMIN_ROLES,
-      'diagnostics-admin',
-      'contract-admin',
-      'mcp-explorer',
-      'realtime-operator',
-    ],
   },
   {
     label: 'Backend Comparison',
@@ -83,7 +58,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Spring, Nest, proxy',
     permission: ['backend-comparison:view', 'realtime:view'],
     icon: 'pi pi-sync',
-    assignedRoles: [...ADMIN_ROLES, 'diagnostics-admin', 'realtime-operator'],
   },
   {
     label: 'Metrics History',
@@ -91,7 +65,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Comparison trends',
     permission: 'backend-comparison:view',
     icon: 'pi pi-chart-line',
-    assignedRoles: [...ADMIN_ROLES, 'diagnostics-admin'],
   },
   {
     label: 'Infrastructure',
@@ -99,7 +72,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Docker and tooling health',
     permission: ['diagnostics:view', 'admin:view'],
     icon: 'pi pi-server',
-    assignedRoles: [...ADMIN_ROLES, 'diagnostics-admin'],
   },
   {
     label: 'Realtime Lab',
@@ -107,7 +79,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Socket.IO and Redis',
     permission: 'realtime:view',
     icon: 'pi pi-wifi',
-    assignedRoles: [...ADMIN_ROLES, 'realtime-operator'],
   },
   {
     label: 'OpenAPI',
@@ -115,7 +86,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Contracts and clients',
     permission: { anyOf: ['contracts:view', 'admin:view'] },
     icon: 'pi pi-code',
-    assignedRoles: [...ADMIN_ROLES, 'contract-admin'],
   },
   {
     label: 'MCP Dashboard',
@@ -123,8 +93,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Angular CLI MCP',
     permission: { allOf: ['developer:view', 'mcp:view'] },
     icon: 'pi pi-cog',
-    assignedRoles: [...ADMIN_ROLES, 'mcp-explorer'],
-    assignedPersonas: ['henry-mcp-explorer'],
   },
   {
     label: 'Glossary',
@@ -132,8 +100,13 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Fintech and Angular terms',
     permission: 'developer:view',
     icon: 'pi pi-book',
-    assignedRoles: [...ADMIN_ROLES, 'mcp-explorer'],
-    assignedPersonas: ['henry-mcp-explorer'],
+  },
+  {
+    label: 'Theme Governance',
+    route: '/lab/theme',
+    description: 'Zeroheight and Nora tokens',
+    permission: 'developer:view',
+    icon: 'pi pi-palette',
   },
   {
     label: 'Admin',
@@ -141,7 +114,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Roles and personas',
     permission: 'admin:view',
     icon: 'pi pi-shield',
-    assignedRoles: ADMIN_ROLES,
   },
   {
     label: 'Phase 6.5 Threat Model',
@@ -149,7 +121,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'OpenAPI threat artifact',
     permission: 'admin:view',
     icon: 'pi pi-exclamation-triangle',
-    assignedRoles: ADMIN_ROLES,
   },
   {
     label: 'Phase 6.5 Security Risk Map',
@@ -157,7 +128,6 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     description: 'Security risk artifact',
     permission: 'admin:view',
     icon: 'pi pi-map',
-    assignedRoles: ADMIN_ROLES,
   },
 ];
 
@@ -169,36 +139,7 @@ export function visibleLabNavItems(
     return [];
   }
 
-  return LAB_NAV_ITEMS.filter(
-    (item) =>
-      isAssignedToUser(item, currentUser) &&
-      permissionRequirementMatches(hasPermission, item.permission),
+  return LAB_NAV_ITEMS.filter((item) =>
+    permissionRequirementMatches(hasPermission, item.permission),
   );
-}
-
-function isAssignedToUser(item: LabNavItem, currentUser: CurrentUserDto): boolean {
-  const assignedRoles = new Set((item.assignedRoles ?? []).map(normalizeRole));
-  const assignedPersonas = new Set(item.assignedPersonas ?? []);
-
-  if (assignedRoles.size === 0 && assignedPersonas.size === 0) {
-    return true;
-  }
-
-  const personaId = currentUser.persona?.id;
-  if (personaId && assignedPersonas.has(personaId)) {
-    return true;
-  }
-
-  const userRoles = [
-    ...(currentUser.roles ?? []),
-    currentUser.persona?.role,
-  ]
-    .filter((role): role is string => typeof role === 'string' && role.length > 0)
-    .map(normalizeRole);
-
-  return userRoles.some((role) => assignedRoles.has(role));
-}
-
-function normalizeRole(role: string): string {
-  return role.trim().toLowerCase().replace(/\s+/g, '-');
 }

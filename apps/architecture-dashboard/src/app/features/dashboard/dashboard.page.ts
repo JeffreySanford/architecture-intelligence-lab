@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -29,6 +29,7 @@ import {
 })
 export class DashboardPage implements OnInit, AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly injector = inject(Injector);
   private readonly route = inject(ActivatedRoute);
   protected readonly dashboardStore = inject(DashboardStore);
   protected readonly globalFilter = signal('');
@@ -91,15 +92,18 @@ export class DashboardPage implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.createChart();
-    effect(() => {
-      if (!this.chart) {
-        return;
-      }
+    effect(
+      () => {
+        if (!this.chart) {
+          return;
+        }
 
-      this.chart.data.labels = this.chartLabels();
-      this.chart.data.datasets[0].data = this.chartData();
-      this.chart.update();
-    });
+        this.chart.data.labels = this.chartLabels();
+        this.chart.data.datasets[0].data = this.chartData();
+        this.chart.update();
+      },
+      { injector: this.injector },
+    );
   }
 
   private createChart(): void {
