@@ -15,6 +15,7 @@ describe('App route configuration', () => {
     ['realtime', 'realtime:view'],
     ['openapi', { anyOf: ['contracts:view', 'admin:view'] }],
     ['mcp', { allOf: ['developer:view', 'mcp:view'] }],
+    ['theme', 'developer:view'],
     ['glossary', 'developer:view'],
     ['admin', 'admin:view'],
   ])('protects /lab/%s with permissionGuard and %s permission', (path, permission) => {

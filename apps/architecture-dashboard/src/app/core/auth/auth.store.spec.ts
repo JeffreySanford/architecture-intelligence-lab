@@ -93,4 +93,20 @@ describe('AuthStore', () => {
     expect(authStore.permissionSet().has('contracts:view')).toBe(true);
     expect(authStore.permissionSet().has('dashboard:view')).toBe(false);
   });
+
+  it('should include persona permissions when top-level current user permissions are missing', () => {
+    authStore.currentUser.set({
+      persona: {
+        id: 'henry-mcp-explorer',
+        name: 'Henry MCP Explorer',
+        role: 'MCP Explorer',
+        description: 'Developer persona',
+        permissions: ['dashboard:view', 'developer:view', 'mcp:view'],
+      },
+      roles: ['MCP Explorer'],
+    } as CurrentUserDto);
+
+    expect(authStore.hasPermission('developer:view')).toBe(true);
+    expect(authStore.hasPermission('mcp:view')).toBe(true);
+  });
 });

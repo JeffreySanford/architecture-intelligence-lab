@@ -1,25 +1,25 @@
-/* Shared MD3 Express color tokens */
+/* PrimeNG-backed app color aliases. Keep these aliases while page styles migrate to PrimeNG tokens. */
 :root {
-  --color-bg: #f7f8fb;
-  --color-surface: #ffffff;
-  --color-surface-2: #f6f8fd;
-  --color-surface-muted: #f2f4f8;
-  --color-surface-alt: #edf1f7;
-  --color-text: #172033;
-  --color-text-muted: #4f5868;
-  --color-primary: #355f9f;
-  --color-primary-strong: #2563eb;
+  --color-bg: var(--p-surface-50);
+  --color-surface: var(--p-surface-0);
+  --color-surface-2: var(--p-surface-100);
+  --color-surface-muted: var(--p-surface-200);
+  --color-surface-alt: var(--p-surface-300);
+  --color-text: var(--p-text-color);
+  --color-text-muted: var(--p-text-muted-color);
+  --color-primary: var(--p-primary-color);
+  --color-primary-strong: var(--p-primary-600);
   --color-primary-container: rgba(53, 95, 159, 0.12);
-  --color-primary-text: #17325f;
+  --color-primary-text: var(--p-primary-700);
   --color-success: #2b7a4b;
   --color-warning: #b07c15;
-  --color-danger: #a32222;
+  --color-danger: var(--p-red-600);
   --color-danger-container: rgba(163, 34, 34, 0.12);
-  --color-on-danger-container: #5a1414;
+  --color-on-danger-container: var(--p-red-800);
   --color-info: #2067b5;
-  --color-border: #d8dce6;
+  --color-border: var(--p-content-border-color);
   --color-shadow: rgba(23, 32, 51, 0.08);
-  --color-primary-soft: rgba(53, 95, 159, 0.12);
+  --color-primary-soft: var(--p-highlight-background);
   --color-primary-shadow: rgba(37, 99, 235, 0.2);
   --color-event-highlight: rgba(59, 130, 246, 0.12);
   --color-event-highlight-strong: rgba(59, 130, 246, 0.24);

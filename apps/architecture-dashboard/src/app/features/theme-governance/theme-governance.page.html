@@ -1,0 +1,121 @@
+<main class="theme-governance" [class.theme-governance--compact]="compactDensity" [class.app-dark]="darkPreview">
+  <section class="theme-governance__summary">
+    <p-card>
+      <div class="theme-governance__card-header">
+        <div>
+          <span class="theme-governance__eyebrow">Zeroheight governance</span>
+          <h1>PrimeNG Nora Theme Governance</h1>
+          <p>
+            Zeroheight documents the design-system decisions. The Angular app implements those decisions
+            with a Nora-based PrimeNG preset and a temporary app-token compatibility bridge.
+          </p>
+        </div>
+        <p-chip label="Nora preset"></p-chip>
+      </div>
+    </p-card>
+
+    <p-card>
+      <div class="theme-governance__card-header">
+        <div>
+          <span class="theme-governance__eyebrow">Live controls</span>
+          <h2>Preview Settings</h2>
+        </div>
+      </div>
+      <div class="theme-governance__controls">
+        <div class="theme-governance__control">
+          <span>Compact density</span>
+          <p-toggleSwitch [(ngModel)]="compactDensity" ariaLabel="Compact density"></p-toggleSwitch>
+        </div>
+        <div class="theme-governance__control">
+          <span>Dark preview</span>
+          <p-toggleSwitch [(ngModel)]="darkPreview" ariaLabel="Dark preview"></p-toggleSwitch>
+        </div>
+      </div>
+    </p-card>
+  </section>
+
+  <section class="theme-governance__grid">
+    <p-card>
+      <div class="theme-governance__card-header">
+        <div>
+          <span class="theme-governance__eyebrow">Token map</span>
+          <h2>MD3 Aliases to PrimeNG Tokens</h2>
+        </div>
+      </div>
+      <p-table [value]="tokenRows" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Alias</th>
+            <th>PrimeNG token</th>
+            <th>Guidance</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td><code>{{ row.alias }}</code></td>
+            <td><code>{{ row.primeToken }}</code></td>
+            <td>{{ row.guidance }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <p-card>
+      <div class="theme-governance__card-header">
+        <div>
+          <span class="theme-governance__eyebrow">PrimeNG preview</span>
+          <h2>Component States</h2>
+        </div>
+        <button pButton type="button" class="icon-label" (click)="dialogVisible = true">
+          <i class="pi pi-window-maximize" aria-hidden="true"></i>
+          Open Dialog
+        </button>
+      </div>
+
+      <div class="theme-governance__form-row">
+        <input pInputText aria-label="Theme search" placeholder="Search token guidance" />
+        <p-select
+          [(ngModel)]="selectedPattern"
+          [options]="patternOptions"
+          optionLabel="label"
+          optionValue="value"
+          ariaLabel="Pattern preview"
+        ></p-select>
+        <button pButton type="button" severity="danger" class="icon-label">
+          <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+          Risk State
+        </button>
+      </div>
+
+      <p-table [value]="previewRows" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Pattern</th>
+            <th>Component</th>
+            <th>State</th>
+            <th>Status</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.pattern }}</td>
+            <td>{{ row.component }}</td>
+            <td>{{ row.state }}</td>
+            <td><p-tag [severity]="row.severity" value="tokenized"></p-tag></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </section>
+
+  <p-dialog header="PrimeNG Nora Dialog" [(visible)]="dialogVisible" [modal]="true" [style]="{ width: 'min(42rem, 92vw)' }">
+    <p>
+      Dialog background, border, radius, focus, and buttons should inherit from the Nora-based
+      ArchitecturePrimePreset instead of page-level Material overrides.
+    </p>
+    <div class="theme-governance__dialog-actions">
+      <button pButton type="button" class="p-button-text" (click)="dialogVisible = false">Close</button>
+      <button pButton type="button" (click)="dialogVisible = false">Confirm</button>
+    </div>
+  </p-dialog>
+</main>

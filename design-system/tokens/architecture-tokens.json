@@ -1,0 +1,62 @@
+{
+  "name": "Architecture Intelligence Lab PrimeNG Nora Tokens",
+  "preset": "ArchitecturePrimePreset",
+  "basePreset": "Nora",
+  "primitive": {
+    "blue": {
+      "50": "#eff6ff",
+      "100": "#dbeafe",
+      "200": "#bfdbfe",
+      "300": "#93c5fd",
+      "400": "#60a5fa",
+      "500": "#355f9f",
+      "600": "#2563eb",
+      "700": "#17325f",
+      "800": "#13294f",
+      "900": "#0f203f",
+      "950": "#081426"
+    },
+    "slate": {
+      "0": "#ffffff",
+      "50": "#f7f8fb",
+      "100": "#f6f8fd",
+      "200": "#f2f4f8",
+      "300": "#edf1f7",
+      "400": "#d8dce6",
+      "500": "#4f5868",
+      "600": "#374151",
+      "700": "#172033",
+      "800": "#111827",
+      "900": "#0f172a",
+      "950": "#020617"
+    },
+    "red": {
+      "50": "#fef2f2",
+      "100": "#fee2e2",
+      "200": "#fecaca",
+      "300": "#fca5a5",
+      "400": "#f87171",
+      "500": "#dc2626",
+      "600": "#a32222",
+      "700": "#7f1d1d",
+      "800": "#5a1414",
+      "900": "#3f0d0d",
+      "950": "#240707"
+    }
+  },
+  "semantic": {
+    "primary": "{blue}",
+    "surface": "{slate}",
+    "danger": "{red}",
+    "focusRing": {
+      "width": "2px",
+      "style": "solid",
+      "color": "{primary.500}",
+      "offset": "2px"
+    },
+    "highlight": {
+      "background": "rgba(53, 95, 159, 0.12)",
+      "focusBackground": "rgba(53, 95, 159, 0.18)"
+    }
+  }
+}

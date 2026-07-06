@@ -1,0 +1,24 @@
+{
+  "source": "Architecture Intelligence Lab MD3-style app aliases",
+  "target": "PrimeNG styled-mode Nora semantic tokens",
+  "implementation": {
+    "preset": "apps/architecture-dashboard/src/app/core/theme/architecture-prime-preset.ts",
+    "aliasBridge": "apps/architecture-dashboard/src/styles/_colors.scss"
+  },
+  "tokens": {
+    "--color-bg": "semantic.colorScheme.light.surface.50",
+    "--color-surface": "semantic.colorScheme.light.surface.0",
+    "--color-surface-2": "semantic.colorScheme.light.surface.100",
+    "--color-surface-muted": "semantic.colorScheme.light.surface.200",
+    "--color-surface-alt": "semantic.colorScheme.light.surface.300",
+    "--color-text": "semantic.colorScheme.light.text.color",
+    "--color-text-muted": "semantic.colorScheme.light.text.mutedColor",
+    "--color-primary": "semantic.colorScheme.light.primary.color",
+    "--color-primary-strong": "semantic.primary.600",
+    "--color-primary-container": "semantic.colorScheme.light.highlight.background",
+    "--color-primary-text": "semantic.primary.700",
+    "--color-primary-soft": "semantic.colorScheme.light.highlight.background",
+    "--color-danger": "primitive.red.600",
+    "--color-border": "semantic.content.borderColor"
+  }
+}
