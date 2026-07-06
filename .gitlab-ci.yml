@@ -101,6 +101,18 @@ test_architecture_dashboard:
 
 openapi_contract_drift:
   stage: contract
+  image: node:22
+  before_script:
+    - node --version
+    - npm --version
+    - apt-get update
+    - apt-get install -y --no-install-recommends openjdk-21-jre-headless
+    - java -version
+    - corepack enable
+    - corepack prepare pnpm@11.9.0 --activate
+    - pnpm --version
+    - pnpm config set store-dir "$PNPM_STORE_PATH"
+    - pnpm install --frozen-lockfile
   script:
     - pnpm run check:openapi-clients
   artifacts:
@@ -108,7 +120,6 @@ openapi_contract_drift:
     expire_in: 1 week
     paths:
       - libs/
-      - apps/**/src/generated/
       - documentation/
 
 build_architecture_dashboard:
