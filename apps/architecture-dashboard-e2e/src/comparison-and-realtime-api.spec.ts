@@ -433,7 +433,7 @@ test('Backend comparison route redirects Contract Admin persona to dashboard', a
 test('Backend Comparison route is protected for Contract Admin but accessible to Realtime Operator', async ({ page }) => {
   await mockApiForPersona(page, 'fiona-contract-admin');
   await page.goto('/lab/backend-comparison');
-  await expect(page).toHaveURL(/.*\/$/, { timeout: 15000 });
+  await expect(page).toHaveURL(/.*\/lab\/dashboard$/, { timeout: 15000 });
 
   await mockApiForPersona(page, 'grace-realtime-operator');
   await page.goto('/lab/backend-comparison');
