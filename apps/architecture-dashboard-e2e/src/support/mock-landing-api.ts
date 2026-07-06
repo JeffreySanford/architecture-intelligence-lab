@@ -19,7 +19,16 @@ const personas: TestPersona[] = [
     id: 'grace-admin',
     name: 'Grace Admin',
     role: 'Admin',
-    permissions: ['admin:view', 'contracts:view', 'dashboard:view', 'diagnostics:view', 'loans:view'],
+    permissions: [
+      'admin:view',
+      'contracts:view',
+      'dashboard:view',
+      'diagnostics:view',
+      'loans:view',
+      'backend-comparison:view',
+      'developer:view',
+      'mcp:view',
+    ],
   },
   {
     id: 'henry-mcp-explorer',
