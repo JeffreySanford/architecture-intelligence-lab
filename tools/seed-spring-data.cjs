@@ -69,26 +69,51 @@ function buildSql() {
   return [
     'BEGIN;',
     '',
-    'insert into borrowers (id, display_name, credit_score, risk_band) values',
+    'WITH inserted_borrowers AS (',
+    '  insert into borrowers (id, display_name, credit_score, risk_band) values',
     borrowers.join(',\n'),
-    'on conflict (id) do nothing;',
+    '  on conflict (id) do nothing',
+    '  RETURNING 1',
+    ')',
+    "SELECT 'borrowers' AS table_name, count(*) AS inserted_rows FROM inserted_borrowers;",
     '',
-    'insert into loan_status_codes (code, label, sort_order) values',
+    'WITH inserted_status_codes AS (',
+    '  insert into loan_status_codes (code, label, sort_order) values',
     statusCodes
       .map((code, idx) => `  (${quote(code)}, ${quote(code.replace(/_/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase()))}, ${idx + 1})`)
       .join(',\n'),
-    'on conflict (code) do nothing;',
+    '  on conflict (code) do nothing',
+    '  RETURNING 1',
+    ')',
+    "SELECT 'loan_status_codes' AS table_name, count(*) AS inserted_rows FROM inserted_status_codes;",
     '',
-    'insert into loans (id, borrower_id, loan_number, amount, status_code, updated_at) values',
+    'WITH inserted_loans AS (',
+    '  insert into loans (id, borrower_id, loan_number, amount, status_code, updated_at) values',
     loans.join(',\n'),
-    'on conflict (id) do nothing;',
+    '  on conflict (id) do nothing',
+    '  RETURNING 1',
+    ')',
+    "SELECT 'loans' AS table_name, count(*) AS inserted_rows FROM inserted_loans;",
     '',
-    'insert into loan_documents (id, loan_id, document_type, status) values',
+    'WITH inserted_documents AS (',
+    '  insert into loan_documents (id, loan_id, document_type, status) values',
     documents.join(',\n'),
-    'on conflict (id) do nothing;',
+    '  on conflict (id) do nothing',
+    '  RETURNING 1',
+    ')',
+    "SELECT 'loan_documents' AS table_name, count(*) AS inserted_rows FROM inserted_documents;",
     '',
     'COMMIT;',
   ].join('\n');
+}
+
+function getTableCount(tableName) {
+  const countCommand = `docker compose exec -T postgres psql -U ${dbUser} -d ${dbName} -q -A -t -c "SELECT count(*) FROM ${tableName};"`;
+  const output = execSync(countCommand, {
+    stdio: ['ignore', 'pipe', 'inherit'],
+    cwd: root,
+  }).toString('utf8').trim();
+  return Number(output);
 }
 
 function runSeed() {
@@ -103,6 +128,9 @@ function runSeed() {
     cwd: root,
   });
 
+  const tables = ['borrowers', 'loan_status_codes', 'loans', 'loan_documents'];
+  const beforeCounts = Object.fromEntries(tables.map((table) => [table, getTableCount(table)]));
+
   const command = `docker compose exec -T postgres psql -U ${dbUser} -d ${dbName}`;
 
   execSync(command, {
@@ -111,8 +139,19 @@ function runSeed() {
     cwd: root,
   });
 
+  const afterCounts = Object.fromEntries(tables.map((table) => [table, getTableCount(table)]));
+  const seededRows = tables.map((table) => ({
+    table,
+    inserted: afterCounts[table] - beforeCounts[table],
+    total: afterCounts[table],
+  }));
+
   const duration = (Date.now() - startTime) / 1000;
   console.log(`Spring seed data completed in ${duration.toFixed(2)}s`);
+  console.log('Seeded rows by table:');
+  seededRows.forEach((entry) => {
+    console.log(`  ${entry.table}: inserted ${entry.inserted}, total ${entry.total}`);
+  });
 }
 
 try {

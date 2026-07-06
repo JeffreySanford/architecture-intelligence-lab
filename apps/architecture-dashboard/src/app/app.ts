@@ -5,15 +5,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
 import { filter } from 'rxjs';
 import { AuthResetService } from './core/auth/auth-reset.service';
 import { AuthStore } from './core/auth/auth.store';
-import { permissionRequirementMatches, type PermissionRequirement } from './core/auth/permission.utils';
-
-type AppNavItem = {
-  label: string;
-  route: string;
-  description: string;
-  permission: PermissionRequirement;
-  icon: string;
-};
+import { visibleLabNavItems } from './core/shell/navigation';
 
 type PageChrome = {
   title: string;
@@ -42,115 +34,9 @@ export class App implements OnInit {
   });
   readonly currentYear = new Date().getFullYear();
 
-  readonly navItems: AppNavItem[] = [
-    {
-      label: 'Dashboard',
-      route: '/lab/dashboard',
-      description: 'Loan workspace',
-      permission: 'dashboard:view',
-      icon: 'pi pi-chart-bar',
-    },
-    {
-      label: 'Security Search',
-      route: '/lab/security-search',
-      description: 'Security and disclosure table',
-      permission: 'loans:view',
-      icon: 'pi pi-search',
-    },
-    {
-      label: 'Capital Markets',
-      route: '/lab/capital-markets',
-      description: 'Commitment sample',
-      permission: 'loans:view',
-      icon: 'pi pi-briefcase',
-    },
-    {
-      label: 'Map Inspector',
-      route: '/lab/map-inspector',
-      description: 'Map and Set indexes',
-      permission: 'dashboard:view',
-      icon: 'pi pi-map',
-    },
-    {
-      label: 'SignalStore Inspector',
-      route: '/lab/signal-store-inspector',
-      description: 'Computed state',
-      permission: 'diagnostics:view',
-      icon: 'pi pi-sliders-h',
-    },
-    {
-      label: 'Architecture Flow',
-      route: '/lab/architecture-flow',
-      description: 'Backend request paths',
-      permission: 'dashboard:view',
-      icon: 'pi pi-sitemap',
-    },
-    {
-      label: 'Backend Comparison',
-      route: '/lab/backend-comparison',
-      description: 'Spring, Nest, proxy',
-      permission: ['backend-comparison:view', 'realtime:view'],
-      icon: 'pi pi-sync',
-    },
-    {
-      label: 'Metrics History',
-      route: '/lab/metrics-history',
-      description: 'Comparison trends',
-      permission: 'backend-comparison:view',
-      icon: 'pi pi-chart-line',
-    },
-    {
-      label: 'Infrastructure',
-      route: '/lab/infrastructure',
-      description: 'Docker and tooling health',
-      permission: ['diagnostics:view', 'admin:view'],
-      icon: 'pi pi-server',
-    },
-    {
-      label: 'Realtime Lab',
-      route: '/lab/realtime',
-      description: 'Socket.IO and Redis',
-      permission: 'realtime:view',
-      icon: 'pi pi-wifi',
-    },
-    {
-      label: 'OpenAPI',
-      route: '/lab/openapi',
-      description: 'Contracts and clients',
-      permission: { anyOf: ['contracts:view', 'admin:view'] },
-      icon: 'pi pi-code',
-    },
-    {
-      label: 'MCP Dashboard',
-      route: '/lab/mcp',
-      description: 'Angular CLI MCP',
-      permission: { allOf: ['developer:view', 'mcp:view'] },
-      icon: 'pi pi-cog',
-    },
-    {
-      label: 'Glossary',
-      route: '/lab/glossary',
-      description: 'Fintech and Angular terms',
-      permission: 'developer:view',
-      icon: 'pi pi-book',
-    },
-    {
-      label: 'Admin',
-      route: '/lab/admin',
-      description: 'Roles and personas',
-      permission: 'admin:view',
-      icon: 'pi pi-shield',
-    },
-  ];
-
   readonly visibleNavItems = computed(() =>
     this.currentUser() && !this.isLandingRoute()
-      ? this.navItems.filter((item) =>
-          permissionRequirementMatches(
-            this.authStore.hasPermission.bind(this.authStore),
-            item.permission,
-          ),
-        )
+      ? visibleLabNavItems(this.currentUser(), this.authStore.hasPermission.bind(this.authStore))
       : [],
   );
 

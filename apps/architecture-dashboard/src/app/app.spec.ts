@@ -6,7 +6,7 @@ import { AuthStore } from './core/auth/auth.store';
 
 class MockAuthStore {
   currentUser = signal<{
-    persona: { name: string; role: string };
+    persona: { id?: string; name: string; role: string };
     permissions: string[];
   } | null>(null);
   permissions = signal<string[]>([]);
@@ -92,13 +92,77 @@ describe('App', () => {
     expect(navText).not.toContain('Admin');
   });
 
+  it.each([
+    ['Alice Viewer', 'Viewer', ['dashboard:view', 'loans:view']],
+    ['Ben Reviewer', 'Reviewer', ['dashboard:view', 'loans:view', 'documents:view']],
+    ['Cara Approver', 'Approver', ['dashboard:view', 'loans:view', 'loans:update']],
+  ])('renders learner navigation explicitly assigned to %s', async (name, role, permissions) => {
+    const fixture = TestBed.createComponent(App);
+    const component = fixture.componentInstance;
+    const authStore = TestBed.inject(AuthStore) as unknown as MockAuthStore;
+
+    authStore.currentUser.set({
+      persona: { name, role },
+      permissions,
+    });
+    authStore.permissions.set(permissions);
+    component.currentUrl.set('/lab/dashboard');
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const navText = compiled.querySelector('aside[aria-label="Primary navigation"]')?.textContent ?? '';
+    expect(navText).toContain('Dashboard');
+    expect(navText).toContain('Security Search');
+    expect(navText).toContain('Capital Markets');
+    expect(navText).toContain('Map Inspector');
+    expect(navText).toContain('Architecture Flow');
+    expect(navText).not.toContain('MCP Dashboard');
+    expect(navText).not.toContain('Admin');
+  });
+
+  it('renders admin navigation from the selected user role', async () => {
+    const fixture = TestBed.createComponent(App);
+    const component = fixture.componentInstance;
+    const authStore = TestBed.inject(AuthStore) as unknown as MockAuthStore;
+    const permissions = [
+      'admin:view',
+      'backend-comparison:view',
+      'contracts:view',
+      'dashboard:view',
+      'developer:view',
+      'diagnostics:view',
+      'loans:view',
+      'mcp:view',
+      'realtime:view',
+    ];
+
+    authStore.currentUser.set({
+      persona: { name: 'Diana Admin', role: 'Admin' },
+      permissions,
+    });
+    authStore.permissions.set(permissions);
+    component.currentUrl.set('/lab/dashboard');
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const navText = compiled.querySelector('aside[aria-label="Primary navigation"]')?.textContent ?? '';
+    expect(navText).toContain('Admin');
+    expect(navText).toContain('OpenAPI');
+    expect(navText).toContain('Backend Comparison');
+    expect(navText).toContain('Realtime Lab');
+    expect(navText).toContain('MCP Dashboard');
+    expect(navText).toContain('Glossary');
+  });
+
   it('renders glossary navigation for a developer persona', async () => {
     const fixture = TestBed.createComponent(App);
     const component = fixture.componentInstance;
     const authStore = TestBed.inject(AuthStore) as unknown as MockAuthStore;
 
     authStore.currentUser.set({
-      persona: { name: 'Henry MCP Explorer', role: 'MCP Explorer' },
+      persona: { id: 'henry-mcp-explorer', name: 'Henry MCP Explorer', role: 'MCP Explorer' },
       permissions: ['dashboard:view', 'developer:view', 'mcp:view'],
     });
     authStore.permissions.set(['dashboard:view', 'developer:view', 'mcp:view']);

@@ -8,6 +8,8 @@ services:
     container_name: architecture-lab-dashboard
     ports:
       - "${ARCHITECTURE_DASHBOARD_PORT:-4200}:80"
+    environment:
+      - ARCHITECTURE_DASHBOARD_ACCESS_LOG=${ARCHITECTURE_DASHBOARD_ACCESS_LOG:-on}
     depends_on:
       spring-api:
         condition: service_healthy

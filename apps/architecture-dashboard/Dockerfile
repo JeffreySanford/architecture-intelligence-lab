@@ -14,9 +14,11 @@ RUN pnpm nx build architecture-dashboard --configuration=production
 
 FROM nginx:stable-alpine AS runtime
 
+RUN apk add --no-cache gettext
+
 COPY --from=build /workspace/dist/apps/architecture-dashboard/browser /usr/share/nginx/html
 COPY apps/architecture-dashboard/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sh", "-c", "if [ \"$ARCHITECTURE_DASHBOARD_ACCESS_LOG\" = \"off\" ]; then export ACCESS_LOG_DIRECTIVE='access_log off;'; else export ACCESS_LOG_DIRECTIVE='access_log /dev/stdout main;'; fi && envsubst '${ACCESS_LOG_DIRECTIVE}' < /etc/nginx/conf.d/default.conf > /tmp/default.conf && mv /tmp/default.conf /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
