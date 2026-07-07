@@ -2,16 +2,17 @@
 
 **Design-system migration**
 
-This story documents a PrimeNG-focused Angular lab that recreates a common enterprise styling migration challenge. It compares the same PrimeNG components across three modes: the normal baseline, the global selector impact from `ViewEncapsulation.None`, and a contained design-system fix.
+This story documents a PrimeNG-focused Angular lab that recreates a common enterprise styling migration challenge. It compares the same PrimeNG components across four modes: the normal baseline, the global selector impact from `ViewEncapsulation.None`, a contained design-system fix, and a localized token-recovery demonstration.
 
 This is not a PrimeNG bug. The issue being demonstrated is CSS cascade behavior caused by disabled Angular view encapsulation combined with broad PrimeNG selectors.
 
 Current implementation status:
 
-- Normal, Impact, and Fixed views are implemented as separate components.
+- Normal, Impact, Fixed, and Token Recovery views are implemented as separate components.
 - The shared PrimeNG suite lives in `PrimengEncapsulationSharedComponent`.
 - Impact mode uses `ViewEncapsulation.None` and broad diagnostic overrides under `.encapsulation-lab--impact`.
 - Fixed mode restores the same PrimeNG suite inside a `.design-system-scope` boundary.
+- Token Recovery mode restores the same PrimeNG suite inside a `.token-recovery-demo` boundary with wrapper-scoped token mappings.
 - The included PrimeNG controls now also cover `p-badge`, `p-accordion`, `p-steps`, `p-toolbar`, `p-toast`, `p-fieldset`, `p-avatar-group`, removable `p-chip`, and `p-skeleton`.
 
 > Progress notation: `[ ]` = not done, `[x]` = completed.
@@ -47,7 +48,7 @@ Keep the demo focused and repeatable:
 
 - [x] one route
 - [x] one lab shell component
-- [x] separate Normal, Impact, and Fixed view components
+- [x] separate Normal, Impact, Fixed, and Token Recovery view components
 - [x] one shared PrimeNG component suite
 - [x] the same sample data in every view
 - [x] native HTML buttons for tab switching
@@ -55,7 +56,7 @@ Keep the demo focused and repeatable:
 
 The demo should not try to switch Angular encapsulation at runtime. Angular encapsulation metadata is static. The impact view intentionally uses `ViewEncapsulation.None` to recreate the scenario, while the normal and fixed views remain isolated. The UI toggles between CSS demonstration modes.
 
-The impact mode is a controlled simulation of global selector leakage. In a real application, a `ViewEncapsulation.None` component could emit broad selectors such as `.p-button`, `.p-card`, or `.p-datatable` without a safe wrapper, causing those styles to affect unrelated PrimeNG components after the component loads. This lab keeps the diagnostic selectors gated under `.encapsulation-lab--impact` so the issue can be demonstrated safely without corrupting the entire application shell.
+The impact mode is a controlled simulation of global selector leakage. In a real application, a `ViewEncapsulation.None` component could emit broad selectors such as `.p-button`, `.p-card`, or `.p-datatable` without a safe wrapper, causing those styles to affect unrelated PrimeNG components after the component loads. This lab keeps the diagnostic selectors gated under `.encapsulation-lab--impact` so the issue can be demonstrated safely without affecting the entire application shell.
 
 ### Component architecture
 
@@ -67,7 +68,8 @@ Current implementation:
 - `PrimengEncapsulationNormalComponent` renders the normal baseline view and reuses the shared inner suite
 - `PrimengEncapsulationImpactComponent` renders the diagnostic impact view and reuses the shared inner suite
 - `PrimengEncapsulationFixedComponent` renders the contained design-system view and reuses the shared inner suite
-- `PrimengEncapsulationSharedComponent` contains the shared repeated PrimeNG controls and serves as the central template for all three modes
+- `PrimengEncapsulationTokenRecoveryComponent` renders the token recovery view and reuses the shared inner suite
+- `PrimengEncapsulationSharedComponent` contains the shared repeated PrimeNG controls and serves as the central template for all four views
 
 This avoids one oversized template and makes visual comparison easier without duplicating the shared inner component logic.
 
@@ -75,7 +77,7 @@ Each tab also owns its own page preview section, so the outside page content is 
 
 In the fixed tab, that page preview is wrapped by the `.design-system-scope` container in the component template. The fixed view’s SCSS writes targeted rules such as `.design-system-scope .p-button`, `.design-system-scope .p-card`, and `.design-system-scope .p-inputtext` so the same PrimeNG controls and preview content are restyled inside that boundary. This is how the fixed tab restores the impacted items while still using the same shared component suite.
 
-Only `PrimengEncapsulationImpactComponent` should use `ViewEncapsulation.None`. The normal and fixed components use Angular’s default encapsulation behavior. This keeps the reproduction focused on the feature area that emits broad `.p-*` styles and makes the fixed view a true scoped containment demo.
+Only the purpose-built encapsulation demonstration components should use `ViewEncapsulation.None`: `PrimengEncapsulationImpactComponent` and `PrimengEncapsulationTokenRecoveryComponent`. Normal and Fixed / Contained should use Angular’s default encapsulation behavior. This keeps the reproduction focused and prevents the entire lab shell from becoming globally styled.
 
 ---
 
@@ -93,24 +95,26 @@ Only `PrimengEncapsulationImpactComponent` should use `ViewEncapsulation.None`. 
 
 ## View Model
 
-The lab should expose three user-facing tabs:
+The lab should expose four user-facing tabs: three baseline comparison views plus one token-recovery view.
 
 | Tab | Purpose |
 | --- | --- |
 | `Normal PrimeNG` | Baseline PrimeNG rendering |
 | `Encapsulation.None Impact` | Diagnostic view showing broad `.p-*` selector impact |
-| `Fixed / Contained` | Scoped design-system boundary restoring predictable UI |
+| `Fixed / Contained` | Scoped design-system boundary restoring predictable UI through containment |
+| `Encapsulation.None Token Recovery` | Component-scoped token boundary demonstrating localized PrimeNG variable recovery |
 
 ### Tab behavior
 
 - Normal: the page preview and shared PrimeNG suite render the baseline design with no diagnostic overrides.
-- Impact: the page preview is included in the impact tab so the same outside page content can show how broad `ViewEncapsulation.None` PrimeNG selectors corrupt unrelated UI.
-- Fixed: the page preview is rendered inside the fixed/contained tab and should remain protected by the scoped `.design-system-scope` boundary, showing how the same impacted items can be restored.
+- Impact: the page preview is included in the impact tab so the same outside page content can show how broad `ViewEncapsulation.None` PrimeNG selectors can alter unrelated UI.
+- Fixed / Contained: the page preview is rendered inside the `.design-system-scope` boundary, showing how impacted items can be restored through scoped containment rules.
+- Token Recovery: the page preview and shared PrimeNG suite render inside `.token-recovery-demo`, where localized CSS custom-property tokens are mapped into selected PrimeNG `--p-*` variables.
 - What we are doing:
   - `PrimengEncapsulationImpactComponent` simulates the problem by using `ViewEncapsulation.None` and broad `.encapsulation-lab--impact .p-*` overrides.
   - `PrimengEncapsulationFixedComponent` demonstrates the fix by keeping the same shared PrimeNG suite, but wrapping it in `.design-system-scope`.
-  - The actual protection comes from CSS rules like `.design-system-scope .p-button`, `.design-system-scope .p-card`, `.design-system-scope .p-inputtext`, etc., not from setting encapsulation alone.
-- This means the fixed/contained view is explicitly addressing the items impacted by an `Encapsulation.None` setup, not just a separate demo panel.
+  - `PrimengEncapsulationTokenRecoveryComponent` demonstrates token-based recovery by keeping the same shared PrimeNG suite, but mapping wrapper-scoped custom properties into selected PrimeNG CSS variables inside `.token-recovery-demo`.
+  - The actual protection comes from CSS containment and token mapping rules, not from switching encapsulation metadata at runtime.
 
 Recommended CSS mode classes:
 
@@ -157,6 +161,8 @@ Current implementation status: the shared inner template (`PrimengEncapsulationS
 
 The shared suite now covers `p-badge`, `p-accordion`, `p-steps`, `p-toolbar`, `p-toast`, `p-fieldset`, `p-avatar` / `p-avatar-group`, removable `p-chip` variants, and `p-skeleton`. The current implementation uses `p-select` instead of `p-dropdown` by default.
 
+> Overlay-based PrimeNG components such as `p-toast`, select panels, dialogs, menus, tooltips, and datepicker panels may render outside a local wrapper. These components may require `appendTo`, `panelStyleClass`, overlay container configuration, or an explicit overlay token strategy to participate fully in scoped styling demos.
+
 Optional PrimeNG exposures for future comparison:
 
 - [ ] `p-dropdown` only if legacy PrimeNG dropdown behavior needs to be compared against current `p-select`
@@ -184,7 +190,7 @@ Suggested dashboard sections:
 
 ### Example trade dataset
 
-The lab should use one consistent data shape across all three views. Example dataset values:
+The lab should use one consistent data shape across all four views. Example dataset values:
 
 ```ts
 interface TradeRow {
@@ -220,7 +226,7 @@ Sample rows:
 - Message/alert area: `p-message` or `p-messages` for an info banner, execution warning, or success note.
 - Tag/chip status labels: `p-tag` for trade status and `p-chip` for strategy or portfolio labels.
 
-This is the planned component suite for the lab. We are not trimming the list here; the intent is to keep every planned control in the template so the impact and the fix are clearly comparable across the three views.
+This is the planned component suite for the lab. We are not trimming the list here; the intent is to keep every planned control in the template so the impact and the fix are clearly comparable across all four views.
 
 Suggested data theme:
 
@@ -397,12 +403,33 @@ or as a separate Storybook story.
 
 ---
 
+## Tab 4 — Encapsulation.None Token Recovery
+
+### Purpose
+
+Demonstrate localized token recovery using wrapper-scoped CSS custom properties mapped into selected PrimeNG `--p-*` variables.
+
+### Tasks
+
+- [x] Set tab label to `Encapsulation.None Token Recovery`
+- [x] Render the same shared PrimeNG component suite used in the other tabs
+- [x] Apply token recovery styles only inside `.token-recovery-demo`
+- [x] Add explanation text: `This view restores predictable styling through localized token mapping inside a recovery boundary.`
+- [x] Add a small note: `Production tokens belong at the app/design-system foundation; this tab is a localized demonstration boundary.`
+- [x] Confirm the token recovery view looks clean, professional, and scoped
+
+### What This Proves
+
+The token recovery tab shows that wrapper-scoped custom properties can recover predictable PrimeNG styling when the surface intentionally uses `ViewEncapsulation.None`, without claiming the pattern is the enterprise token source of truth.
+
+---
+
 ## Implementation Checklist
 
 ### Shared
 
 - [x] Create reusable PrimeNG component suite template
-- [x] Use the same data and layout in all three tabs
+- [x] Use the same data and layout in all four tabs
 - [x] Keep tab selector as native HTML buttons
 - [x] Keep route at `/lab/primeng-encapsulation`
 - [x] Avoid client-specific terminology
@@ -432,20 +459,31 @@ or as a separate Storybook story.
 - [x] Explain that scoped containment restores predictable styling
 - [x] Confirm the fixed view looks professional
 
+### Token Recovery
+
+- [x] Render shared component suite
+- [x] Apply token recovery styling under `.token-recovery-demo`
+- [x] Document that this is a localized demonstration boundary, not the enterprise token source of truth
+- [x] Confirm the token recovery view is scoped and clean
+
 ---
 
 ## Acceptance Criteria
 
-- [ ] `/lab/primeng-encapsulation` renders successfully
-- [ ] The page includes three tabs: `Normal PrimeNG`, `Encapsulation.None Impact`, and `Fixed / Contained`
-- [ ] All three tabs render the same PrimeNG component suite
-- [ ] Normal tab looks like normal PrimeNG
-- [ ] Impact tab is visibly affected by diagnostic global `.p-*` selectors
-- [ ] Fixed tab looks clean, professional, and contained
-- [ ] Native tab-switching buttons remain usable in every mode
-- [ ] The demo clearly shows that the issue is CSS cascade behavior, not PrimeNG itself
-- [ ] The workaround is explained as scoped design-system containment
-- [ ] No client-specific language appears in the public lab
+- [x] `/lab/primeng-encapsulation` renders successfully
+- [x] The page includes four tabs: `Normal PrimeNG`, `Encapsulation.None Impact`, `Fixed / Contained`, and `Encapsulation.None Token Recovery`
+- [x] All four views render the same PrimeNG component suite
+- [x] Normal tab looks like normal PrimeNG
+- [x] Impact tab is visibly affected by diagnostic global `.p-*` selectors
+- [x] Fixed tab looks clean, professional, and contained
+- [x] Token Recovery tab defines localized demonstration tokens under `.token-recovery-demo`
+- [x] Token Recovery tab maps selected local tokens into PrimeNG `--p-*` variables
+- [x] Token Recovery tab clearly states production tokens belong at the app/design-system foundation layer
+- [x] Overlay component behavior is documented as a scoped styling caveat
+- [x] Native tab-switching buttons remain usable in every mode
+- [x] The demo clearly shows that the issue is CSS cascade behavior, not PrimeNG itself
+- [x] The workaround is explained as scoped design-system containment
+- [x] No client-specific language appears in the public lab
 
 > Note: code review confirms the current component structure and CSS boundary implementation; browser rendering should still be verified during QA.
 >
