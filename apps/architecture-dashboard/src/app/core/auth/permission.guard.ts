@@ -3,6 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
 import { permissionRequirementMatches, type PermissionRequirement } from './permission.utils';
 import { AuthStore } from './auth.store';
+import { firstVisibleLabNavRoute } from '../shell/navigation';
 
 export const permissionGuard: CanActivateFn = (route) => {
   const authStore = inject(AuthStore);
@@ -17,7 +18,12 @@ export const permissionGuard: CanActivateFn = (route) => {
     map(() =>
       permissionRequirementMatches(authStore.hasPermission.bind(authStore), requiredPermission)
         ? true
-        : router.createUrlTree(['/lab/dashboard']),
+        : router.createUrlTree([
+            firstVisibleLabNavRoute(
+              authStore.currentUser(),
+              authStore.hasPermission.bind(authStore),
+            ) ?? '/',
+          ]),
     ),
     catchError(() => of(router.createUrlTree(['/']))),
   );

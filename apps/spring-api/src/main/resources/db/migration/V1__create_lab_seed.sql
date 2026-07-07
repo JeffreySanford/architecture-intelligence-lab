@@ -71,7 +71,8 @@ insert into roles (id, label) values
   ('contract-admin', 'Contract Admin'),
   ('realtime-operator', 'Realtime Operator'),
   ('mcp-explorer', 'MCP Explorer'),
-  ('auditor', 'Auditor')
+  ('auditor', 'Auditor'),
+  ('designer', 'Designer')
 on conflict (id) do nothing;
 
 insert into permissions (id, label) values
@@ -84,6 +85,7 @@ insert into permissions (id, label) values
   ('diagnostics:view', 'View diagnostics panels'),
   ('contracts:view', 'View OpenAPI contract lab'),
   ('developer:view', 'View developer-only lab pages'),
+  ('design:view', 'View design-system labs'),
   ('mcp:view', 'View MCP dashboard'),
   ('realtime:view', 'View realtime lab'),
   ('realtime:emit', 'Trigger demo realtime events'),
@@ -124,7 +126,9 @@ insert into role_permissions (role_id, permission_id) values
   ('realtime-operator', 'realtime:emit'),
   ('auditor', 'dashboard:view'),
   ('auditor', 'loans:view'),
-  ('auditor', 'documents:view')
+  ('auditor', 'documents:view'),
+  ('designer', 'design:view'),
+  ('designer', 'dashboard:view')
 on conflict (role_id, permission_id) do nothing;
 
 insert into users (id, display_name) values
@@ -156,7 +160,8 @@ insert into personas (id, user_id, role_id, display_name, description) values
   ('jason-auditor', 'jason-auditor', 'auditor', 'Jason Auditor', 'Audits loan and document state.'),
   ('morgan-platform-admin', 'morgan-platform-admin', 'admin', 'Morgan Platform Admin', 'Platform administration persona.'),
   ('nora-security-admin', 'nora-security-admin', 'admin', 'Nora Security Admin', 'Security administration persona.'),
-  ('owen-api-admin', 'owen-api-admin', 'contract-admin', 'Owen API Admin', 'API contract administration persona.')
+  ('owen-api-admin', 'owen-api-admin', 'contract-admin', 'Owen API Admin', 'API contract administration persona.'),
+  ('adhan-designer', 'adhan-designer', 'designer', 'Adhan Designer', 'Frontend design-system lab.')
 on conflict (id) do nothing;
 
 insert into user_roles (user_id, role_id)

@@ -31,20 +31,9 @@
     </div>
   </header>
 
-  <div class="app-frame__body">
-    <aside class="app-frame__nav" aria-label="Primary navigation">
+  <div class="app-frame__body" [class.app-frame__body--no-nav]="!hasNavItems()">
+    <aside class="app-frame__nav" aria-label="Primary navigation" [hidden]="!hasNavItems()">
       <div class="app-frame__nav-section">
-        <a
-          class="app-frame__nav-item"
-          routerLink="/"
-          routerLinkActive="app-frame__nav-item--active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <i class="app-frame__nav-icon pi pi-user" aria-hidden="true"></i>
-          <span class="app-frame__nav-label">Persona Setup</span>
-          <span class="app-frame__nav-description">Select role and context</span>
-        </a>
-
         @for (item of visibleNavItems(); track item.route) {
           <a
             class="app-frame__nav-item"

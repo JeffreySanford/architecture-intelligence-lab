@@ -2,7 +2,7 @@ FROM node:24-alpine
 
 WORKDIR /workspace
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@11.10.0 --activate
 RUN apk add --no-cache curl
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json ./

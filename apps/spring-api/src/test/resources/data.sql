@@ -1,21 +1,27 @@
 insert into roles (id, label) values
   ('viewer', 'Viewer'),
-  ('contract-admin', 'Contract Admin');
+  ('contract-admin', 'Contract Admin'),
+  ('designer', 'Designer');
 
 insert into permissions (id, label) values
   ('dashboard:view', 'Open dashboard views'),
-  ('contracts:view', 'View OpenAPI contract lab');
+  ('contracts:view', 'View OpenAPI contract lab'),
+  ('design:view', 'View design-system labs');
 
 insert into role_permissions (role_id, permission_id) values
-  ('contract-admin', 'contracts:view');
+  ('contract-admin', 'contracts:view'),
+  ('designer', 'design:view'),
+  ('designer', 'dashboard:view');
 
 insert into users (id, display_name) values
   ('alice-viewer', 'Alice Viewer'),
-  ('fiona-contract-admin', 'Fiona Contract Admin');
+  ('fiona-contract-admin', 'Fiona Contract Admin'),
+  ('adhan-designer', 'Adhan Designer');
 
 insert into personas (id, user_id, role_id, display_name, description) values
   ('alice-viewer', 'alice-viewer', 'viewer', 'Alice Viewer', 'Read-only dashboard learner.'),
-  ('fiona-contract-admin', 'fiona-contract-admin', 'contract-admin', 'Fiona Contract Admin', 'Inspects API contracts and generated clients.');
+  ('fiona-contract-admin', 'fiona-contract-admin', 'contract-admin', 'Fiona Contract Admin', 'Inspects API contracts and generated clients.'),
+  ('adhan-designer', 'adhan-designer', 'designer', 'Adhan Designer', 'Frontend design-system lab.');
 
 insert into borrowers (id, display_name, credit_score, risk_band) values
   ('borrower-001', 'Maya Chen', 742, 'Low');

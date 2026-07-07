@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { vi } from 'vitest';
 import { LandingPage } from './landing.page';
 import { AuthStore } from '../../core/auth/auth.store';
@@ -9,6 +10,13 @@ import { of } from 'rxjs';
 
 class MockAuthStore {
   personas = signal([
+    {
+      id: 'adhan-designer',
+      name: 'Adhan Designer',
+      role: 'Designer',
+      description: 'Frontend design-system lab.',
+      permissions: ['design:view', 'dashboard:view'],
+    },
     {
       id: 'alice-viewer',
       name: 'Alice Viewer',
@@ -39,10 +47,13 @@ class MockAuthStore {
     },
   ]);
   loading = signal(false);
+  personasLoading = signal(false);
+  currentUserLoading = signal(false);
   error = signal<string | null>(null);
   currentUser = signal(null);
 
   loadPersonas = vi.fn(() => of(this.personas()));
+  hasPermission = vi.fn(() => false);
 
   selectPersona = vi.fn((personaId: string) =>
     of({
@@ -70,22 +81,23 @@ class MockDashboardStore {
 describe('LandingPage', () => {
   let fixture: ComponentFixture<LandingPage>;
   let router: Router;
-  let navigateSpy: ReturnType<typeof vi.fn>;
+  let navigateSpy: (commands: readonly unknown[], extras?: Record<string, unknown>) => Promise<boolean>;
+  let authStore: MockAuthStore;
 
   beforeEach(async () => {
-    navigateSpy = vi.fn();
-    router = { navigate: navigateSpy } as unknown as Router;
+    authStore = new MockAuthStore();
 
     await TestBed.configureTestingModule({
-      imports: [LandingPage],
+      imports: [LandingPage, RouterTestingModule],
       providers: [
-        { provide: AuthStore, useClass: MockAuthStore },
+        { provide: AuthStore, useValue: authStore },
         { provide: DashboardStore, useClass: MockDashboardStore },
-        { provide: Router, useValue: router },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LandingPage);
+    router = TestBed.inject(Router);
+    navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
     fixture.detectChanges();
   });
 
@@ -95,7 +107,7 @@ describe('LandingPage', () => {
 
   it('should load personas and render the persona count', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('Loaded 4 personas from Spring.');
+    expect(compiled.textContent).toContain('Loaded 5 personas from Spring.');
   });
 
   it('should expose all persona, dataset, and backend dropdown options', () => {
@@ -118,6 +130,7 @@ describe('LandingPage', () => {
       'Compare all',
     ]);
     expect(component.personaOptions().map((option) => option.value)).toEqual([
+      'adhan-designer',
       'alice-viewer',
       'ethan-diagnostics-admin',
       'grace-realtime-operator',
@@ -134,7 +147,7 @@ describe('LandingPage', () => {
     expect(compiled.textContent).not.toContain('OpenAPI Contract Lab');
   });
 
-  it('should set shared dashboard state when entering lab', () => {
+  it('should set shared dashboard state when entering lab', async () => {
     const component = fixture.componentInstance as unknown as {
       selectedPersonaId: { set: (value: string) => void };
       selectedDatasetSize: { set: (value: string) => void };
@@ -142,15 +155,15 @@ describe('LandingPage', () => {
       enterLab: () => void;
     };
     const dashboardStore = TestBed.inject(DashboardStore);
-    const authStore = TestBed.inject(AuthStore) as unknown as MockAuthStore;
 
     component.selectedPersonaId.set('grace-realtime-operator');
     component.selectedDatasetSize.set('Large');
     component.selectedBackendMode.set('Nest proxy');
     component.enterLab();
 
+    await fixture.whenStable();
+
     expect(authStore.selectPersona).toHaveBeenCalledWith('grace-realtime-operator');
-    expect(authStore.loadCurrentUser).toHaveBeenCalled();
     expect(dashboardStore.selectedDataset()).toBe('large');
     expect(dashboardStore.selectedBackendMode()).toBe('nest-proxy');
     expect(dashboardStore.explainMode()).toBe(true);
@@ -166,9 +179,25 @@ describe('LandingPage', () => {
     );
   });
 
-  it('should navigate to the dashboard when entering lab', () => {
+  it('should navigate to the default lab route when entering lab', async () => {
     fixture.componentInstance.enterLab();
+    await fixture.whenStable();
     expect(navigateSpy).toHaveBeenCalledWith(['/lab/dashboard'], expect.any(Object));
+  });
+
+  it('should show the explain mode label and update when toggled', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const component = fixture.componentInstance as unknown as {
+      explainMode: { set: (value: boolean) => void };
+    };
+
+    component.explainMode.set(false);
+    fixture.detectChanges();
+    expect(compiled.textContent).toContain('Clean Mode');
+
+    component.explainMode.set(true);
+    fixture.detectChanges();
+    expect(compiled.textContent).toContain('Explain Mode');
   });
 
 });

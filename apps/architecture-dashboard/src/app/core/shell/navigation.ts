@@ -18,6 +18,13 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     icon: 'pi pi-chart-bar',
   },
   {
+    label: 'PrimeNG Encapsulation Lab',
+    route: '/lab/primeng-encapsulation',
+    description: 'PrimeNG style conflict and containment lab',
+    permission: 'design:view',
+    icon: 'pi pi-paint-brush',
+  },
+  {
     label: 'Security Search',
     route: '/lab/security-search',
     description: 'Security and disclosure table',
@@ -105,7 +112,7 @@ export const LAB_NAV_ITEMS: LabNavItem[] = [
     label: 'Theme Governance',
     route: '/lab/theme',
     description: 'Zeroheight and Nora tokens',
-    permission: 'developer:view',
+    permission: { anyOf: ['developer:view', 'design:view'] },
     icon: 'pi pi-palette',
   },
   {
@@ -142,4 +149,11 @@ export function visibleLabNavItems(
   return LAB_NAV_ITEMS.filter((item) =>
     permissionRequirementMatches(hasPermission, item.permission),
   );
+}
+
+export function firstVisibleLabNavRoute(
+  currentUser: CurrentUserDto | null,
+  hasPermission: (permission: string) => boolean,
+): string | null {
+  return visibleLabNavItems(currentUser, hasPermission)[0]?.route ?? null;
 }

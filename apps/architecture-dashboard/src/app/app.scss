@@ -120,6 +120,14 @@
   min-height: 0;
 }
 
+.app-frame__body--no-nav {
+  grid-template-columns: 1fr;
+}
+
+.app-frame__body--no-nav .app-frame__nav {
+  display: none;
+}
+
 .app-frame__nav {
   border-right: 1px solid var(--color-border);
   background: var(--color-surface);

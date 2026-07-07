@@ -64,6 +64,20 @@ h1 {
   background: var(--color-surface);
 }
 
+.landing__explain-mode-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.landing__explain-mode-active {
+  color: var(--color-success);
+}
+
 .landing__personas {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -75,10 +89,13 @@ h1 {
   min-height: 180px;
   border-radius: var(--radius-md);
   cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
   transition:
     border-color var(--motion-duration-fast) var(--motion-ease),
     box-shadow var(--motion-duration-fast) var(--motion-ease),
-    transform var(--motion-duration-fast) var(--motion-ease);
+    transform var(--motion-duration-fast) var(--motion-ease),
+    background-color var(--motion-duration-fast) var(--motion-ease);
 }
 
 .landing__persona:hover,
@@ -88,9 +105,17 @@ h1 {
   transform: translateY(-1px);
 }
 
-.landing__persona--selected {
-  border-color: var(--color-primary-strong);
+.landing__persona--focused {
+  border-color: #009cff;
+  background: rgba(0, 156, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(0, 156, 255, 0.12);
+}
+
+.landing__persona--selected,
+.landing__persona--selected:focus-within {
+  border-color: #009cff;
   background: var(--color-surface-alt);
+  box-shadow: 0 0 0 4px rgba(0, 156, 255, 0.18);
 }
 
 .landing__persona-content {

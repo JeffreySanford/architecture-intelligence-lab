@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { firstValueFrom, of } from 'rxjs';
+import { delay, firstValueFrom, of } from 'rxjs';
 import { AuthStore } from './auth.store';
 import { SpringApiFacade } from '../api/spring-api.facade';
 import { CurrentUserDto, PersonaDto } from '../api/lab-api.models';
@@ -9,7 +9,7 @@ class MockSpringApiFacade {
     return of([
       { id: 'alice', name: 'Alice', role: 'Viewer', description: 'Viewer persona', permissions: ['dashboard:view'] },
       { id: 'fiona', name: 'Fiona', role: 'Contract Admin', description: 'Contract Admin persona', permissions: ['contracts:view'] },
-    ] as PersonaDto[]);
+    ] as PersonaDto[]).pipe(delay(0));
   }
 
   selectPersona(personaId: string) {
@@ -26,7 +26,7 @@ class MockSpringApiFacade {
             permissions: ['dashboard:view'],
           };
 
-    return of(currentUser as CurrentUserDto);
+    return of(currentUser as CurrentUserDto).pipe(delay(0));
   }
 
   getCurrentUser() {
@@ -34,7 +34,7 @@ class MockSpringApiFacade {
       persona: { id: 'alice', name: 'Alice', role: 'Viewer', description: 'Viewer persona', permissions: ['dashboard:view'] },
       roles: ['viewer'],
       permissions: ['dashboard:view'],
-    } as CurrentUserDto);
+    } as CurrentUserDto).pipe(delay(0));
   }
 }
 
@@ -85,6 +85,27 @@ describe('AuthStore', () => {
     const currentUser = await firstValueFrom(authStore.loadCurrentUser());
     expect(currentUser.roles).toEqual(['viewer']);
     expect(authStore.currentUser()?.permissions).toContain('dashboard:view');
+  });
+
+  it('should track separate personasLoading and currentUserLoading states', async () => {
+    expect(authStore.personasLoading()).toBe(false);
+    expect(authStore.currentUserLoading()).toBe(false);
+
+    const personasPromise = authStore.loadPersonas().toPromise();
+    expect(authStore.personasLoading()).toBe(true);
+    expect(authStore.currentUserLoading()).toBe(false);
+
+    await personasPromise;
+    expect(authStore.personasLoading()).toBe(false);
+    expect(authStore.currentUserLoading()).toBe(false);
+
+    const selectPromise = authStore.selectPersona('alice').toPromise();
+    expect(authStore.personasLoading()).toBe(false);
+    expect(authStore.currentUserLoading()).toBe(true);
+
+    await selectPromise;
+    expect(authStore.personasLoading()).toBe(false);
+    expect(authStore.currentUserLoading()).toBe(false);
   });
 
   it('should compute permission set membership correctly', async () => {

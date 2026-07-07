@@ -6,7 +6,7 @@
   "scripts": {
     "start:all": "node tools/start-all.cjs",
     "start:all:monitor": "pnpm run start:all",
-    "start:all:rebuild": "docker compose up --build -d postgres redis pgadmin redis-insight spring-api nest-api && pnpm run docker:check && docker compose up -d architecture-dashboard && pnpm run seed:spring-api && docker compose logs --follow",
+    "start:all:rebuild": "docker compose down --remove-orphans && docker compose up --build -d postgres redis pgadmin redis-insight spring-api nest-api architecture-dashboard && pnpm run docker:check && pnpm run seed:spring-api && docker compose logs --follow",
     "start:storybook": "pnpm nx run architecture-dashboard:storybook",
     "storybook:start": "pnpm nx run architecture-dashboard:storybook",
     "storybook:build": "pnpm nx run architecture-dashboard:build-storybook:ci",

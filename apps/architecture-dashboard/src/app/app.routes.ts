@@ -54,6 +54,21 @@ export const appRoutes: Routes = [
         },
       },
       {
+        path: 'primeng-encapsulation',
+        loadComponent: () =>
+          import('./features/style-conflict/primeng-encapsulation-lab.component').then(
+            (m) => m.PrimengEncapsulationLabComponent,
+          ),
+        canActivate: [permissionGuard],
+        data: {
+          title: 'PrimeNG Encapsulation Lab',
+          eyebrow: 'Design-system migration',
+          description:
+            'Recreates PrimeNG styling conflicts caused by ViewEncapsulation.None and shows a scoped containment boundary.',
+          permission: 'design:view',
+        },
+      },
+      {
         path: 'capital-markets',
         loadComponent: () =>
           import('./features/capital-markets/capital-markets.page').then(
@@ -245,7 +260,7 @@ export const appRoutes: Routes = [
           eyebrow: 'PrimeNG Nora',
           description:
             'Preview Zeroheight documentation guidance, PrimeNG Nora tokens, and themed component states.',
-          permission: 'developer:view',
+          permission: { anyOf: ['developer:view', 'design:view'] },
         },
       },
       {

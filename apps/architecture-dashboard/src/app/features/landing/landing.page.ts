@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { switchMap } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ChipModule } from 'primeng/chip';
@@ -11,6 +10,7 @@ import { SelectModule } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { AuthStore } from '../../core/auth/auth.store';
 import { DashboardStore, type BackendMode, type DatasetSize } from '../../core/dashboard/dashboard.store';
+import { firstVisibleLabNavRoute } from '../../core/shell/navigation';
 
 @Component({
   standalone: true,
@@ -78,10 +78,18 @@ export class LandingPage implements OnInit {
     permissions: ['dashboard:view', 'loans:view'],
   };
 
-  protected readonly selectedPersonaId = signal<string | undefined>('alice-viewer');
+  protected readonly selectedPersonaId = signal<string | undefined>('adhan-designer');
+  protected readonly focusedPersonaId = signal<string | null>(null);
   protected readonly selectedDatasetSize = signal(this.datasetSizes[0]);
   protected readonly selectedBackendMode = signal(this.backendModes[0]);
   protected readonly explainMode = signal(true);
+
+  protected readonly defaultLabRoute = computed(() =>
+    firstVisibleLabNavRoute(
+      this.authStore.currentUser(),
+      this.authStore.hasPermission.bind(this.authStore),
+    ) ?? '/lab/dashboard',
+  );
 
   protected readonly selectedPersona = computed(() => {
     const personas = this.personaList();
@@ -93,7 +101,8 @@ export class LandingPage implements OnInit {
   });
 
   protected readonly personaCount = computed(() => this.personaList().length);
-  protected readonly isLoadingPersonas = computed(() => this.authStore.loading());
+  protected readonly isLoadingPersonas = computed(() => this.authStore.personasLoading());
+  protected readonly isSelectingPersona = computed(() => this.authStore.currentUserLoading());
 
   ngOnInit(): void {
     this.authStore
@@ -114,13 +123,32 @@ export class LandingPage implements OnInit {
   }
 
   selectPersona(personaId?: string): void {
-    if (personaId) {
-      this.selectedPersonaId.set(personaId);
+    if (!personaId) {
+      return;
     }
+
+    this.selectedPersonaId.set(personaId);
+
+    this.authStore
+      .selectPersona(personaId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: () => {
+          console.error('Failed to select persona:', personaId);
+        },
+      });
+  }
+
+  focusPersona(personaId?: string): void {
+    this.focusedPersonaId.set(personaId ?? null);
+  }
+
+  blurPersona(): void {
+    this.focusedPersonaId.set(null);
   }
 
   openCurrentUserLab(): void {
-    void this.router.navigate(['/lab/dashboard']);
+    void this.router.navigate([this.defaultLabRoute()]);
   }
 
   enterLab(): void {
@@ -135,12 +163,9 @@ export class LandingPage implements OnInit {
 
     this.authStore
       .selectPersona(this.selectedPersonaId())
-      .pipe(
-        switchMap(() => this.authStore.loadCurrentUser()),
-        takeUntilDestroyed(this.destroyRef),
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        void this.router.navigate(['/lab/dashboard'], {
+        void this.router.navigate([this.defaultLabRoute()], {
           queryParams: {
             dataset,
             backend,

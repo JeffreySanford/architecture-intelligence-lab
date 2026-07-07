@@ -38,14 +38,13 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should render shared header, navigation, main content, and footer', async () => {
+  it('should render shared header, main content, and footer', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('header')).toBeTruthy();
-    expect(compiled.querySelector('aside[aria-label="Primary navigation"]')).toBeTruthy();
     expect(compiled.querySelector('main')).toBeTruthy();
     expect(compiled.querySelector('footer')).toBeTruthy();
   });
@@ -64,7 +63,6 @@ describe('App', () => {
 
     const compiled = fixture.nativeElement as HTMLElement;
     const navText = compiled.querySelector('aside[aria-label="Primary navigation"]')?.textContent ?? '';
-    expect(navText).toContain('Persona Setup');
     expect(navText).not.toContain('Dashboard');
     expect(navText).not.toContain('Security Search');
     expect(navText).not.toContain('Backend Comparison');
@@ -86,7 +84,6 @@ describe('App', () => {
 
     const compiled = fixture.nativeElement as HTMLElement;
     const navText = compiled.querySelector('aside[aria-label="Primary navigation"]')?.textContent ?? '';
-    expect(navText).toContain('Persona Setup');
     expect(navText).toContain('Dashboard');
     expect(navText).toContain('Security Search');
     expect(navText).toContain('Capital Markets');

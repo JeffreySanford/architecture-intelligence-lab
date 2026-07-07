@@ -40,6 +40,7 @@ export class App implements OnInit, AfterViewInit {
       : [],
   );
 
+  readonly hasNavItems = computed(() => this.visibleNavItems().length > 0);
   readonly isLandingRoute = computed(() => this.currentUrl() === '/');
 
   ngOnInit(): void {

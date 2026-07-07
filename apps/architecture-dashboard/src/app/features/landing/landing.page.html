@@ -24,6 +24,7 @@
     <p class="landing__status">
       Loaded {{ personaCount() }} personas from Spring.
       @if (isLoadingPersonas()) { Loading personas... }
+      @if (isSelectingPersona()) { Selecting persona... }
     </p>
   </section>
 
@@ -31,7 +32,6 @@
     <p class="landing__error" animate.enter="enter" animate.leave="exit">{{ error }}</p>
   }
 
-  <!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
   <section class="landing__controls" aria-label="Lab setup controls">
     <div class="field" animate.enter="enter">
       <label for="persona-select">JWT persona</label>
@@ -80,8 +80,13 @@
         ngDefaultControl
         [ngModel]="explainMode()"
         (ngModelChange)="explainMode.set($event)"
+        aria-label="Toggle explain mode"
       ></p-toggleSwitch>
-      <label>Explain Mode</label>
+      <div class="landing__explain-mode-label">
+        <span [class.landing__explain-mode-active]="explainMode()">
+          {{ explainMode() ? 'Explain Mode' : 'Clean Mode' }}
+        </span>
+      </div>
     </div>
   </section>
 
@@ -91,8 +96,14 @@
         class="landing__persona"
         animate.enter="scale-enter"
         animate.leave="exit"
-        [ngClass]="{ 'landing__persona--selected': persona.id === selectedPersonaId() }"
+        tabindex="0"
+        [ngClass]="{
+          'landing__persona--selected': persona.id === selectedPersonaId(),
+          'landing__persona--focused': persona.id === focusedPersonaId(),
+        }"
         (click)="selectPersona(persona.id)"
+        (focus)="focusPersona(persona.id)"
+        (blur)="blurPersona()"
       >
         <div class="landing__persona-content">
           <strong>{{ persona.name }}</strong>

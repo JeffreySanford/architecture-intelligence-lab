@@ -10,6 +10,8 @@ export class AuthStore {
   readonly personas = signal<PersonaDto[]>([]);
   readonly currentUser = signal<CurrentUserDto | null>(null);
   readonly loading = signal(false);
+  readonly personasLoading = signal(false);
+  readonly currentUserLoading = signal(false);
   readonly error = signal<string | null>(null);
 
   readonly permissionSet = computed(() => {
@@ -22,13 +24,26 @@ export class AuthStore {
 
   loadPersonas(): Observable<PersonaDto[]> {
     this.loading.set(true);
+    this.personasLoading.set(true);
     this.error.set(null);
+    console.log('[AuthStore] loadPersonas start', {
+      personasLoading: this.personasLoading(),
+      currentUserLoading: this.currentUserLoading(),
+    });
 
     return this.api.getPersonas().pipe(
       tap((personas) => {
         this.personas.set(personas);
       }),
-      finalize(() => this.loading.set(false)),
+      finalize(() => {
+        this.personasLoading.set(false);
+        this.loading.set(false);
+        console.log('[AuthStore] loadPersonas complete', {
+          personasLoading: this.personasLoading(),
+          currentUserLoading: this.currentUserLoading(),
+          personasLoaded: this.personas().length,
+        });
+      }),
       catchError((error: unknown) => {
         this.error.set('Unable to load personas from Spring.');
         throw error;
@@ -42,14 +57,31 @@ export class AuthStore {
     }
 
     this.loading.set(true);
+    this.currentUserLoading.set(true);
     this.error.set(null);
+    console.log('[AuthStore] selectPersona start', {
+      personaId,
+      personasLoading: this.personasLoading(),
+      currentUserLoading: this.currentUserLoading(),
+    });
 
     return this.api.selectPersona(personaId).pipe(
       tap((currentUser) => this.currentUser.set(currentUser)),
-      tap(() => this.loading.set(false)),
+      tap(() => {
+        this.currentUserLoading.set(false);
+        this.loading.set(false);
+        console.log('[AuthStore] selectPersona complete', {
+          personaId,
+          personasLoading: this.personasLoading(),
+          currentUserLoading: this.currentUserLoading(),
+          currentUser: this.currentUser()?.persona?.id,
+        });
+      }),
       catchError((error: unknown) => {
+        this.currentUserLoading.set(false);
         this.loading.set(false);
         this.error.set('Unable to select persona.');
+        console.error('[AuthStore] selectPersona failed', { personaId, error });
         throw error;
       }),
     );
@@ -57,14 +89,29 @@ export class AuthStore {
 
   loadCurrentUser(): Observable<CurrentUserDto> {
     this.loading.set(true);
+    this.currentUserLoading.set(true);
     this.error.set(null);
+    console.log('[AuthStore] loadCurrentUser start', {
+      personasLoading: this.personasLoading(),
+      currentUserLoading: this.currentUserLoading(),
+    });
 
     return this.api.getCurrentUser().pipe(
       tap((currentUser) => this.currentUser.set(currentUser)),
-      tap(() => this.loading.set(false)),
+      tap(() => {
+        this.currentUserLoading.set(false);
+        this.loading.set(false);
+        console.log('[AuthStore] loadCurrentUser complete', {
+          personasLoading: this.personasLoading(),
+          currentUserLoading: this.currentUserLoading(),
+          currentUser: this.currentUser()?.persona?.id,
+        });
+      }),
       catchError((error: unknown) => {
+        this.currentUserLoading.set(false);
         this.loading.set(false);
         this.error.set('Unable to load current user.');
+        console.error('[AuthStore] loadCurrentUser failed', { error });
         throw error;
       }),
     );

@@ -8,6 +8,12 @@ type TestPersona = {
 };
 
 const personas: TestPersona[] = [
+  {
+    id: 'adhan-designer',
+    name: 'Adhan Designer',
+    role: 'Designer',
+    permissions: ['design:view', 'dashboard:view'],
+  },
   { id: 'alice-viewer', name: 'Alice Viewer', role: 'Viewer', permissions: ['dashboard:view', 'loans:view'] },
   {
     id: 'ethan-diagnostics-admin',
