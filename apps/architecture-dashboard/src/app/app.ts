@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ElementRef, OnInit, AfterViewInit, ViewChild, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, OnInit, ViewChild, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -18,7 +18,7 @@ type PageChrome = {
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App implements OnInit, AfterViewInit {
+export class App implements OnInit {
   @ViewChild('brandLogo', { static: true }) private readonly brandLogo?: ElementRef<HTMLImageElement>;
 
   private readonly authStore = inject(AuthStore);
@@ -57,9 +57,6 @@ export class App implements OnInit, AfterViewInit {
       });
   }
 
-  ngAfterViewInit(): void {
-    console.log('Brand logo element detected:', this.brandLogo?.nativeElement?.src ?? 'MISSING');
-  }
 
   private updateChrome(): void {
     let route = this.router.routerState.snapshot.root;

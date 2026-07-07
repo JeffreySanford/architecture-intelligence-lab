@@ -26,10 +26,6 @@ export class AuthStore {
     this.loading.set(true);
     this.personasLoading.set(true);
     this.error.set(null);
-    console.log('[AuthStore] loadPersonas start', {
-      personasLoading: this.personasLoading(),
-      currentUserLoading: this.currentUserLoading(),
-    });
 
     return this.api.getPersonas().pipe(
       tap((personas) => {
@@ -38,11 +34,6 @@ export class AuthStore {
       finalize(() => {
         this.personasLoading.set(false);
         this.loading.set(false);
-        console.log('[AuthStore] loadPersonas complete', {
-          personasLoading: this.personasLoading(),
-          currentUserLoading: this.currentUserLoading(),
-          personasLoaded: this.personas().length,
-        });
       }),
       catchError((error: unknown) => {
         this.error.set('Unable to load personas from Spring.');
@@ -59,23 +50,12 @@ export class AuthStore {
     this.loading.set(true);
     this.currentUserLoading.set(true);
     this.error.set(null);
-    console.log('[AuthStore] selectPersona start', {
-      personaId,
-      personasLoading: this.personasLoading(),
-      currentUserLoading: this.currentUserLoading(),
-    });
 
     return this.api.selectPersona(personaId).pipe(
       tap((currentUser) => this.currentUser.set(currentUser)),
       tap(() => {
         this.currentUserLoading.set(false);
         this.loading.set(false);
-        console.log('[AuthStore] selectPersona complete', {
-          personaId,
-          personasLoading: this.personasLoading(),
-          currentUserLoading: this.currentUserLoading(),
-          currentUser: this.currentUser()?.persona?.id,
-        });
       }),
       catchError((error: unknown) => {
         this.currentUserLoading.set(false);
@@ -91,21 +71,12 @@ export class AuthStore {
     this.loading.set(true);
     this.currentUserLoading.set(true);
     this.error.set(null);
-    console.log('[AuthStore] loadCurrentUser start', {
-      personasLoading: this.personasLoading(),
-      currentUserLoading: this.currentUserLoading(),
-    });
 
     return this.api.getCurrentUser().pipe(
       tap((currentUser) => this.currentUser.set(currentUser)),
       tap(() => {
         this.currentUserLoading.set(false);
         this.loading.set(false);
-        console.log('[AuthStore] loadCurrentUser complete', {
-          personasLoading: this.personasLoading(),
-          currentUserLoading: this.currentUserLoading(),
-          currentUser: this.currentUser()?.persona?.id,
-        });
       }),
       catchError((error: unknown) => {
         this.currentUserLoading.set(false);
