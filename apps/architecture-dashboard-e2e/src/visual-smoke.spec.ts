@@ -67,6 +67,23 @@ test.describe('Visual smoke - Phase 9', () => {
     await expect(page.locator('.route-transition')).toBeVisible();
   });
 
+  test('app brand logo image loads successfully and is displayed', async ({ page }) => {
+    await mockLandingApi(page);
+
+    await page.goto('/');
+    const logo = page.locator('.app-frame__brand-logo');
+
+    await expect(logo).toBeVisible();
+    await expect(logo).toHaveAttribute('src', /architecture-intelligence-lab-logo\.png/);
+    await expect(logo).toHaveAttribute('alt', 'Architecture Intelligence Lab logo');
+
+    const naturalWidth = await logo.evaluate((img) => {
+      const image = img as HTMLImageElement;
+      return image.complete ? image.naturalWidth : 0;
+    });
+    expect(naturalWidth).toBeGreaterThan(0);
+  });
+
   test('Architecture Flow smoke covers request path graph and route transition', async ({ page }) => {
     await mockLandingApi(page);
 
