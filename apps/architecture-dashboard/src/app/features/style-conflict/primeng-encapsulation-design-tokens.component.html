@@ -1,0 +1,119 @@
+<section class="token-recovery-demo">
+  <header class="token-recovery-demo__header">
+    <div>
+      <p-tag value="ViewEncapsulation.None Demo" severity="warn"></p-tag>
+      <h2>Encapsulation.None → Token-Based Recovery</h2>
+      <p>
+        This tab demonstrates how component styles behave globally when Angular
+        `ViewEncapsulation.None` is enabled, then shows how localized design tokens
+        can restore predictable PrimeNG styling inside a scoped boundary.
+      </p>
+    </div>
+  </header>
+
+  <div class="token-recovery-demo__grid">
+    <section class="token-recovery-demo__panel token-recovery-demo__panel--solution">
+      <div class="token-recovery-demo__panel-heading">
+        <h3>Token-Based Recovery</h3>
+        <p>
+          This pane uses local CSS custom properties and PrimeNG variable mapping
+          to recover consistent styling without broad page-level overrides.
+        </p>
+      </div>
+
+      <div class="token-recovery-demo__controls">
+        <button pButton type="button">Recovered Action</button>
+        <button pButton type="button" class="p-button-secondary">Cancel</button>
+        <input pInputText placeholder="Token-bound search" />
+      </div>
+
+      <p-card header="Scoped token styling">
+        <p>
+          Token values are defined locally for this tab and mapped into PrimeNG
+          CSS variables inside the demo wrapper.
+        </p>
+      </p-card>
+
+      <div class="token-recovery-demo__tag-row">
+        <p-tag value="Local tokens" severity="success"></p-tag>
+        <p-tag value="Scoped boundary" severity="info"></p-tag>
+      </div>
+
+      <section class="prime-demo__page-sample">
+        <div class="prime-demo__panel-header">
+          <h4>Page preview</h4>
+          <p>
+            Example page content to prove the same Normal PrimeNG controls are
+            rendered inside the token recovery tab.
+          </p>
+        </div>
+        <p-card header="Global page section">
+          <div class="prime-demo__controls prime-demo__page-sample-controls">
+            <p-select
+              ngDefaultControl
+              [options]="dropdownOptions"
+              [ngModel]="selectedPattern()"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Page filter"
+            ></p-select>
+            <button pButton type="button">Action</button>
+            <button pButton type="button" class="p-button-secondary">Cancel</button>
+            <input pInputText placeholder="Global search" />
+          </div>
+          <div class="prime-demo__chip-row">
+            <p-chip [label]="'Live headline'"></p-chip>
+            <p-chip [label]="'Status good'"></p-chip>
+          </div>
+        </p-card>
+      </section>
+
+      <app-primeng-encapsulation-shared></app-primeng-encapsulation-shared>
+    </section>
+  </div>
+
+  <section class="token-recovery-demo__inspector">
+    <div class="token-recovery-demo__inspector-header">
+      <h3>Token Source Map</h3>
+      <p>
+        These tokens are intentionally local to this tab for demonstration. In
+        a production design system, token ownership belongs at the application
+        or design-system foundation layer.
+      </p>
+    </div>
+
+    <div class="token-recovery-demo__tokens">
+      <article class="token-recovery-demo__token">
+        <span class="token-recovery-demo__swatch" style="background: var(--tab4-primary)"></span>
+        <div>
+          <strong>--tab4-primary</strong>
+          <code>#355f9f</code>
+        </div>
+      </article>
+
+      <article class="token-recovery-demo__token">
+        <span class="token-recovery-demo__swatch" style="background: var(--tab4-surface)"></span>
+        <div>
+          <strong>--tab4-surface</strong>
+          <code>#ffffff</code>
+        </div>
+      </article>
+
+      <article class="token-recovery-demo__token">
+        <span class="token-recovery-demo__swatch" style="background: var(--tab4-border)"></span>
+        <div>
+          <strong>--tab4-border</strong>
+          <code>#d8dce6</code>
+        </div>
+      </article>
+
+      <article class="token-recovery-demo__token">
+        <span class="token-recovery-demo__swatch" style="background: var(--tab4-primary-soft)"></span>
+        <div>
+          <strong>--tab4-primary-soft</strong>
+          <code>rgba(53, 95, 159, 0.12)</code>
+        </div>
+      </article>
+    </div>
+  </section>
+</section>

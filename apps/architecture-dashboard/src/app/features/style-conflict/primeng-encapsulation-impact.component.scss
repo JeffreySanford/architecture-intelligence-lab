@@ -1,0 +1,72 @@
+.encapsulation-lab--impact .prime-demo--impact {
+  border-color: #ff00ff;
+  background: #fff6c9;
+}
+
+.encapsulation-lab--impact .p-button,
+.encapsulation-lab--impact .p-select,
+.encapsulation-lab--impact .p-checkbox,
+.encapsulation-lab--impact .p-progressbar,
+.encapsulation-lab--impact .p-chip,
+.encapsulation-lab--impact .p-inputtext,
+.encapsulation-lab--impact .p-inputtextarea,
+.encapsulation-lab--impact .p-card,
+.encapsulation-lab--impact .p-table,
+.encapsulation-lab--impact .p-tag,
+.encapsulation-lab--impact .p-datatable,
+.encapsulation-lab--impact .p-panel,
+.encapsulation-lab--impact .p-tabs,
+.encapsulation-lab--impact .p-radiobutton,
+.encapsulation-lab--impact .p-toggleswitch,
+.encapsulation-lab--impact .p-message {
+  background: #eeffcc !important;
+  color: #4b0082 !important;
+  border: 4px dashed #ff00ff !important;
+  border-radius: 0 !important;
+  font-family: 'Times New Roman', serif !important;
+}
+
+.encapsulation-lab--impact .p-button {
+  background: #39ff14 !important;
+  color: #4b0082 !important;
+  border: 4px dashed #ff00ff !important;
+  text-transform: uppercase !important;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+}
+
+.encapsulation-lab--impact .p-card {
+  box-shadow: 12px 12px 0 #39ff14 !important;
+}
+
+.encapsulation-lab--impact .p-datatable .p-datatable-thead > tr > th,
+.encapsulation-lab--impact .p-table th {
+  background: #4b0082 !important;
+  color: #39ff14 !important;
+  border: 4px solid #ff00ff !important;
+}
+
+.encapsulation-lab--impact .p-datatable .p-datatable-tbody > tr:hover,
+.encapsulation-lab--impact .p-table tr:hover {
+  background: #ff00ff !important;
+  color: #ffffff !important;
+}
+
+.encapsulation-lab--impact .p-inputtext,
+.encapsulation-lab--impact .p-inputtextarea,
+.encapsulation-lab--impact .p-select {
+  background: #00ffff !important;
+  color: #000000 !important;
+  border: 5px solid #ff00ff !important;
+}
+
+.encapsulation-lab--impact .p-chip,
+.encapsulation-lab--impact .p-tag,
+.encapsulation-lab--impact .p-message,
+.encapsulation-lab--impact .p-panel,
+.encapsulation-lab--impact .p-tabs,
+.encapsulation-lab--impact .p-radiobutton,
+.encapsulation-lab--impact .p-toggleswitch {
+  background: #ff00ff !important;
+  color: #ffffff !important;
+  border: 3px solid #39ff14 !important;
+}

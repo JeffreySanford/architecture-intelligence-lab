@@ -1,0 +1,50 @@
+<section class="encapsulation-lab encapsulation-lab--{{ activeView() }}">
+  <nav class="encapsulation-lab__mode-bar" aria-label="PrimeNG encapsulation demo views">
+    <button
+      type="button"
+      class="encapsulation-lab__mode-button"
+      [class.encapsulation-lab__mode-button--active]="activeView() === 'normal'"
+      (click)="setView('normal')"
+    >
+      Normal PrimeNG
+    </button>
+    <button
+      type="button"
+      class="encapsulation-lab__mode-button"
+      [class.encapsulation-lab__mode-button--active]="activeView() === 'impact'"
+      (click)="setView('impact')"
+    >
+      Encapsulation.None Impact
+    </button>
+    <button
+      type="button"
+      class="encapsulation-lab__mode-button"
+      [class.encapsulation-lab__mode-button--active]="activeView() === 'fixed'"
+      (click)="setView('fixed')"
+    >
+      Fixed / Contained
+    </button>
+    <button
+      type="button"
+      class="encapsulation-lab__mode-button"
+      [class.encapsulation-lab__mode-button--active]="activeView() === 'tokens'"
+      (click)="setView('tokens')"
+    >
+      Encapsulation.None Token Recovery
+    </button>
+  </nav>
+
+  @switch (activeView()) {
+    @case ('normal') {
+      <app-primeng-encapsulation-normal></app-primeng-encapsulation-normal>
+    }
+    @case ('impact') {
+      <app-primeng-encapsulation-impact></app-primeng-encapsulation-impact>
+    }
+    @case ('fixed') {
+      <app-primeng-encapsulation-fixed></app-primeng-encapsulation-fixed>
+    }
+    @case ('tokens') {
+      <app-primeng-encapsulation-design-tokens></app-primeng-encapsulation-design-tokens>
+    }
+  }

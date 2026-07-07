@@ -1,0 +1,175 @@
+<div class="prime-demo__suite">
+  <p-card header="PrimeNG control panel" styleClass="prime-demo__control-card">
+    <div class="prime-demo__controls">
+      <p-select
+        ngDefaultControl
+        [options]="dropdownOptions"
+        [ngModel]="selectedPattern()"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Choose a pattern"
+      ></p-select>
+      <div class="prime-demo__toggle-group">
+        <p-toggleswitch
+          ngDefaultControl
+          [ngModel]="showAdvanced()"
+          (ngModelChange)="showAdvanced.set($event)"
+          inputId="toggle-advanced"
+          aria-label="Toggle advanced display"
+        ></p-toggleswitch>
+        <label for="toggle-advanced">Show advanced metrics</label>
+      </div>
+      <button pButton type="button" (click)="showToast()">Approve</button>
+      <button pButton type="button" class="p-button-secondary">Review</button>
+      <button pButton type="button" class="p-button-warning">Hold</button>
+      <p-badge value="Prime" severity="success"></p-badge>
+    </div>
+    <div class="prime-demo__chip-row">
+      @for (tag of removableTags(); track tag) {
+        <p-chip [label]="tag" removable="true" (remove)="removeTag(tag)"></p-chip>
+      }
+    </div>
+
+    <p-toast></p-toast>
+  </p-card>
+
+  <div class="prime-demo__summary-row">
+    <p-fieldset legend="Trade Summary" class="prime-demo__panel">
+      <p>
+        The same PrimeNG component suite is rendered in each view so the style
+        differences are easy to compare.
+      </p>
+      <div class="prime-demo__trade-row">
+        <p-message severity="info" text="Migrating PrimeNG styling with a scoped boundary."></p-message>
+      </div>
+      <div class="prime-demo__textarea-row">
+        <textarea
+          pInputTextarea
+          ngDefaultControl
+          [ngModel]="selectedPattern()"
+          (ngModelChange)="selectedPattern.set($event)"
+          rows="3"
+          cols="30"
+          placeholder="Design note"
+        ></textarea>
+      </div>
+      <p-progressbar [value]="migrationProgress()"></p-progressbar>
+    </p-fieldset>
+  </div>
+
+  <div class="prime-demo__tabs-row">
+    <p-toolbar>
+      <div class="p-toolbar-group-left">
+        <p-button label="Overview" class="p-button-text"></p-button>
+        <p-button label="Details" class="p-button-text"></p-button>
+      </div>
+      <div class="p-toolbar-group-right">
+        <p-button label="Toggle skeleton" class="p-button-secondary" (click)="toggleSkeleton()"></p-button>
+      </div>
+    </p-toolbar>
+
+    <p-steps [model]="steps"></p-steps>
+
+    <p-tabs>
+      <p-tabpanel header="Overview">
+        <p>
+          This is part of the shared component suite: the same PrimeNG tab
+          component appears in every view.
+        </p>
+      </p-tabpanel>
+      <p-tabpanel header="Details">
+        <p>
+          A contained tab panel helps prove the scoped design-system surface
+          still renders predictable UI.
+        </p>
+      </p-tabpanel>
+    </p-tabs>
+  </div>
+
+  <div class="prime-demo__extra-controls">
+    <div class="prime-demo__field-group">
+      <p-checkbox
+        ngDefaultControl
+        [ngModel]="showAdvanced()"
+        binary="true"
+        inputId="show-advanced"
+      ></p-checkbox>
+      <label for="show-advanced">Show advanced metrics</label>
+    </div>
+    <div class="prime-demo__field-group">
+      <p-radiobutton
+        ngDefaultControl
+        name="focus"
+        value="Trade"
+        [ngModel]="selectedFocus()"
+        (ngModelChange)="selectedFocus.set($event)"
+        inputId="focus-trade"
+      ></p-radiobutton>
+      <label for="focus-trade">Trade</label>
+      <p-radiobutton
+        ngDefaultControl
+        name="focus"
+        value="Pool"
+        [ngModel]="selectedFocus()"
+        (ngModelChange)="selectedFocus.set($event)"
+        inputId="focus-pool"
+      ></p-radiobutton>
+      <label for="focus-pool">Pool</label>
+      <p-radiobutton
+        ngDefaultControl
+        name="focus"
+        value="Coupon"
+        [ngModel]="selectedFocus()"
+        (ngModelChange)="selectedFocus.set($event)"
+        inputId="focus-coupon"
+      ></p-radiobutton>
+      <label for="focus-coupon">Coupon</label>
+    </div>
+
+    <div class="prime-demo__avatar-row">
+      <p-avatar-group>
+        @for (avatar of avatars; track avatar) {
+          <p-avatar [label]="avatar"></p-avatar>
+        }
+      </p-avatar-group>
+    </div>
+  </div>
+
+  <div class="prime-demo__table-row">
+    <p-table [value]="rows">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Pool</th>
+          <th>Status</th>
+          <th>Amount</th>
+          <th>Coupon</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td>{{ row.pool }}</td>
+          <td><p-tag [value]="row.status"></p-tag></td>
+          <td>{{ row.amount }}</td>
+          <td>{{ row.coupon }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div class="prime-demo__accordion-row">
+    <p-accordion>
+      <p-accordionpanel header="Diagnostics" icon="pi pi-info-circle">
+        <p>Accordion content helps demonstrate structural components under scoped styles.</p>
+      </p-accordionpanel>
+      <p-accordionpanel header="Guidance" icon="pi pi-check-circle">
+        <p>Use the fixed view to protect PrimeNG components inside a scoped design-system boundary.</p>
+      </p-accordionpanel>
+    </p-accordion>
+  </div>
+
+  <div class="prime-demo__skeleton-row">
+    @if (showSkeleton()) {
+      <p-skeleton width="100%" height="2rem"></p-skeleton>
+    }
+  </div>
+</div>

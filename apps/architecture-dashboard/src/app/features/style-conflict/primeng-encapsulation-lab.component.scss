@@ -1,0 +1,368 @@
+/*
+  PrimeNG Encapsulation Lab
+  This component intentionally uses ViewEncapsulation.None.
+  The impact and fixed views both simulate broad PrimeNG overrides leaking globally.
+*/
+
+.encapsulation-lab {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.encapsulation-lab__header {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface);
+}
+
+.encapsulation-lab__eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.encapsulation-lab__summary {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--color-text-muted);
+}
+
+.encapsulation-lab__mode-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.encapsulation-lab__mode-button {
+  min-height: 2.5rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.encapsulation-lab__mode-button--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.prime-demo {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface);
+}
+
+.prime-demo__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.prime-demo__panel {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.prime-demo__panel-header {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.prime-demo__area {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface-alt);
+}
+
+.prime-demo__page-sample {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface);
+}
+
+.design-system-scope {
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface);
+}
+
+.prime-demo--fixed.design-system-scope {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: 0 8px 20px rgba(23, 32, 51, 0.08);
+}
+
+.design-system-scope .p-card,
+.design-system-scope .p-select,
+.design-system-scope .p-checkbox,
+.design-system-scope .p-progressbar,
+.design-system-scope .p-inputtext,
+.design-system-scope .p-tag,
+.design-system-scope .p-table,
+.design-system-scope .p-chip,
+.design-system-scope .p-datatable {
+  transition: all 0.2s ease-in-out;
+}
+
+.design-system-scope .p-button {
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--color-primary) !important;
+  border-radius: 0.625rem !important;
+  text-transform: none !important;
+  font-family: Inter, Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  letter-spacing: normal !important;
+  font-weight: 600 !important;
+}
+
+.design-system-scope .p-inputtext {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 0.5rem !important;
+  font-family: Inter, Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+.design-system-scope .p-card {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 0.875rem !important;
+  box-shadow: 0 12px 30px rgba(23, 32, 51, 0.12) !important;
+}
+
+.design-system-scope .p-datatable .p-datatable-thead > tr > th,
+.design-system-scope .p-table th {
+  background: var(--color-surface-2) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.design-system-scope .p-datatable .p-datatable-tbody > tr:hover,
+.design-system-scope .p-table tr:hover {
+  background: var(--color-primary-soft) !important;
+  color: var(--color-text) !important;
+}
+
+.encapsulation-lab--impact .prime-demo__page-sample {
+  background: #fff6f6 !important;
+  border-color: #ff00ff !important;
+}
+
+.encapsulation-lab--fixed .prime-demo__page-sample {
+  background: #f7f7ff !important;
+}
+
+.prime-demo__page-sample-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.prime-demo__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.prime-demo__split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.encapsulation-lab--normal .prime-demo--normal {
+  outline: 3px solid rgba(53, 95, 159, 0.16);
+}
+
+.encapsulation-lab--impact .prime-demo--impact {
+  border-color: #ff00ff;
+  background: #fff6c9;
+}
+
+.encapsulation-lab--fixed .prime-demo--fixed {
+  display: grid;
+  gap: 1rem;
+}
+
+.encapsulation-lab--fixed .prime-demo__split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.encapsulation-lab--impact .p-button,
+.encapsulation-lab--impact .p-select,
+.encapsulation-lab--impact .p-checkbox,
+.encapsulation-lab--impact .p-progressbar,
+.encapsulation-lab--impact .p-chip,
+.encapsulation-lab--impact .p-inputtext,
+.encapsulation-lab--impact .p-inputtextarea,
+.encapsulation-lab--impact .p-card,
+.encapsulation-lab--impact .p-table,
+.encapsulation-lab--impact .p-tag,
+.encapsulation-lab--impact .p-datatable,
+.encapsulation-lab--impact .p-panel,
+.encapsulation-lab--impact .p-tabs,
+.encapsulation-lab--impact .p-radiobutton,
+.encapsulation-lab--impact .p-toggleswitch,
+.encapsulation-lab--impact .p-message {
+  background: #eeffcc !important;
+  color: #4b0082 !important;
+  border: 4px dashed #ff00ff !important;
+  border-radius: 0 !important;
+  font-family: 'Times New Roman', serif !important;
+}
+
+.encapsulation-lab--impact .p-button {
+  background: #39ff14 !important;
+  color: #4b0082 !important;
+  border: 4px dashed #ff00ff !important;
+  text-transform: uppercase !important;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+}
+
+.encapsulation-lab--impact .p-card {
+  box-shadow: 12px 12px 0 #39ff14 !important;
+}
+
+.encapsulation-lab--impact .p-datatable .p-datatable-thead > tr > th,
+.encapsulation-lab--impact .p-table th {
+  background: #4b0082 !important;
+  color: #39ff14 !important;
+  border: 4px solid #ff00ff !important;
+}
+
+.encapsulation-lab--impact .p-datatable .p-datatable-tbody > tr:hover,
+.encapsulation-lab--impact .p-table tr:hover {
+  background: #ff00ff !important;
+  color: #ffffff !important;
+}
+
+.encapsulation-lab--impact .p-inputtext,
+.encapsulation-lab--impact .p-inputtextarea {
+  background: #00ffff !important;
+  color: #000000 !important;
+  border: 5px solid #ff00ff !important;
+}
+
+.encapsulation-lab--impact .p-chip,
+.encapsulation-lab--impact .p-tag {
+  background: #ff00ff !important;
+  color: #ffffff !important;
+  border: 3px solid #39ff14 !important;
+}
+
+.encapsulation-lab--impact .p-table,
+.encapsulation-lab--impact .p-datatable {
+  border: 4px dashed #ff00ff !important;
+}
+
+.encapsulation-lab--impact .p-tabs {
+  border: 4px dashed #ff00ff !important;
+}
+
+.design-system-scope {
+  border-color: var(--color-border) !important;
+  background: var(--color-surface) !important;
+}
+
+.design-system-scope .p-button {
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--color-primary) !important;
+  border-radius: 0.625rem !important;
+  text-transform: none !important;
+  font-family: Inter, Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  letter-spacing: normal !important;
+  font-weight: 600 !important;
+}
+
+.design-system-scope .p-inputtext,
+.design-system-scope .p-inputtextarea,
+.design-system-scope .p-select {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 0.5rem !important;
+  font-family: Inter, Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+.design-system-scope .p-card,
+.design-system-scope .p-panel,
+.design-system-scope .p-tabs,
+.design-system-scope .p-message,
+.design-system-scope .p-tag,
+.design-system-scope .p-chip,
+.design-system-scope .p-radioButton,
+.design-system-scope .p-radiobutton,
+.design-system-scope .p-toggleswitch,
+.design-system-scope .p-checkbox {
+  border-radius: 0.75rem !important;
+}
+
+.design-system-scope .p-card {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 0.875rem !important;
+  box-shadow: 0 12px 30px rgba(23, 32, 51, 0.12) !important;
+}
+
+.design-system-scope .p-panel {
+  background: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+.design-system-scope .p-tabs {
+  background: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.design-system-scope .p-message {
+  background: var(--color-surface-alt) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.design-system-scope .p-tag,
+.design-system-scope .p-chip {
+  background: var(--color-surface-2) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.design-system-scope .p-datatable .p-datatable-thead > tr > th,
+.design-system-scope .p-table th {
+  background: var(--color-surface-2) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.design-system-scope .p-datatable .p-datatable-tbody > tr:hover,
+.design-system-scope .p-table tr:hover {
+  background: var(--color-primary-soft) !important;
+  color: var(--color-text) !important;
+}

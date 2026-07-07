@@ -1,0 +1,57 @@
+.prime-demo__suite {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.prime-demo__controls,
+.prime-demo__extra-controls,
+.prime-demo__page-sample-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.prime-demo__toggle-group,
+.prime-demo__field-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.prime-demo__panel {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.prime-demo__card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.prime-demo__textarea-row {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.prime-demo__trade-row {
+  display: grid;
+}
+
+.prime-demo__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.prime-demo__summary-row,
+.prime-demo__tabs-row,
+.prime-demo__table-row {
+  display: grid;
+  gap: 1rem;
+}
+
+.prime-demo__control-card {
+  overflow: visible;
+}

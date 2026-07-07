@@ -1,0 +1,38 @@
+<section class="prime-demo prime-demo--normal">
+  <h3>Normal PrimeNG</h3>
+  <p>
+    This view shows the expected PrimeNG baseline before any broad global
+    `.p-*` rules are applied.
+  </p>
+
+  <section class="prime-demo__page-sample">
+    <div class="prime-demo__panel-header">
+      <h4>Page preview</h4>
+      <p>
+        Example page content outside the main demo set. This section should render
+        normally in the baseline view.
+      </p>
+    </div>
+    <p-card header="Global page section">
+      <div class="prime-demo__controls prime-demo__page-sample-controls">
+        <p-select
+          ngDefaultControl
+          [options]="dropdownOptions"
+          [ngModel]="selectedPattern()"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Page filter"
+        ></p-select>
+        <button pButton type="button">Action</button>
+        <button pButton type="button" class="p-button-secondary">Cancel</button>
+        <input pInputText placeholder="Global search" />
+      </div>
+      <div class="prime-demo__chip-row">
+        <p-chip [label]="'Live headline'"></p-chip>
+        <p-chip [label]="'Status good'"></p-chip>
+      </div>
+    </p-card>
+  </section>
+
+  <app-primeng-encapsulation-shared></app-primeng-encapsulation-shared>
+</section>
