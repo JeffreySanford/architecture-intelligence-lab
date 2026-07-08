@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -44,12 +44,7 @@ type DropdownOption = {
     PrimengEncapsulationDesignTokensComponent,
   ],
   templateUrl: './primeng-encapsulation-lab.component.html',
-  styleUrls: ['./primeng-encapsulation-lab.component.scss'],
-  /*
-    This intentionally recreates the enterprise styling issue:
-    component styles behave globally when encapsulation is disabled.
-  */
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./primeng-encapsulation-lab.component.scss']
 })
 export class PrimengEncapsulationLabComponent {
   readonly activeView = signal<DemoView>('normal');
