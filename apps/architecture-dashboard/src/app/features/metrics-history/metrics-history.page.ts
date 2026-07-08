@@ -132,7 +132,11 @@ export class MetricsHistoryPage implements OnInit, AfterViewInit {
     Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Title, Tooltip);
 
     const canvas = this.latencyChart?.nativeElement;
-    const context = canvas?.getContext('2d');
+    if (!canvas || typeof canvas.getContext !== 'function') {
+      return;
+    }
+
+    const context = canvas.getContext('2d');
     if (!context) {
       return;
     }

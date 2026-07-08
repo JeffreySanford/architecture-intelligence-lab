@@ -110,7 +110,7 @@ export class DashboardPage implements OnInit, AfterViewInit {
     Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Title, Tooltip);
 
     const canvas = this.dashboardChart?.nativeElement;
-    if (!canvas) {
+    if (!canvas || typeof canvas.getContext !== 'function') {
       return;
     }
 
