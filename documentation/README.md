@@ -18,6 +18,13 @@ Mermaid diagrams are embedded directly in the relevant Markdown files. Step-by-s
 10. [19 Testing Strategy](19-testing-strategy.md)
 11. [20 Capital Markets And PrimeNG Knowledgebase](20-capital-markets-primeng-knowledgebase.md)
 12. [21 Capital Markets Vocabulary](21-capital-markets-vocabulary.md)
+13. [Design System Documentation](design/README.md)
+
+## Design System Documentation
+
+The [design](design/README.md) directory documents the PrimeNG Nora enterprise-inspired design direction for the Angular dashboard. It covers Zeroheight-style governance, MD3-to-PrimeNG token migration, component usage guidelines, and the target `/lab/theme` preview strategy.
+
+Use this section when working on PrimeNG themes, token aliases, dark mode, DataTable/card/form standards, and Capital Markets UI patterns.
 
 ## Locked Decisions
 
