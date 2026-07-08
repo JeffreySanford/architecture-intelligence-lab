@@ -318,18 +318,13 @@ test('Diagnostics Admin sees the Phase 5 live gateway loan reads table and Swagg
   );
 });
 
-test('Landing route shows only public sidebar navigation', async ({ page }) => {
+test('Landing route hides protected sidebar navigation', async ({ page }) => {
   await mockApiForPersona(page, 'alice-viewer');
 
   await page.goto('/');
 
   const sidebar = page.locator('aside[aria-label="Primary navigation"]');
-  await expect(sidebar.getByText('Persona Setup')).toBeVisible();
-  await expect(sidebar.getByText('Dashboard')).toHaveCount(0);
-  await expect(sidebar.getByText('Security Search')).toHaveCount(0);
-  await expect(sidebar.getByText('Backend Comparison')).toHaveCount(0);
-  await expect(sidebar.getByText('OpenAPI')).toHaveCount(0);
-  await expect(sidebar.getByText('Admin')).toHaveCount(0);
+  await expect(sidebar).toBeHidden();
 });
 
 test('Viewer persona sidebar hides protected links without matching permissions', async ({ page }) => {

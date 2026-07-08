@@ -16,11 +16,11 @@ test('loads capital markets route after selecting a persona', async ({ page }) =
 
   await page.goto('/');
 
-  const enterButton = page.locator('button:has-text("Enter As")');
-  await expect(enterButton).toBeVisible({ timeout: 15000 });
-  await enterButton.click();
+  const alicePersona = page.locator('.landing__persona', { hasText: 'Alice Viewer' }).first();
+  await expect(alicePersona).toBeVisible({ timeout: 15000 });
 
-  await expect(page).toHaveURL(/.*\/lab\/dashboard(\?.*)?/, {
+  await alicePersona.click();
+  await expect(page.locator('.landing__persona--selected strong')).toContainText('Alice Viewer', {
     timeout: 30000,
   });
 
