@@ -93,7 +93,7 @@
     "vitest": "^4.0.8",
     "webpack": "^5.101.3",
     "webpack-cli": "^7.0.0",
-    "webpack-dev-server": "^5.2.1"
+    "webpack-dev-server": "^5.2.6"
   },
   "dependencies": {
     "@angular/animations": "22.0.5",
